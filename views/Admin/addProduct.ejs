@@ -1,0 +1,843 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Dustyknot clothing</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/imgs/theme/Dustyknot_logo_favicon.png">
+    <!-- Template CSS -->
+    <link href="/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/public/cropperjs/cropper.css">
+    <style>
+        .OUTER-DIV{
+            width: 100% !important;
+        }
+        .preview-image{
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+    </style>
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding: 5rem;
+            left: 30rem;
+            top: 0;
+            width: 50%;
+            height: 80%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .modal-content {
+            object-fit: cover;
+            aspect-ratio: 1/1;
+            display: block;
+            width: 80% !important;
+        }
+        .close {
+            color: #fff;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/imgs/theme/Dustynote_logo_Black.png" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item active">
+                    <a class="menu-link" href="adminDash"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href=""> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="productList">Product List</a>
+                        <a href="categories">Categories</a>
+                    </div>
+                   
+                </li>
+                <!-- <li class="menu-item has-submenu ">
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="orderlist">Order list </a>
+                        
+                        <a href="page-orders-detail.html">Order detail</a>
+                    </div>
+                </li> -->
+                <li class="">
+                    <a class="menu-link" href="adminorderPage"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                   
+                </li>
+                <!-- <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Sellers</span>
+                    </a>
+                    
+                </li> -->
+                <li class="menu-item ">
+                    <a class="menu-link" href="/addProduct"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a>
+                   
+                </li>
+                <!-- <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
+                        <span class="text">Transactions</span>
+                    </a>
+                    
+                </li> -->
+                <li class="menu-item ">
+                    <a class="menu-link" href="/userList"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Users</span>
+                    </a>
+                   
+                </li>
+                <!-- <li class="menu-item">
+                    <a class="menu-link" href="couponList"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text">Coupon</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="salesReport"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text">Sales Report</span>
+                    </a>
+                </li> -->
+                <!-- <li class="menu-item">
+                    <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
+                        <span class="text">Reviews</span>
+                    </a>
+                </li> -->
+                <!-- <li class="menu-item">
+                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Brands</span> </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Statistics</span>
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li> -->
+            </ul>
+            <br>
+            <br>
+        </nav>
+    </aside>
+
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <!-- <img class="modal-content" height="100%" id="img01"> -->
+        <div class="modal-content img-container">
+            <img id='image' src="" alt="">
+        </div>
+        <button id="btn-crop" type="button">Crop</button>
+        <div class="cropped-container">
+            <img id="output" src="" alt="">
+        </div>
+    </div>
+
+
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                    </div>
+                   
+                </form>
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                    <li class="nav-item">
+                        
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle"src="/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <!-- <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <div class="dropdown-divider"></div> -->
+                            <a class="dropdown-item text-danger" href="adminlogout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
+                        </div>
+                        <div class="card-body">
+            <form method="post" action="/addProduct" id="pdtform" enctype="multipart/form-data">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Product Name</label>
+                                    <input type="text" name="name"  placeholder="Type here" class="form-control" id="productName">
+                                    <p id="error1" style="display: none; color: red;"></p>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" name="description" id="pdtdes" class="form-control" rows="4"></textarea>
+                                    <p id="error2" style="display: none; color: red;"></p>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">Category</label>
+                                    <select name="category" class="form-select" id="product_category">
+                                        <% categories.forEach (element => { %>
+                                            <option value="<%= element._id %>"> <%= element.name %> </option>
+                                        <%})%>
+                                        
+                                        
+                                        
+                                    </select>
+                                </div>
+                                
+                                <div class="row">
+                                    <!-- <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Price</label>
+                                            <div class="row gx-2">
+                                                <input placeholder=" " id="productPrice" name="regularPrice" type="text" class="form-control">
+                                                <p id="error3" style="display: none; color: red;"></p>
+                                                <p id="error8" style="display: none; color: red;"></p>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Price</label>
+                                            <input placeholder=" " id="saleprice" name="salesPrice" type="text" class="form-control">
+                                            <p id="error4" style="display: none; color: red;"></p>
+                                            
+                                        </div>
+                                    </div>
+                                   
+                                    <!-- <div class="col-lg-4">
+                                        <label class="form-label">Size</label>
+                                        <select class="form-select">
+                                            <option> Small </option>
+                                            <option> Medium </option>
+                                            <option> Large </option>
+                                        </select>
+                                    </div> -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">small</label>
+                                            <div class="row gx-2">
+                                                <input placeholder=" " id="smallQuantity" name="small" type="text" class="form-control">
+                                                <p id="error5" style="display: none; color: red;"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Medium</label>
+                                            <div class="row gx-2">
+                                                <input placeholder=" " id="mediumQuantity" name="medium" type="text" class="form-control">
+                                                <p id="error6" style="display: none; color: red;"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Large</label>
+                                            <div class="row gx-2">
+                                                <input placeholder=" " id="largeQuantity" name="large" type="text" class="form-control">
+                                                <p id="error7" style="display: none; color: red;"></p>
+                                            </div>
+                                        </div>
+                                    </div>                                   
+                                </div>
+                        </div>
+                    </div> <!-- card end// -->
+
+                    
+                    
+                </div>
+                
+                <!-- CODE FOR IMAGE CROP -->
+                <div class="col-lg-4">
+                    <div class="card mb-3">
+                        
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <label class="form-label"> image</label>
+                                
+                                
+                                <input id="imageUpload" class="form-control" type="file" name="image"  multiple>
+                                <div id="errorMessage" style="color: red; display: none;">Only images are allowed.</div>
+                                <div id="preview-container" ></div>
+    
+                                <input type="hidden" id="hiddenField1" name="hiddenField1" value="">
+                                <input type="hidden" id="hiddenField2" name="hiddenField2" value="">
+                                <input type="hidden" id="hiddenField3" name="hiddenField3" value="">
+                                <input type="hidden" id="hiddenField4" name="hiddenField4" value="">
+                
+    
+    
+                                    <script src="/public/cropperjs/cropper.js"></script>
+                                    <script>
+                                        document.getElementById('imageUpload').addEventListener('change', handleFileSelect);
+                                        const hidden1 = document.getElementById('hiddenField1')
+                                        const hidden2 = document.getElementById('hiddenField2')
+                                        const hidden3 = document.getElementById('hiddenField3')
+                                        const hidden4 = document.getElementById('hiddenField4')
+    
+                                        function handleFileSelect(event) {
+                                            var previewContainer = document.getElementById('preview-container');
+                                            previewContainer.innerHTML = ''; // Clear previous previews
+    
+                                            var files = event.target.files;
+    
+                                            for (var i = 0; i < files.length; i++) {
+                                                var file = files[i];
+                                                let ind =i
+                                                if (!file.type.startsWith('image/')) {
+                                                    continue; // Skip non-image files
+                                                }
+    
+                                                var reader = new FileReader();
+    
+                                                reader.onload = (function (currentFile) {
+                                                    return function (e) {
+                                                        var previewImage = document.createElement('img');
+                                                        previewImage.className = 'preview-image';
+                                                        // previewImage.id=`image${ind}`
+                                                        previewImage.src = e.target.result;
+                                                        previewImage.title = currentFile.name;
+                                                        previewImage.width = "300px"
+                                                        previewImage.height = "300px"
+    
+                                                        const deleteButton = document.createElement('button');
+                                                        deleteButton.innerHTML = 'Delete';
+                                                        deleteButton.type = 'button';
+                                                        deleteButton.addEventListener('click', function () {
+                                                                
+                                                            const container = deleteButton.parentNode;
+                                                            container.parentNode.removeChild(container);
+                                                        
+                                                            // Remove the file from the selectedFiles array
+                                                            selectedFiles.splice(ind, 1);
+                                                        
+                                                            // Create a new FileList with the remaining files
+                                                            const remainingFileList = new DataTransfer();
+                                                            selectedFiles.forEach(file => {
+                                                                remainingFileList.items.add(file);
+                                                            });
+                                                        
+                                                            // Assign the new FileList to the file input field
+                                                            imageInput.files = remainingFileList.files;
+                                                        
+                                                            // Update the length property of the file input field
+                                                            imageInput.files.length = selectedFiles.length;
+                                                        });
+    
+                                                        
+                                            
+                                                    
+                                                        var viewButton = document.createElement('button');
+                                                        viewButton.innerHTML = 'View';
+                                                        viewButton.id = `view${ind}`
+                                                        viewButton.type = 'button'
+                                                        viewButton.onclick = function() {
+                                                            var modal = document.getElementById('myModal');
+                                                            // var modalImg = document.getElementById('img01');
+                                                            modal.style.display = 'block';
+                                                            // modalImg.src = e.target.result;
+    
+    
+                                                            const image = document.getElementById(`image`);
+                                                            image.src = e.target.result
+                                                            const cropper = new Cropper(image, {
+                                                                aspectRatio: 1/1,
+                                                                viewMode:3
+                                                            
+                                                            });
+    
+                                                            document.querySelector('#btn-crop').addEventListener('click',async function(){
+                                                                var croppedImage = await cropper.getCroppedCanvas().toDataURL("image/png");
+                                                                let dimensions = cropper.getData()
+                                                                // console.log(ind);
+                                                                // console.log(dimensions);
+                                                                previewImage.src= croppedImage
+                                                                let x=dimensions.x
+                                                                let y=dimensions.y
+    
+                                                                let height=dimensions.height
+    
+                                                                let width=dimensions.width
+    
+                                                                const imagedata="index= "+ind+" x= "+x+" y= "+y+" width= "+width+" height= "+height
+                                                                // console.log(imagedata);
+    
+                                                                if(ind == 0){
+                                                                    hidden1.value = imagedata
+                                                                }
+                                                                if(ind == 1){
+                                                                    hidden2.value = imagedata
+                                                                }
+                                                                if(ind == 2){
+                                                                    hidden3.value = imagedata
+                                                                }
+                                                                if(ind == 3){
+                                                                    hidden4.value = imagedata
+                                                                }
+    
+                                                            
+                                                                document.querySelector(".cropped-container").style.display = 'none';
+                                                                modal.style.display = 'none';
+                                                                cropper.destroy()
+                                                            })
+                                                        };
+    
+                                                
+                                                    
+                                                    
+    
+                                                        var container = document.createElement('div');
+                                                        container.className = 'OUTER-DIV'
+                                                        container.appendChild(previewImage);
+                                                        container.appendChild(viewButton);
+                                                        container.appendChild(deleteButton);
+                                                        previewContainer.appendChild(container);
+                                                    };
+                                                })(file);
+    
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }
+    
+                                        // Close modal when clicking on the close button
+                                        document.getElementsByClassName('close')[0].onclick = function() {
+                                            document.getElementById('myModal').style.display = 'none';
+    
+                                        };
+    
+                                        // Close modal when clicking anywhere outside the modal
+                                        // window.onclick = function(event) {
+                                        //     var modal = document.getElementById('myModal');
+                                        //     if (event.target == modal) {
+                                        //         modal.style.display = 'none';
+                                        //     }
+                                        // };
+                                    </script>
+                                    
+    
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="card mb-6">
+                            <div class="card-body">
+                                
+                                <div class="d-flex justify-content-center">
+                                    <button class="btn btn-md rounded font-sm hover-up"  >Add Product</button>
+                                </div>
+                            </div> <!-- card end// -->
+                        </div>
+                    </div>
+                </form>
+                    
+                    
+                </div>
+            </div>
+
+            
+            
+
+        </section> 
+        <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©,Dustyknot clothing store .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>=
+        </footer>
+    </main>
+
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function() {
+            var files = this.files;
+            var errorMessage = document.getElementById('errorMessage');
+            var allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; 
+            var containsNonImage = false;
+        
+            for (var i = 0; i < files.length; i++) {
+                if (!allowedTypes.includes(files[i].type)) {
+                    containsNonImage = true;
+                    break;
+                }
+            }
+        
+            if (containsNonImage) {
+                errorMessage.style.display = 'block';
+                this.value = ''; 
+    
+                setTimeout(function() {
+                errorMessage.style.display = 'none';
+            }, 3000);
+            } else {
+                errorMessage.style.display = 'none';
+            }
+        });
+    </script>
+
+    <script src="/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/js/vendors/select2.min.js"></script>
+    <script src="/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/js/main.js" type="text/javascript"></script>
+</body>
+
+<!-- <script>
+    const pdtname = document.getElementById('pdtname')
+    const pdtdes = document.getElementById('pdtdes')
+    const regprice = document.getElementById('regprice')
+    const saleprice = document.getElementById('saleprice')
+    const squantity = document.getElementById('squantity')
+    const mquantity = document.getElementById('mquantity')
+    const lquantity = document.getElementById('lquantity')
+    const image = document.getElementById('imageInput')
+    const img = document.getElementById('imagePreviewContainer')
+    
+    const error1 = document.getElementById('error1')
+    const error2 = document.getElementById('error2')
+    const error3 = document.getElementById('error3')
+    const error4 = document.getElementById('error4')
+    const error5 = document.getElementById('error5')
+    const error6 = document.getElementById('error6')
+    const error7 = document.getElementById('error7')
+    const error8 = document.getElementById('error8')
+    const error9 = document.getElementById('error9')
+
+    const pdtform = document.getElementById('pdtform')
+
+    function validateProduct(e){
+        console.log("> inside validate product <");
+        const nameval = pdtname.value;
+    const namePattern = /^[A-Za-z][A-Za-z\s]*[A-Za-z]$/i
+
+    if (nameval === "") {
+        error1.style.display = "block"
+        error1.innerHTML = "Please Enter a valid name."
+    } else if (!namePattern.test(nameval)) {
+        error1.style.display = "block"
+        error1.innerHTML = "Invalid format for the Name. First letter should be capital."
+    } else {
+        error1.style.display = "none"
+        error1.innerHTML = ""
+    }
+    }
+
+    function validatePdtdes(e){
+        const catdesval = pdtdes.value.trim()
+        if (catdesval === "") {
+            error2.style.display = 'block'
+            error2.innerHTML = 'description is required'
+        } else {
+            error2.style.display = 'none'
+            error2.innerHTML = ''
+        }
+    }
+
+    function validateRegPrice(e){
+        const regPval = regprice.value
+        const rpPattern = /^(?!-)\d+$/
+        if (!rpPattern.test(regPval)) {
+            error3.style.display = 'block'
+            error3.innerHTML = 'Invalid!!'
+        } else {
+            error3.style.display = 'none'
+            error3.innerHTML = ''
+        }
+    }
+
+    function validateSalePrice(e){
+        const salePval = saleprice.value
+        const spPattern = /^(?!-)\d+$/
+        if (!spPattern.test(salePval)) {
+            error4.style.display = 'block'
+            error4.innerHTML = 'Invalid!!'
+        } else {
+            error4.style.display = 'none'
+            error4.innerHTML = '' 
+        }
+    }
+
+    function validateSmQuantity(e){
+        const smquantityval = squantity.value.trim()
+        const smpattern = /^\d+$/;
+        if (smquantityval==='') {
+            error5.style.display = 'block'
+            error5.innerHTML = 'Field cannot be empty!!'
+        }else if (!smpattern.test(smquantityval)) {
+            error5.style.display = 'block'
+            error5.innerHTML = 'enter valid Quantity!!'
+        }else{
+            error5.style.display = 'none'
+            error5.innerHTML = '' 
+        }
+    }
+
+    function validateMQuantity(e){
+        const Mquantityval = mquantity.value.trim()
+        const Mpattern = /^\d+$/;
+        if (Mquantityval==='') {
+            error6.style.display = 'block'
+            error6.innerHTML = 'Field cannot be empty!!'
+        }else if (!Mpattern.test(Mquantityval)) {
+            error6.style.display = 'block'
+            error6.innerHTML = 'enter valid Quantity!!'
+        }else{
+            error6.style.display = 'none'
+            error6.innerHTML = '' 
+        }
+    }
+
+    function validateLQuantity(e){
+        const Lquantityval = lquantity.value.trim()
+        const Lpattern = /^\d+$/;
+        if (Lquantityval==='') {
+            error7.style.display = 'block'
+            error7.innerHTML = 'Field cannot be empty!!'
+        }else if (!Lpattern.test(Lquantityval)) {
+            error7.style.display = 'block'
+            error7.innerHTML = 'enter valid Quantity!!'
+        }else{
+            error7.style.display = 'none'
+            error7.innerHTML = '' 
+        }
+    }
+
+    function validateBothPrice(e){
+        const regularP = parseFloat(regprice.value)
+        const saleP = parseFloat(saleprice.value)
+        if (regularP<saleP) {
+            error8.style.display = 'block'
+            error8.innerHTML = 'Regular price must be greater than sale price'
+        } else {
+            error8.style.display = 'none'
+            error8.innerHTML = '' 
+        }
+        
+    }
+
+    function validateImage(e){
+        const hasInvalidFiles = Array.from(image.files).some(file => !file.type.startsWith('image/'));
+        const maxImageCount = 5
+
+        img.innerHTML = '';
+
+        if(image.files.length > maxImageCount){
+            error9.style.display = 'block'
+            error9.innerHTML = 'image limit exceeded'
+        } else if(hasInvalidFiles){
+            error9.style.display = 'block'
+            error9.innerHTML = 'Invalid file type. Please select only image files.'
+        } else {
+            error9.style.display = 'none'
+            error9.innerHTML = ''
+
+            Array.from(image.files).forEach(file => {
+            const imagePreview = document.createElement('img');
+            imagePreview.src = URL.createObjectURL(file);
+            imagePreview.alt = 'Image Preview';
+            img.appendChild(imagePreview);
+        });
+        } 
+    }
+
+    pdtname.addEventListener('blur',validateProduct)
+    pdtdes.addEventListener('blur',validatePdtdes)
+    regprice.addEventListener('blur',validateRegPrice)
+    regprice.addEventListener('blur',validateBothPrice)
+    saleprice.addEventListener('blur',validateSalePrice)
+    squantity.addEventListener('blur',validateSmQuantity)
+    mquantity.addEventListener('blur',validateMQuantity)
+    lquantity.addEventListener('blur',validateLQuantity)
+    image.addEventListener('blur',validateImage)
+
+    pdtform.addEventListener('submit',function(e){
+        validateProduct()
+        validatePdtdes()
+        validateRegPrice()
+        validateSalePrice()
+        validateSmQuantity()
+        validateMQuantity()
+        validateLQuantity()
+        validateBothPrice()
+        validateImage()
+
+        if(error1.innerHTML||error2.innerHTML||error3.innerHTML||error4.innerHTML||error5.innerHTML||error6.innerHTML||error7.innerHTML||error8.innerHTML||error9.innerHTML){
+            e.preventDefault()
+        }
+    })
+
+</script> -->
+
+<!-- viswcode -->
+<script>
+    function validateForm(e) {
+            
+        
+            console.log("entered validation...........................................................");
+            let productName = document.getElementById('productName').value;
+            let productPrice = document.getElementById('productPrice').value;
+            let productQuantity = document.getElementById('productQuantity').value;
+            let discount = document.getElementById('productDiscount').value;
+
+            //for clearing previous errors
+
+            document.getElementById('productNameError').innerHTML = "";
+            document.getElementById('productPriceError').innerHTML = "";
+            document.getElementById('productQuantityError').innerHTML = "";
+            document.getElementById('productDiscountError').innerHTML = "";
+            let isValid = true;
+
+            // Product Name validation
+            if (productName.trim() === "") {
+                document.getElementById('productNameError').innerText = "Product Name is required.";
+                isValid = false;
+            } else if (/^\d+$/.test(productName) || /^-\d+$/.test(productName)) {
+                document.getElementById('productNameError').innerText = "Product Name cannot contain numbers.";
+                isValid = false;
+            }
+
+            // Product Price validation
+            if (productPrice.trim() === "") {
+                document.getElementById('productPriceError').innerText = "Product Price is required.";
+                isValid = false;
+            }
+            else if (isNaN(productPrice) || parseFloat(productPrice) <= 0) {
+                document.getElementById('productPriceError').innerHTML = "Product Price must be a valid number greater than 0.";
+                isValid = false;
+            }
+
+            // Product Quantity validation
+
+            if (isNaN(productQuantity) || parseInt(productQuantity) < 0) {
+                document.getElementById('productQuantityError').innerHTML = "Product Quantity must be a valid non-negative integer.";
+                isValid = false;
+            } else if (productQuantity.trim() === "") {
+                document.getElementById('productQuantityError').innerText = "Product Quantity is required.";
+                isValid = false;
+            }
+
+            // // Discount validation
+            // if (discount.trim() === "") {
+            //     document.getElementById('productDiscountError').innerText = "Discount is required.";
+            //     isValid = false;
+            // }
+            // else if (isNaN(discount) || parseFloat(discount) < 0 || parseFloat(discount) > 100) {
+            //     document.getElementById('productDiscountError').innerHTML = "Discount must be a valid percentage between 0 and 100.";
+            //     isValid = false;
+            // }
+
+            return isValid;
+        }
+        const form = document.getElementById("pdtform");
+        form.addEventListener("submit", (e) => {
+            const isValid = validateForm(e);
+            console.log(isValid);
+            if (!isValid) {
+                e.preventDefault();
+            }
+        })
+</script>
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+</html 
