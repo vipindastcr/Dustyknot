@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-wishlist.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:05 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Fashion Club</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/public/image/Screenshot 2024-02-24 095808.jpg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
+
+    <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css">
+    
+</head>
+
+<body>
+    
+    <%- include('header') %>
+
+
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="index.html"><img src="/public/image/fashion club logo.jpg" alt="logo"></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Search for items…">
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <div class="main-categori-wrap mobile-header-border">
+                        <a class="categori-button-active-2" href="#">
+                            <span class="fi-rs-apps"></span> Browse Categories
+                        </a>
+                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                            <ul>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a></li>
+                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer & Office</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer Electronics</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother & Kids</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu">
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="index.html">Home</a>
+                                <ul class="dropdown">
+                                    <li><a href="index.html">Home 1</a></li>
+                                    <li><a href="index-2.html">Home 2</a></li>
+                                    <li><a href="index-3.html">Home 3</a></li>
+                                    <li><a href="index-4.html">Home 4</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="shop-grid-right.html">shop</a>
+                                <ul class="dropdown">
+                                    <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
+                                    <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
+                                    <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
+                                    <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
+                                    <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
+                                            <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
+                                            <li><a href="shop-product-full.html">Product – No sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="shop-filter.html">Shop – Filter</a></li>
+                                    <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
+                                    <li><a href="shop-cart.html">Shop – Cart</a></li>
+                                    <li><a href="shop-checkout.html">Shop – Checkout</a></li>
+                                    <li><a href="shop-compare.html">Shop – Compare</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega menu</a>
+                                <ul class="dropdown">
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Women's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Dresses</a></li>
+                                            <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
+                                            <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
+                                            <li><a href="shop-product-right.html">Women's Sets</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Men's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Jackets</a></li>
+                                            <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
+                                            <li><a href="shop-product-right.html">Genuine Leather</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Technology</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Gaming Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Tablets</a></li>
+                                            <li><a href="shop-product-right.html">Laptop Accessories</a></li>
+                                            <li><a href="shop-product-right.html">Tablet Accessories</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="blog-category-fullwidth.html">Blog</a>
+                                <ul class="dropdown">
+                                    <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
+                                    <li><a href="blog-category-list.html">Blog Category List</a></li>
+                                    <li><a href="blog-category-big.html">Blog Category Big</a></li>
+                                    <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product Layout</a>
+                                        <ul class="dropdown">
+                                            <li><a href="blog-post-left.html">Left Sidebar</a></li>
+                                            <li><a href="blog-post-right.html">Right Sidebar</a></li>
+                                            <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="page-about.html">About Us</a></li>
+                                    <li><a href="page-contact.html">Contact</a></li>
+                                    <li><a href="page-account.html">My Account</a></li>
+                                    <li><a href="page-login-register.html">login/register</a></li>
+                                    <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
+                                    <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                    <li><a href="page-terms.html">Terms of Service</a></li>
+                                    <li><a href="page-404.html">404 Page</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">German</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap mobile-header-border">
+                    <div class="single-mobile-header-info mt-30">
+                        <a  href="page-contact.html"> Our location </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="page-login-register.html">Log In / Sign Up </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#">(+01) - 2345 - 6789 </a>
+                    </div>
+                </div>
+                <div class="mobile-social-icon">
+                    <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                    <a href="#"><img src="/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                    <a href="#"><img src="/assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                    <a href="#"><img src="/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                    <a href="#"><img src="/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                    <a href="#"><img src="/assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/home-page" rel="nofollow">Home</a>
+                    <span></span> Shop
+                    <span></span> Wishlist
+                </div>
+            </div>
+        </div>
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <% if (wishListItems.length<=0) { %>
+                                <div class="mb-150">
+                                    <h1 class="text-dark">No items in wishlist</h1>
+                                </div>
+                                
+
+                                <% } else { %>
+                                    <table class="table shopping-summery text-center mb-100">
+                                        <thead>
+                                            <tr class="main-heading">
+                                                <th scope="col" colspan="2">Product</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Stock Status</th>
+                                                <th scope="col">Action</th>
+                                                <th scope="col">Remove</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                            console.log(wishListItems)
+                                            <% wishListItems.forEach(element=> { %>
+                                                <tr>
+                                                    <td class="image product-thumbnail"><img
+                                                            src="/uploads/<%= element.product.image[0] %>" alt="#"></td>
+                                                    <td class="product-des product-name">
+                                                        <h5 class="product-name"><a href="/">
+                                                                <%= element.product.name %>
+                                                            </a></h5>
+
+                                                    </td>
+                                                    <td class="price" data-title="Price"><span>₹<%=
+                                                                element.product.salesPrice %></span></td>
+                                                    <% if (element.product.totalQuantity>0) { %>
+                                                        <td class="text-center" data-title="Stock">
+                                                            <span class="text-success font-weight-bold">In Stock</span>
+                                                        </td>
+                                                        <% } else { %>
+                                                            <td class="text-center" data-title="Stock">
+                                                                <span class="text-danger font-weight-bold">Out of
+                                                                    Stock</span>
+                                                            </td>
+                                                            <% } %>
+
+                                                                <% if (element.cartStatus) { %>
+                                                                    <td class="text-center" data-title="Cart">
+                                                                        <a class="btn btn-sm" href="/user-cart">View in
+                                                                            cart</a>
+                                                                    </td>
+                                                                    <% } else { %>
+                                                                        <td class="text-center" data-title="Cart">
+                                                                            <button class="btn btn-sm" type="submit" class="btn-btn-fill-out-submit" value="submit"
+                                                                            onclick="addToCart('<%=element.product._id %>')">Add to cart</button>
+                                                                        </td>
+                                                                        <% } %>
+
+                                                                            <td class="action" data-title="Remove"><a
+                                                                                    onclick="removeFromWishlist('<%=element.product._id%>')"><i
+                                                                                        class="fi-rs-trash"></i></a>
+                                                                            </td>
+                                                </tr>
+                                                <% }) %>
+                                                
+
+
+                                        </tbody>
+                                    </table>
+                                    <% } %>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal HTML -->
+
+            
+<div id="sizeModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Select Size</h2>
+        <ul>
+            <li><button onclick="findSize('small')">S</button></li>
+            <li><button onclick="findSize('medium')">M</button></li>
+            <li><button onclick="findSize('large')">L</button></li>
+        </ul>
+    </div>
+</div>
+
+        </section>
+    </main>
+    <!-- footer -->
+    <%- include('footer') %>
+
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const removeFromWishlist = (productId) => {
+
+            console.log("onclick of ---- removeFromWishlist ");
+          $.ajax({
+            url: `/removeFromWishList`,
+            method: "PUT",
+            data: {
+              productId: productId
+    
+            },
+            success: function (response) {
+              if (response.status) {
+                Toastify({
+                  text: `Removed from wishlist`,
+                  duration: 3000,
+                  gravity: "top",
+                  position: "center",
+                  stopOnFocus: true,
+                  style: {
+                    background: "red",
+                  },
+                }).showToast();
+                setTimeout(() => {
+                  location.reload()
+                }, 1000);
+    
+              }
+              else {
+                Toastify({
+                  text: `Something went wrong, Please try again later`,
+                  duration: 3000,
+                  gravity: "top",
+                  position: "center",
+                  stopOnFocus: true,
+                  style: {
+                    background: "red",
+                  },
+                }).showToast();
+              }
+            },
+            error: function (XHR, textStatus, errorThrown) {
+              console.log(errorThrown);
+            }
+          });
+        }
+      </script>
+
+<script>
+    // function openSizeModal(productId) {
+    //   $('#sizeModal'+productId).modal('show');
+    // }
+
+
+    // JavaScript function to open the modal
+
+    let id;
+function openSizeModal() {
+    var modal = document.getElementById("sizeModal");
+    modal.style.display = "block";
+}
+
+    
+    function closeSizeModal(productId) {
+      $('#sizeModal' + productId).modal('hide');
+    }
+    
+    
+    function addToCart(productId){
+
+        console.log("productid",productId)
+        console.log("clicked add to cart")
+        id = productId
+        openSizeModal(productId)
+     
+     
+    
+    
+    }
+
+    function findSize(size){
+        console.log("size : ",size);
+        let quantity = 1;
+        if (quantity > 0) {
+        
+        $.ajax({
+          url: `/addToCart/${id}/${size}`,
+          method: "POST",
+          success: function (response) {
+            if (response.status) {
+              Toastify({
+                text: `Added to Cart`,
+                duration: 3000,
+                gravity: "top", 
+                position: "center",
+                stopOnFocus: true,
+                style: {
+                  background: "green",
+                },
+              }).showToast();
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+            }
+            else {
+              Toastify({
+                text: `Something went wrong, Please try again later`,
+                duration: 3000,
+                gravity: "top", 
+                position: "center", 
+                stopOnFocus: true, 
+                style: {
+                  background: "red",
+                },
+              }).showToast();
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+            }
+
+          },
+          error: function (XHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+          }
+        });
+      } else {
+        Toastify({
+          text: `Out of stock`,
+          duration: 3000,
+          gravity: "top", 
+          position: "center", 
+          stopOnFocus: true, 
+          style: {
+            background: "red",
+          },
+        }).showToast();
+      }
+    }
+    </script>
+     <!-- <script>
+        document.getElementById('smallQuantity').style.display = "none"
+        document.getElementById('largeQuantity').style.display = 'none';
+        document.getElementById('mediumQuantity').style.display = "inline";
+        document.getElementById("S").addEventListener('click', () => {
+            console.log("hau");
+          document.getElementById('smallQuantity').style.display = "inline";
+          document.getElementById('largeQuantity').style.display = 'none';
+          document.getElementById('mediumQuantity').style.display = "none";
+          document.getElementById("S").classList.add('active');
+          document.getElementById("M").classList.remove('active');
+          document.getElementById("L").classList.remove('active');
+    
+        });
+        document.getElementById("M").addEventListener('click', () => {
+          document.getElementById('mediumQuantity').style.display = "inline";
+          document.getElementById('largeQuantity').style.display = 'none';
+          document.getElementById('smallQuantity').style.display = "none";
+          document.getElementById("M").classList.add('active');
+          document.getElementById("L").classList.remove('active');
+          document.getElementById("S").classList.remove('active');
+        });
+        document.getElementById("L").addEventListener('click', () => {
+          document.getElementById('largeQuantity').style.display = "inline";
+          document.getElementById('mediumQuantity').style.display = 'none';
+          document.getElementById('smallQuantity').style.display = "none";
+          document.getElementById("L").classList.add('active');
+          document.getElementById("M").classList.remove('active');
+          document.getElementById("S").classList.remove('active');
+        });
+      </script> -->
+
+<script>
+    const addToCart = (productId) => {
+        
+      let size = "";
+      let quantity = 0;
+      if (document.getElementById("S").classList.contains("active")) {
+        size = "S";
+        quantity = parseInt(document.getElementById("smallQuantity").innerHTML)
+      } else if (document.getElementById("M").classList.contains("active")) {
+        size = "M"
+        quantity = parseInt(document.getElementById("mediumQuantity").innerHTML);
+      } else if (document.getElementById("L").classList.contains("active")) {
+        size = "L"
+        quantity = parseInt(document.getElementById("largeQuantity").innerHTML)
+      } else {
+        size = "M";
+        quantity = parseInt(document.getElementById("mediumQuantity").innerHTML);
+      }
+      console.log(productId);
+     
+
+    };
+  </script>
+    <!-- Vendor JS-->
+    <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/plugins/slick.js"></script>
+    <script src="/assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="/assets/js/plugins/wow.js"></script>
+    <script src="/assets/js/plugins/jquery-ui.js"></script>
+    <script src="/assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="/assets/js/plugins/magnific-popup.js"></script>
+    <script src="/assets/js/plugins/select2.min.js"></script>
+    <script src="/assets/js/plugins/waypoints.js"></script>
+    <script src="/assets/js/plugins/counterup.js"></script>
+    <script src="/assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="/assets/js/plugins/images-loaded.js"></script>
+    <script src="/assets/js/plugins/isotope.js"></script>
+    <script src="/assets/js/plugins/scrollup.js"></script>
+    <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+    <!-- Template  JS -->
+    <script src="/assets/js/maind134.js?v=3.4"></script>
+    <script src="/assets/js/shopd134.js?v=3.4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-wishlist.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:05 GMT -->
+</html>

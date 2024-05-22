@@ -132,10 +132,14 @@ const addToCart = (userId, productId, size) => {
 const isAProductInCart = (userId,productId)=> {
     return new Promise(async(resolve,reject)=> {
         try {
+            console.log("> inside the cartHelper isAProductIncart function <"); //
+
             const cart = await cartModel.findOne({
-                user:userId,
-                "products.productItemId":productId
+                user: userId,
+                "products.productItemId": productId,
             });
+
+            console.log("cart................> ", cart);
 
             if(cart) {
                 resolve(true)
@@ -287,6 +291,23 @@ const clearAllCartItems = ( userId ) => {
     })
 }
 
+
+const getCartCount = (userId) => {
+    return new Promise(async(resolve,reject) => {
+       
+        let count = 0;
+        let cart = await cartModel.findOne({ user: userId});
+
+        if(cart) {
+            count = cart.products.length;
+        }else{
+            count = 0;
+        }
+
+        resolve(count)
+    })
+}
+
 module.exports = {
     addToCart,
     isAProductInCart,
@@ -294,5 +315,6 @@ module.exports = {
     totalSubtotal,
     removeItemFromCart,
     incDecProductQuantity,
-    clearAllCartItems
+    clearAllCartItems,
+    getCartCount
 }

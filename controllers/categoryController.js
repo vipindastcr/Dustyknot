@@ -21,7 +21,7 @@ const postAddCategories = async(req,res) => {
             // console.log("req.body>>> "+req.body);
             // console.log(">>>"+req.body.name+"<<<");
 
-            const categoryExists = await Category.findOne({name:name});
+            const categoryExists = await Category.findOne({name: { $regex: `^${name}$`, $options: 'i' } });
             console.log("categoryExists >>> "+categoryExists);
 
             if(categoryExists) {    

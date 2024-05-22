@@ -11,6 +11,7 @@ const userHelper=require("../helper/userhelper")
 const orderHelper = require("../helper/orderHelper")
 const categoryModel = require('../models/categoryModel');
 const { query } = require('express');
+const { name } = require('ejs');
 
 // Function to hash the password
 const securePasswordFunction = async(password) => {
@@ -26,76 +27,37 @@ const loadHome = async (req,res) => {
 
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
-
     
-
-    
+    const email = req.session.user;
+    const category = await categoryModel.find({ isActive:true })
+    const sort = req.query.sort;
 
     try {  
-        
+        let product;
        const email = req.session.user   
-    let product = await productModel.find({isActive:true})
+        product = await productModel.find({isActive:true})
                         .skip((page - 1) * limit)
                         .limit(limit);
-
     let totalPages = Math.ceil(await productModel.countDocuments() / limit);
     let category = await categoryModel.find({isActive:true})
 
 
-    const categoryname = req.query.name;
+    if(req.query.name){
+        req.session.filter_categor = req.query.name;
+    }
     const searchword = req.query.search;
 
-    console.log("userController_loadHOme || categoryname : ",categoryname);
+    // console.log("userController_loadHOme || categoryname : ",categoryname);
     
-    const sort = req.query.sort;
-    console.log("sort ....>",sort);
-
-
-    if(sort == 'lowtohigh') {
-        const product = await productModel.find({ isActive:true }).sort({ 'price.salesPrice': 1 })
-        res.render('home',{email,product,category,currentPage: page, totalPages,sort})
-    }
-
-    if(sort == 'hightolow') {
-        const product = await productModel.find({ isActive:true }).sort({ 'price.salesPrice': -1 })
-        res.render('home',{email,product,category,currentPage: page, totalPages,sort})
-    }
-    if(sort == 'aAzZ') {
-        const product = await productModel.find({ isActive:true }).sort({ name: 1 })
-        res.render('home',{email,product,category,currentPage: page, totalPages,sort})
-    }
-    if(sort == 'zZaA') {
-        const product = await productModel.find({ isActive:true }).sort({ name: -1 })
-        res.render('home',{email,product,category,currentPage: page, totalPages,sort})
-    }
-
-    if(categoryname){
-        console.log('hi..............................');
-        
-        let categoryTofilter = await categoryModel.findOne({name:categoryname})
-        console.log(category);
-        console.log(categoryTofilter._id);
-        
-        product =  await productModel.find({category:categoryTofilter._id,isActive:true})
-        console.log(product);
-    }
-
-    if(searchword){
-        console.log(searchword);
-        console.log("in search ..");
-
-        let product = await productModel.find({name:{$regex: '.*'+ searchword +'.*',$options:"i"}})
-       
-      res.render('home',{email,product,category,currentPage: page, totalPages})    
-    }else{
-      res.render('home',{email,product,category,currentPage: page, totalPages})    
-
-    }
-       
+    // console.log("sort ....>",sort);
+    res.render('home',{email,product,category,currentPage: page, totalPages,sort})
     } catch (error) {
         console.log(error);
     }
 }
+
+
+
 
 const loadLogin = async (req,res) => {
     try {
@@ -699,6 +661,87 @@ const addressEditModal = async (req, res) => {
         }
     }
 
+// work on this getCat -
+    const getCategory = async (req, res) => {
+        try {
+
+            const email = req.session.user;
+            const category = await categoryModel.find({ isActive: true })
+
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 12;
+
+            let totalPages = Math.ceil(await productModel.countDocuments() / limit);
+
+            
+
+            if(req.query.name){
+                req.session.filter_categor = req.query.name;
+            }
+            const searchword = req.query.search;
+        
+            const sort = req.query.sort;
+            console.log("sort ....>",sort);
+            if(req.session.filter_categor){
+                console.log('hi..............................');
+                let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+                product = await productModel.find({ category:categoryTofilter._id,isActive:true })
+                console.log(product);
+                console.log(categoryTofilter._id);
+            }
+        
+            if(sort == 'lowtohigh') {
+                product = await productModel.find({ isActive:true }).sort({ 'price.salesPrice': 1 })
+                if(req.session.filter_categor){
+                    let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+                    product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ 'price.salesPrice': 1 })
+                }
+            }
+        
+            if(sort == 'hightolow') {
+                product = await productModel.find({ isActive:true }).sort({ 'price.salesPrice': -1 })
+                if(req.session.filter_categor){
+                    let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+                    product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ 'price.salesPrice': -1 })
+                }
+            }
+            if(sort == 'aAzZ') {
+                product = await productModel.find({ isActive:true }).sort({ name: 1 })
+                if(req.session.filter_categor){
+                    let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+                    product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ name: 1 })
+                }
+            }
+            if(sort == 'zZaA') {
+                product = await productModel.find({ isActive:true }).sort({ name: -1 })
+                if(req.session.filter_categor){
+                    let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+                    product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ name: -1 })
+                }
+            }
+        
+        
+            if(searchword){
+                console.log(searchword);
+                console.log("in search ..");
+        
+                product = await productModel.find({name:{$regex: '.*'+ searchword +'.*',$options:"i"}})
+               
+              res.render('category',{email,product,category,currentPage: page, totalPages})    
+            }else{
+              res.render('category',{email,product,category,currentPage: page, totalPages})    
+        
+            }
+            // res.render('category',{email,product,category,currentPage: page, totalPages,sort})
+        } catch (error) {
+            console.log(error);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+
+    
+    
+
 module.exports = {
     loadHome,
     loadLogin,
@@ -724,6 +767,7 @@ module.exports = {
     deleteAddress,
     updatePassword,
     getShop,
-    // search
+    getCategory,
+    
 
 }

@@ -45,6 +45,11 @@ const productSchema = new mongoose.Schema({
             }
         }
     },
+    productstatus:{
+        type:Boolean,
+        default:true,
+
+    },
     createdAt:{
         type:Date,
         default:Date.now()

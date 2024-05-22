@@ -49,8 +49,7 @@
                     <div class="col-12">
                         <div class="table-responsive">
                             <table class="table shopping-summery text-center clean">
-                                <%if(status){%>
-                                    <% for(let i=0; i < cartItems.products.length; i++) { %>
+                               
                                 <thead>
                                     <tr class="main-heading">
                                         <th scope="col">Image</th>
@@ -63,6 +62,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <%if(status){%>
+                                        <% for(let i=0; i < cartItems.products.length; i++) { %>
                                     
                                         <tr>
                                             <td class="image product-thumbnail">
@@ -363,38 +364,37 @@
     
     
 
-<script>
+  <script>
     const removeItemFromCart = (productId, index) => {
-
-        console.log(">>reached the remove Itemfrom cart<<");
-      $.ajax({
-        url: "/removeCart/" + productId,
-        method: "DELETE",
-        success: (response) => {
-
-            // console.log("response is :"+response)
-          if (response.success) {
-            Toastify({
-              text: `Product removed from cart`,
-              duration: 3000,
-              gravity: "top",
-              position: "center",
-              stopOnFocus: true,
-              style: {
-                background: "red",
-              },
-            }).showToast();
-            setTimeout(() => {
-              location.reload();
-            }, 800);
-          } else {
-            location.reload();
-          }
-
-        },
-      })
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to remove this item from the cart?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, remove it!',
+            cancelButtonText: 'No, keep it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/removeCart/" + productId,
+                    method: "DELETE",
+                    success: (response) => {
+                        if (response.success) {
+                            setTimeout(() => {
+                                location.reload();
+                            }, 800);
+                        } else {
+                            location.reload();
+                        }
+                    },
+                });
+            }
+        });
     }
-  </script>
+</script>
+
 
     <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
@@ -418,6 +418,8 @@
     <!-- Template  JS -->
     <script src="/assets/js/maind134.js?v=3.4"></script>
     <script src="/assets/js/shopd134.js?v=3.4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 </body>
 
 

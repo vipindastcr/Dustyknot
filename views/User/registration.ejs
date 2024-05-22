@@ -314,8 +314,8 @@ function emailvalidate(e){
 
 function passvalidate(e){
     const passval = passid.value
-    const alpha = /[a-zA-Z]/
-    const digit = /\d/
+    const alpha = /[a-zA-Z]/;      // did the strong password
+    const digit = /\d/;
     if(passval.length < 8)
     {   
         error2.style.display = "block"

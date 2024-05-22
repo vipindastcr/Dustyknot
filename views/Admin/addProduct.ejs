@@ -79,44 +79,43 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <li class="menu-item active">
+                <li class="menu-item ">
                     <a class="menu-link" href="adminDash"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href=""> <i class="icon material-icons md-shopping_bag"></i>
-                        <span class="text">Products</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="productList">Product List</a>
-                        <a href="categories">Categories</a>
-                    </div>
+                <li class="menu-item ">
+                    <a class="menu-link" href="productList"><i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Product List</span></a>
                    
                 </li>
-                <!-- <li class="menu-item has-submenu ">
-                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
-                        <span class="text">Orders</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="orderlist">Order list </a>
-                        
-                        <a href="page-orders-detail.html">Order detail</a>
-                    </div>
-                </li> -->
-                <li class="">
+                <li class="menu-item ">
+                    <a class="menu-link" href="categories"><i class="icon material-icons md-category"></i>
+                        <span class="text"> Categories</span> </a>
+                </li>
+                <li class="menu-item ">
                     <a class="menu-link" href="adminorderPage"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
-                   
+                    <!-- <div class="submenu">
+                        <a href="orderlist">Order list </a>
+                        
+                        <a href="page-orders-detail.html">Order detail</a>
+                    </div> -->
                 </li>
+                <!-- <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                   
+                </li> -->
                 <!-- <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
                         <span class="text">Sellers</span>
                     </a>
                     
                 </li> -->
-                <li class="menu-item ">
+                <li class="menu-item active">
                     <a class="menu-link" href="/addProduct"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Add product</span>
                     </a>
@@ -129,7 +128,7 @@
                     
                 </li> -->
                 <li class="menu-item ">
-                    <a class="menu-link" href="/userList"> <i class="icon material-icons md-person"></i>
+                    <a class="menu-link" href="userList"> <i class="icon material-icons md-person"></i>
                         <span class="text">Users</span>
                     </a>
                    
@@ -396,6 +395,12 @@
                                                         deleteButton.innerHTML = 'Delete';
                                                         deleteButton.type = 'button';
                                                         deleteButton.addEventListener('click', function () {
+
+                                                            // Ask for confirmation before deleting
+                                                            const confirmed = window.confirm('Are you sure you want to delete this file?');
+                                                            if (!confirmed) {
+                                                                return; // If not confirmed, do nothing
+                                                            }
                                                                 
                                                             const container = deleteButton.parentNode;
                                                             container.parentNode.removeChild(container);

@@ -46,7 +46,7 @@ adminRoute.post('/editCategory',categoryController.postEditCategory)
 adminRoute.post('/blockCategory',categoryController.blockCategory)
 // adminRoute.put('/addcategory',adminAuth.isLogout,adminController.addcategory)
 adminRoute.get('/addProduct',adminAuth.isLogout,productController.displayAddProduct)
-adminRoute.post('/addProduct', adminAuth.isLogout, multer.productUpload.array("image"),imageMiddleware.validateImage, adminController.addProduct)
+adminRoute.post('/addProduct', adminAuth.isLogout, multer.productUpload.array("image"), adminController.addProduct)
 
 adminRoute.get('/productList',adminAuth.isLogout,productController.displayProductList)
 adminRoute.get('/editProduct',adminAuth.isLogout,productController.editProduct)
