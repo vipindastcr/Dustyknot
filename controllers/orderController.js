@@ -4,8 +4,18 @@ const productModel = require("../models/productModel")
 
 const orderHelper = require("../helper/orderHelper")
 const cartHelper = require("../helper/cartHelper")
+const couponHelper = require('../helper/couponHelper')
 
 const moment = require("moment")
+const Razorpay = require('razorpay')
+
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+
 
 const checkoutpage = async(req,res) => {
     try {
@@ -14,6 +24,9 @@ const checkoutpage = async(req,res) => {
         const email = req.session.user
         const userData = await user.findById({ _id: userId })
         console.log("userData >>>>>> "+userData);
+
+        const coupons = await couponHelper.findAllCoupons();
+
         const cartItems = await cartHelper.getAllCartItems( userId )
         let totalandsubtotal = await cartHelper.totalSubtotal( userId, cartItems )
         
@@ -38,7 +51,8 @@ const checkoutpage = async(req,res) => {
                 cartItems,
                 totalAmountOfEachProduct,
                 totalandsubtotal,
-                email
+                email,
+                coupons
         })
         
         
@@ -184,6 +198,62 @@ const orderDetails = async (req, res) => {
     }
   };
 
+
+  const createOrder = async(req,res) => {
+    try {
+      console.log("> entered to the orderController_create order <");
+      const amount = parseInt(req.query.totalAmount);
+      console.log(amount);
+      const order = await razorpay.orders.create({
+        amount: amount * 100,
+        currency: "INR",
+        receipt: req.session.user
+      })
+      console.log(order);
+      res.json({ orderId: order })
+      
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+
+  const ordersuccesspageload = (req,res) => {
+    res.render('ordersuccesspage')
+  }
+
+  const paymentSuccess = (req,res) => {
+    try {
+      console.log("> inside the orderCOntroller_paymentSuccess <");
+      console.log(req.body);
+
+      const { paymentid, signature, orderId } = req.body;
+      const { createHmac } = require("node:crypto");
+
+      
+
+      const hash = createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+        .update(orderId + "|" + paymentid)
+        .digest("hex");
+
+      if(hash === signature) {
+        console.log("success");
+        res.status(200).json({ success:true, message: "Payment successful" });
+      }else {
+        console.log("error");
+        res.json({ success:false, message: "Invalid payment details" });
+      }
+
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  } 
+
+  const orderFailurePageload = (req,res) => {
+    res.render('orderFailure-page')
+  }
+
 module.exports = {
     checkoutpage,
     placeOrder,
@@ -192,5 +262,9 @@ module.exports = {
     cancelSingleOrder,
     orderspage,
     adminOrderDetails,
-    changeOrderStatusOfEachProduct
+    changeOrderStatusOfEachProduct,
+    createOrder,
+    ordersuccesspageload,
+    orderFailurePageload,
+    paymentSuccess
 }

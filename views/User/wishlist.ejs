@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-wishlist.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:05 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Fashion Club</title>
+    <title>Dustyknot - Clothing Store</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,12 +14,13 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/public/image/Screenshot 2024-02-24 095808.jpg">
+    <link rel="shortcut icon" type="image/x-icon" href="/public/image/Dustyknot_logo_favicon.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
 
     <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css">
+    
     
 </head>
 
@@ -192,8 +193,8 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/home-page" rel="nofollow">Home</a>
-                    <span></span> Shop
+                    <a href="/" rel="nofollow">Home</a>
+                    <span><a href="/">Shop</a></span> 
                     <span></span> Wishlist
                 </div>
             </div>
@@ -221,7 +222,7 @@
                                             </tr>
                                         </thead>
                                         <tbody> 
-                                            console.log(wishListItems)
+                                            
                                             <% wishListItems.forEach(element=> { %>
                                                 <tr>
                                                     <td class="image product-thumbnail"><img
@@ -233,8 +234,8 @@
 
                                                     </td>
                                                     <td class="price" data-title="Price"><span>₹<%=
-                                                                element.product.salesPrice %></span></td>
-                                                    <% if (element.product.totalQuantity>0) { %>
+                                                                element.product.price.salesPrice %></span></td>
+                                                    <% if ( element.product.totalQuantity > 0 ) { %>
                                                         <td class="text-center" data-title="Stock">
                                                             <span class="text-success font-weight-bold">In Stock</span>
                                                         </td>
@@ -278,17 +279,17 @@
             <!-- Modal HTML -->
 
             
-<div id="sizeModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Select Size</h2>
-        <ul>
-            <li><button onclick="findSize('small')">S</button></li>
-            <li><button onclick="findSize('medium')">M</button></li>
-            <li><button onclick="findSize('large')">L</button></li>
-        </ul>
-    </div>
-</div>
+            <div id="sizeModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Select Size</h2>
+                    <ul>
+                        <li><button onclick="findSize('small')">S</button></li>
+                        <li><button onclick="findSize('medium')">M</button></li>
+                        <li><button onclick="findSize('large')">L</button></li>
+                    </ul>
+                </div>
+            </div>
 
         </section>
     </main>
@@ -369,10 +370,10 @@
     // JavaScript function to open the modal
 
     let id;
-function openSizeModal() {
+    function openSizeModal() {
     var modal = document.getElementById("sizeModal");
     modal.style.display = "block";
-}
+    }
 
     
     function closeSizeModal(productId) {
@@ -387,9 +388,6 @@ function openSizeModal() {
         id = productId
         openSizeModal(productId)
      
-     
-    
-    
     }
 
     function findSize(size){
@@ -529,6 +527,7 @@ function openSizeModal() {
     <script src="/assets/js/maind134.js?v=3.4"></script>
     <script src="/assets/js/shopd134.js?v=3.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js"></script>
+    
 </body>
 
 

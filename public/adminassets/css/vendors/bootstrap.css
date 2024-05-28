@@ -3300,11 +3300,11 @@ fieldset:disabled .btn {
 }
 
 .btn-success {
-  color: #000;
-  background-color: #00B517;
+  color: #fcfcfc;
+  background-color: #5cea6e;
   border-color: #00B517;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
 .btn-success:hover {
@@ -3516,16 +3516,16 @@ fieldset:disabled .btn {
 
 .btn-danger {
   color: #fff;
-  background-color: #F30000;
-  border-color: #F30000;
+  background-color: #fe5252;
+  border-color: #b96565;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
 .btn-danger:hover {
   color: #fff;
-  background-color: #cf0000;
-  border-color: #c20000;
+  background-color: #603f3f;
+  border-color: #6c757d;
 }
 
 .btn-check:focus + .btn-danger, .btn-danger:focus {

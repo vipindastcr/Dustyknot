@@ -132,14 +132,14 @@ const addToCart = (userId, productId, size) => {
 const isAProductInCart = (userId,productId)=> {
     return new Promise(async(resolve,reject)=> {
         try {
-            console.log("> inside the cartHelper isAProductIncart function <"); //
+            console.log("> inside the cartHelper_isAProductIncart- function <"); //
 
             const cart = await cartModel.findOne({
                 user: userId,
                 "products.productItemId": productId,
             });
 
-            console.log("cart................> ", cart);
+            console.log("cart...............xxxx.> ", cart);
 
             if(cart) {
                 resolve(true)

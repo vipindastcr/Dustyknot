@@ -23,6 +23,7 @@ const productController = require('../controllers/productController')
 const adminAuth = require('../middlewares/adminAuth')
 const orderController = require('../controllers/orderController')
 const imageMiddleware = require('../middlewares/imageValidateMiddleware')
+const couponController = require('../controllers/couponController')
 
 
 
@@ -30,7 +31,7 @@ const imageMiddleware = require('../middlewares/imageValidateMiddleware')
 // adminRoute.get('/adminReg',adminController.adminReg)
 // adminRoute.post('/adminReg',adminController.postAdmin)
 
-adminRoute.get('/adminLogin',adminAuth.isLogin,adminController.loadAdmin)
+adminRoute.get('/adminLogin',adminController.loadAdmin)
 adminRoute.post('/adminLogin',adminController.postAdminLogin)
 adminRoute.get('/adminDash',adminAuth.isLogout,adminController.getAdminDash)
 adminRoute.get('/adminlogout',adminAuth.isLogout,adminController.logoutAdmin)
@@ -58,7 +59,12 @@ adminRoute.get('/adminOrderDetails/:id',adminAuth.isLogout,orderController.admin
 
 adminRoute.patch('/orderStatusChangeForEachProduct/:orderId/:productId',adminAuth.isLogout,orderController.changeOrderStatusOfEachProduct)
 
-adminRoute.get('/userProductPage',)
+adminRoute.get('/userProductPage',adminAuth.isLogout,adminController.displayUser)
+
+adminRoute.get('/admin-coupon',adminAuth.isLogout,couponController.adminCoupon)
+adminRoute.post('/addCoupon',adminAuth.isLogout,couponController.addCoupon)
+adminRoute.delete('/deleteCoupon/:id',adminAuth.isLogout,couponController.deleteCoupon)
+adminRoute.post('/editCoupon',adminAuth.isLogout,couponController.editCoupon)
 
 // adminRoute.get('/unblockProduct',productController.unblockProduct)
 // adminRoute.get('/blockUser',productController.blockUser)

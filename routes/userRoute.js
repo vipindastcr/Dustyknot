@@ -15,6 +15,7 @@ const productController = require('../controllers/productController');
 const orderController = require("../controllers/orderController");
 const userBlockingMiddileware = require('../middlewares/userBlockingMiddleare');
 const wishlistController = require('../controllers/wishlistController');
+const couponController = require('../controllers/couponController')
 
 
 userRoute.get('/',userController.loadHome);
@@ -63,5 +64,12 @@ userRoute.get('/category',userController.getCategory)
 userRoute.get('/wishlist',userMiddleware.isLogout,userBlockingMiddileware.userBlock,wishlistController.wishlistload)
 userRoute.post('/addToWishlist/:id',userMiddleware.isLogout,wishlistController.addToWishlist)
 userRoute.put('/removeFromWishList',userMiddleware.isLogout,wishlistController.removeFromWishlist)
+
+userRoute.post('/createorder',userMiddleware.isLogout,orderController.createOrder)
+userRoute.get('/ordersuccesspage',userMiddleware.isLogout,orderController.ordersuccesspageload)
+userRoute.get('/orderFailure-page',userMiddleware.isLogout,orderController.orderFailurePageload)
+userRoute.post('/paymentSuccess',userMiddleware.isLogout,orderController.paymentSuccess)
+
+userRoute.post('/applyCoupon',userMiddleware.isLogout,couponController.applyCoupon)
 
 module.exports = userRoute;

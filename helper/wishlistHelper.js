@@ -18,6 +18,7 @@ const addToWishlist = (userID,productId) => {
             return;
         }
 
+        console.log("userID :",userID," productId : ",productId);
         const existingWishlist = await wishlistModel.findOne({ user: userID, 'products.productItemId': productId });
         console.log("existingWishlist : ",existingWishlist);
 
@@ -95,7 +96,7 @@ const getAllWishlistProducts = (userID) => {
             }
         ]);
 
-        console.log("> wishlisthelper < _wishlistProducts...........> ",wishlistProducts);
+        console.log("> wishlisthelper < _wishlistProducts.......>>>>>>>>>>>>>>>>>>>>>>>>>>>> ",wishlistProducts);
 
         resolve(wishlistProducts)
     })

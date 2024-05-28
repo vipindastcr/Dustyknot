@@ -21,6 +21,7 @@
 
     <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>    
 </head>
 
 <body>
@@ -45,17 +46,23 @@
 
                         <div class="col-lg-6 mb-sm-15">
                             <div class="toggle_info">
-                              <span><i class="fi-rs-mr-10"></i><span class="text-muted">Avialable Coupons</span> <a
-                                  href="" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">See
+                              <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Avialable Coupons</span> <a
+                                  href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">See
                                   More</a></span>
                             </div>
                             <div class="panel-collapse collapse login_form" id="loginform">
                               <div class="panel-body">
-                              
-                               
+                                <% for( let i=0; i < coupons.length; i++ ) { %>
+                                  <p>
+                                    <%=coupons[i].couponName%>: <%= coupons[i].code %>
+                                  </p><br>
+                                  <% } %>
+                
                               </div>
                             </div>
                           </div>
+
+
                         <div class="panel-collapse collapse login_form" id="loginform">
                             <div class="panel-body">
                                 <p class="mb-30 font-sm">If you have shopped with us before, please enter your details
@@ -94,17 +101,18 @@
                         </div>
                         <div class="panel-collapse collapse coupon_form " id="coupon">
                             <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Enter Coupon Code...">
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn  btn-md" name="login">Apply Coupon</button>
-                                    </div>
-                                </form>
+                              <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                              <form action="/applyCoupon" method="post" id="couponForm">
+                                <div class="form-group">
+                                  <input type="text" placeholder="Enter Coupon Code..." name="couponCode" id="couponCodeEnter">
+                                </div>
+                                <div class="form-group">
+                                  <button class="btn  btn-md" name="login" style="background-color: lightskyblue;" type="submit">Apply
+                                    Coupon</button>
+                                    <button class="btn btn-md cancel"type="button"  id="remCoupon" onclick="removeCoupon('<%=cartItems.coupon %>','<%=userData._id %>')">Remove Coupon</button>
+                              </form>
                             </div>
-                        </div>
+                          </div>
                     </div>
                 </div>
                 <div class="row">
@@ -533,12 +541,194 @@
           }
         }
       })
+    }else if (payment === "RazorPay") {
+    console.log("razorpay selected");
+    console.log(typeof(totalAmount));
+    $.ajax({
+        url:`/createorder?totalAmount=${totalAmount}`,
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (data) {
+            const parseAmount = parseInt(totalAmount);
+            console.log('data ....................: > ',data);
+            var options = {
+                "key": "rzp_test_vFXpOj7PsDYubS",
+                "amount": 100000,
+                "currency": "INR",
+                "name": "Dustyknot Clothings",
+                "description": "Test Transaction",
+                "image": "https://localhost:3003/public/image/Dustyknot.png",
+                "order_id": data.orderId.id,
+                "handler": function (response) {
+                    console.log(response);
+                    console.log("Hello .................... <<");
+                    verify(response, data.orderId.id);
+                    console.log("hey........................ <<");
+                },
+                "prefill": {
+                    "name": "Gaurav Kumar",
+                    "email": "gaurav.kumar@example.com",
+                    "contact": "9000090000"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp = new Razorpay(options);
+            rzp.open();
+            rzp.on("payment.failed", function (response) {
+                console.log('Payment failed:', response.error.description);
+                handleFailure(response.error.description, address, payment);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            console.error('Response Text:', xhr.responseText);
+        }
+    });
+
+    function handleFailure(description, address, paymentMethod) {
+        console.log('Payment failed:', description);
+        createOrderWithStatusPending(address, paymentMethod);
+        window.location.href = "/orderFailure-page";
     }
+
+    function createOrderWithStatusPending(address, paymentMethod) {
+        $.ajax({
+            url: '/placeOrder',
+            type: 'POST',
+            data: ({
+                addressId: address,
+                paymentOption: paymentMethod,
+                status: "payment pending"
+            }),
+            success: function (data) {
+                console.log(data);
+                if (data.success) {
+                    window.location.href = '/orderFailure-page';
+                } else {
+                    console.error('Error: Order creation failed');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+            }
+        });
+    }
+
+    function verify(response, orderId) {
+        $.ajax({
+            url: '/paymentSuccess',
+            type: 'POST',
+            data: ({
+                paymentid: response.razorpay_payment_id,
+                razorpayorderid: response.razorpay_order_id,
+                signature: response.razorpay_signature,
+                orderId
+            }),
+            success: function (data) {
+                console.log("data..................................................: ",data);
+                if (data.success) {
+                    console.log("data.success.................: ",data.success);
+                    $.ajax({
+                        url: '/placeOrder',
+                        type: 'POST',
+                        data: ({
+                            addressId: address,
+                            paymentOption: payment,
+                            // couponCode: code
+                        }),
+                        success: function (data) {
+                            console.log(data);
+                            window.location.href = '/ordersuccesspage';
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            console.error('Response Text:', xhr.responseText);
+                        }
+                    });
+                } else {
+                    console.error('Payment failed:', data.error);
+                    alert('Payment failed. Please try again later.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+            }
+        });
+    }
+}
+
 })
 })
 </script>
 
 
+
+
+<script>
+    $(document).ready(function () {
+        const price = document.getElementById("totalAmount").innerText.trim()
+
+        $("#couponForm").submit(function (event) {
+
+            event.preventDefault();
+            let formData = $("#couponCodeEnter").val();
+            console.log("this is formdata", formData)
+            $.ajax({
+                url: `/applyCoupon?price=${price}&couponCode=${formData}`,
+                method: "POST",
+                success: (response) => {
+                    if (response.status) {
+                        Toastify({
+                            text:` ${response.message}`,
+                            duration: 3000,
+                            gravity: "top",
+                            position: "center",
+                            stopOnFocus: true,
+                            style: {
+                                background: "green",
+                            },
+                        }).showToast();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+
+
+                    } else {
+                        Toastify({
+                            text:`${response.message}`,
+                            duration: 3000,
+                            gravity: "top",
+                            position: "center",
+                            stopOnFocus: true,
+                            style: {
+                                background: "red",
+                            },
+                        }).showToast();
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+                    }
+
+                },
+                error: (error) => {
+                    console.log(error)
+                }
+            })
+
+
+        })
+
+    })
+
+</script>
 
 </body>
 
