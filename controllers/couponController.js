@@ -119,7 +119,7 @@ const editCoupon = async (req, res) => {
         let editedCoupon = await couponHelper.editTheCouponDetails(req.body);
         console.log("editedCoupon   >>>>:",editedCoupon);
   
-        res.redirect("/admin-coupon",editedCoupon);
+        res.redirect("/admin-coupon",editedCoupon,{status:200});
     } catch (error) {
       console.log(error);
     }
