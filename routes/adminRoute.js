@@ -64,6 +64,8 @@ adminRoute.get('/userProductPage',adminAuth.isLogout,adminController.displayUser
 adminRoute.get('/admin-coupon',adminAuth.isLogout,couponController.adminCoupon)
 adminRoute.post('/addCoupon',adminAuth.isLogout,couponController.addCoupon)
 adminRoute.delete('/deleteCoupon/:id',adminAuth.isLogout,couponController.deleteCoupon)
+
+adminRoute.get('/editCoupon/:id',adminAuth.isLogout,couponController.getEditCoupon)
 adminRoute.post('/editCoupon',adminAuth.isLogout,couponController.editCoupon)
 
 // adminRoute.get('/unblockProduct',productController.unblockProduct)

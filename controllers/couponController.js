@@ -113,9 +113,13 @@ const deleteCoupon = async(req,res) => {
 
 const editCoupon = async (req, res) => {
     try {
-      let editedCoupon = await couponHelper.editTheCouponDetails(req.body);
+        console.log("> in couponController_ editCoupon <");
+        console.log("req.body ..................................................  :",req.body);
+
+        let editedCoupon = await couponHelper.editTheCouponDetails(req.body);
+        console.log("editedCoupon   >>>>:",editedCoupon);
   
-      res.redirect("/admin-coupon");
+        res.redirect("/admin-coupon",editedCoupon);
     } catch (error) {
       console.log(error);
     }
@@ -156,10 +160,24 @@ const applyCoupon = async(req,res) => {
     }
 }
 
+
+const getEditCoupon = async (req, res) => {
+    try {
+      const couponData = await couponHelper.getCouponData(req.params.id);
+  
+      couponData.expiryDate = dateFormatter(couponData.expiryDate);
+  
+      res.json({ couponData });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 module.exports = {
     adminCoupon,
     addCoupon,
     deleteCoupon,
     editCoupon,
-    applyCoupon
+    applyCoupon,
+    getEditCoupon
 }

@@ -899,6 +899,7 @@
             let formdata = $(this).serialize();
             let addressId = $(this).find('input[name="addressid"]').val();
             console.log("address id :", addressId)
+            console.log("formdata : ",formdata);
             $.ajax({
                 url: "/editAddress/" + addressId,
                 method: "PUT",

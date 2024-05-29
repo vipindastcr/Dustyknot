@@ -70,6 +70,6 @@ userRoute.get('/ordersuccesspage',userMiddleware.isLogout,orderController.orders
 userRoute.get('/orderFailure-page',userMiddleware.isLogout,orderController.orderFailurePageload)
 userRoute.post('/paymentSuccess',userMiddleware.isLogout,orderController.paymentSuccess)
 
-userRoute.post('/applyCoupon',userMiddleware.isLogout,couponController.applyCoupon)
+userRoute.post('/applyCoupon/:id/',userMiddleware.isLogout,couponController.applyCoupon)
 
 module.exports = userRoute;

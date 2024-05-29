@@ -69,19 +69,22 @@ const editTheCouponDetails = async (editedCouponData) => {
     try {
 
         console.log("> you are in the couponHelper_ editthecouponDetails <");
+        console.log("editedCouponData : ",editedCouponData);
         console.log("> couponHelper_ editTheCoupondetails  couponId: <", editedCouponData.couponId1);
 
         let coupon = await couponModel.findById(editedCouponData.couponId1)
-        console.log("the coupon ",coupon);
-        // console.log(editedCouponData.couponName1);
-    //     coupon.couponName = editedCouponData.couponName1;
-    //   coupon.discount = editedCouponData.couponDiscount1; // Corrected property name
-    //   coupon.expiryDate = editedCouponData.couponExpiry1;
 
-    //   console.log(coupon.couponName," ",coupon.discount,"  ",coupon.expiryDate);
+        console.log("the coupon ",coupon);
+        console.log(editedCouponData.couponName1);
+
+        coupon.couponName = editedCouponData.couponName1;
+      coupon.discount = editedCouponData.couponDiscount1; // Corrected property name
+      coupon.expiryDate = editedCouponData.couponExpiry1;
+
+      console.log("check here ..........",coupon.couponName,"....",coupon.discount,".....",coupon.expiryDate);
   
-    //   await coupon.save();
-    //   return coupon;
+      await coupon.save();
+      return coupon;
 
         
     } catch (error) {
@@ -127,11 +130,23 @@ const applyCoupon = (uesrId,couponCode) => {
     })
 }
 
+const getCouponData = (couponId) => {
+    return new Promise(async(resolve,reject) => {
+        await couponModel
+            .findOne({ _id: couponId })
+            .lean()
+            .then((result)=> {
+                resolve(result)
+            });
+    });
+}
+
 module.exports = {
     addCoupon,
     findAllCoupons,
     deleteSelectedCoupon,
     editTheCouponDetails,
-    applyCoupon
+    applyCoupon,
+    getCouponData
 
 }
