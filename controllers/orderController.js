@@ -1,6 +1,7 @@
 const user = require("../models/userSchema")
 const cartModel = require("../models/cartModel")
 const productModel = require("../models/productModel")
+const couponModel = require("../models/couponModel")
 
 const orderHelper = require("../helper/orderHelper")
 const cartHelper = require("../helper/cartHelper")
@@ -68,7 +69,8 @@ const placeOrder = async(req,res) => {
 
     const userId = req.session.user;
     const {totalAmount,data} = req.body;
-
+    console.log("ordrcntrllr_plcordr > req.body is ....: ",req.body);
+    console.log("data is : ",data);
     const status = req.body.status;
 
     const result = await orderHelper.placeOrder(totalAmount,data, userId);
@@ -86,6 +88,8 @@ const placeOrder = async(req,res) => {
     }
 
 }
+
+
 
 const orderSuccesspageload = (req,res) => {
     res.render("ordersuccesspage")

@@ -48,13 +48,9 @@ const adminCoupon = async(req,res) => {
 
 // Date Formatter
 function dateFormatter(date) {
-    console.log("> inside the dateformatter <",date);
-    // console.log("Received date:", date); //
+    console.log("Received date:", date); //
     return date.toISOString().slice(0, 10);
   }
-// function dateFormatter(date) {
-//     return date.toISOString(); // Line 52    
-// }
 
 const addCoupon = async (req,res) => {
     try {
