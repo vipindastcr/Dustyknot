@@ -19,10 +19,10 @@ const userCart = async(req,res)=> {
       
         const cartItems = await cartHelper.getAllCartItems(userData)
         
-        console.log("getting back with cartItems",cartItems)
+        // console.log("getting back with cartItems",cartItems)
 
         if(cartItems) {
-            console.log("cart items is",cartItems)
+            // console.log("cart items is",cartItems)
             // console.log("getting inside cart itmess====>");
             const email = req.session.user;
             if(cartItems.products.length>0) {

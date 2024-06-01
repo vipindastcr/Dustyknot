@@ -162,6 +162,7 @@ const totalSubtotal = (userId, cartItems) => {
       let cart = await cartModel.findOne({ user: userId });
       let total = 0;
       if (cart) {
+            console.log("cart is nt EMPTY");
           if (cartItems.products.length) {
             for (let i = 0; i < cartItems.products.length; i++) {
               console.log(cartItems.products[i])
@@ -182,14 +183,15 @@ const totalSubtotal = (userId, cartItems) => {
   };
 
 
-const getAllCartItems = (userId)=> {
+const 
+getAllCartItems = (userId)=> {
     console.log("here is in getallcartitems >>");
-    console.log("userId is : > ",userId);
+    // console.log("userId is : > ",userId);
     return new Promise(async(res,rej)=> {
         try {
             
             let userCartItems = await cartModel.findOne({user: userId}).populate('products.productItemId').populate('user')
-            console.log("userCartItems is ",userCartItems);
+            // console.log("userCartItems is ",userCartItems);
             res(userCartItems)
         
         } catch (error) {

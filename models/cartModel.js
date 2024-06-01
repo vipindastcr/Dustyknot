@@ -28,10 +28,17 @@ const cartSchema = new mongoose.Schema({
             default:"m",
         }
     }],
-    totalPrice:{
+    coupon: {
+        type: String,
+        default: null,
+    },
+    totalAmount:{
         type:Number
     }
 
+},
+{
+    timestamps: true,
 })
 
 // module.exports = mongoose.model('Cart',cartSchema)

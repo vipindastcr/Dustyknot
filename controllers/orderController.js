@@ -19,44 +19,80 @@ const razorpay = new Razorpay({
 
 
 const checkoutpage = async(req,res) => {
-    try {
+    
+  try {
         console.log("orderController_in the checkout page");
         const userId = req.session.user
         const email = req.session.user
         const userData = await user.findById({ _id: userId })
+
+        
         console.log("userData >>>>>> "+userData);
 
         const coupons = await couponHelper.findAllCoupons();
+        let cart = await cartModel.findOne({ user: userId })
 
         const cartItems = await cartHelper.getAllCartItems( userId )
-        let totalandsubtotal = await cartHelper.totalSubtotal( userId, cartItems )
+        let totalandsubtotal = cart.totalAmount;
         
-       
 
-        let totalAmountOfEachProduct = []
-        for (let i = 0; i < cartItems.products.length; i++) {
-            let total = 
-                cartItems.products[i].quantity * parseInt( cartItems.products[i].price )
+        if( cart.coupon != null ) {
+            const appliedCoupon = await couponModel.findOne({ code: cart.coupon });
+            cartItems.couponAmount = appliedCoupon.discount;
 
-            console.log("quantity >> "+cartItems.products[i].quantity+" price >> "+cartItems.products[i].price);
-            console.log("total >> "+total);
+            console.log("cartItems.couponAmount : ", cartItems.couponAmount);
 
-            totalAmountOfEachProduct.push(total);
+                let totalAmountOfEachProduct = []
+            for (let i = 0; i < cartItems.products.length; i++) {
+                let total = 
+                    cartItems.products[i].quantity * parseInt( cartItems.products[i].price )
+
+                console.log("quantity >> "+cartItems.products[i].quantity," price >> ",cartItems.products[i].price);
+                console.log("total >> ",total);
+
+                totalAmountOfEachProduct.push(total);
+            }
+
+            console.log("totalandsubtotal >>................................................ ",totalandsubtotal);
+
+            if (cartItems) {
+              console.log("totalAmountOfEachProduct 1: ",totalAmountOfEachProduct);
+              console.log("cartItems s1sssssss", cartItems)
+              res.render("userCheckout",{
+                  userData,
+                  cartItems,
+                  totalAmountOfEachProduct,
+                  totalandsubtotal,
+                  email,
+                  coupons
+              })
+          }
+            
+        }
+         else {
+          let totalAmountOfEachProduct = [];
+          for ( i = 0; i< cartItems.products.length; i++ ) {
+              let total = cartItems.products[i].quantity * parseInt(cartItems.products[i].price);
+              totalAmountOfEachProduct.push(total)
+          }
+          totalandsubtotal = totalandsubtotal;
+
+          if (cartItems) {
+            console.log("cartItems s2-------", cartItems)
+            console.log("totalAmountOfEachProduct 2: ",totalAmountOfEachProduct);
+            res.render("userCheckout", {
+              cartItems,
+              totalAmountOfEachProduct,
+              totalandsubtotal,
+              userData,
+              coupons,
+            });
+          }
+
         }
 
-        console.log("totalandsubtotal >>................................................ "+totalandsubtotal);
-
-        // res.send("order.....hi")
-        res.render("userCheckout",{
-                userData,
-                cartItems,
-                totalAmountOfEachProduct,
-                totalandsubtotal,
-                email,
-                coupons
-        })
         
-        
+       
     } catch (error) {
         console.log(error);
     }
@@ -68,18 +104,25 @@ const placeOrder = async(req,res) => {
     console.log("> ordrCntrllr_PlceOrder <");
 
     const userId = req.session.user;
-    const {totalAmount,data} = req.body;
-    console.log("ordrcntrllr_plcordr > req.body is ....: ",req.body);
-    console.log("data is : ",data);
-    const status = req.body.status;
+    const data = req.body;
+    console.log(userId);
+    const body = req.body;
+    console.log("ordrcntrllr_plcordr > req.body is ....: ",data);
 
-    const result = await orderHelper.placeOrder(totalAmount,data, userId);
+    // console.log("Place order failed");
+    
+    console.log("body.couponCode : > ", body.couponCode);
+    let coupon = await cartModel.findOne({ code: body.couponCode });
+    
+    console.log("this is coupon : > ", coupon);
+
+    const result = await orderHelper.placeOrder(data,userId);
     if( result.status ) {
         console.log('........................................................its');
         const cart = await cartModel.deleteOne({ user: userId })
         console.log('the cart is',cart);
             console.log('ivida ethikkitoo');
-            console.log(totalAmount+" "+"data >> "+data);
+           
             console.log("userId  >> "+userId);
             res.json({ status: true })
         

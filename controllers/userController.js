@@ -85,7 +85,7 @@ const loadforgot = async(req,res) => {
 
 const userRegisterPost = async (req,res) => {
     try {
-        console.log("getting inside a post user");
+        // console.log("getting inside a post user");
         // const fullname = req.body.fullname;
         
         const name = req.body.name;
@@ -93,7 +93,7 @@ const userRegisterPost = async (req,res) => {
         const phone = req.body.mobile;
         const password = req.body.password;
 
-        console.log(email+"  "+password);
+        // console.log(email+"  "+password);
         // console.log("phone number : "+req.body.mobile);
 
         // Retrieve confirmpassword from the request body
@@ -127,14 +127,14 @@ const userRegisterPost = async (req,res) => {
 
         //store userdata in the session for otp verification
         req.session.userData = userData;
-        console.log(userData);
-        console.log("ivide ningaL ethiyo");
+        // console.log(userData);
+        // console.log("ivide ningaL ethiyo");
 
         //generate otp and timer save it for temporary
         const generatedOtp = Otp();
         req.session.Otp = generatedOtp;
         req.session.timer = Date.now();
-        console.log("Generated OTP:",generatedOtp);
+        // console.log("Generated OTP:",generatedOtp);
 
 
         //send otp to mail
@@ -175,7 +175,7 @@ const createUser = async(userData) => {
 }
 
 const otpVerificationPost = async (req,res) => {
-    console.log("ivide ethiYOOO..");
+    // console.log("ivide ethiYOOO..");
     try {
         const currentTimer = Date.now();
         const timer = req.session.timer;
@@ -222,7 +222,7 @@ let lastotpGeneration = 0;
 
 const resendOtp = async (req,res) => {
     try {
-        console.log("gets here");
+        // console.log("gets here");
         const currentTime = Date.now();
         const timeDifference = currentTime - lastotpGeneration/1000;
         console.log(timeDifference);
@@ -242,7 +242,7 @@ const resendOtp = async (req,res) => {
 
         const otpExpiration = Date.now() + 60*1000;
         req.session.otpExpiration = otpExpiration;
-        console.log("ho, ivide ethi");
+        // console.log("ho, ivide ethi");
         res.redirect('/views/User');
 
         
@@ -257,7 +257,7 @@ const checkUser = async(req,res) => {
         const logemail = req.body.email;
         const logpassword = req.body.password;
 
-        console.log("> userController_ checkUser ||  logemail >> "+logemail+" logpass >> "+logpassword);
+        // console.log("> userController_ checkUser ||  logemail >> "+logemail+" logpass >> "+logpassword);
     
         const loggeduser = await User.findOne({ email:logemail })
        
@@ -277,7 +277,7 @@ const checkUser = async(req,res) => {
                         req.session.user = loggeduser._id
 
                     res.redirect('/');
-                    console.log("userController_checkuser | redirect to home >> ");
+                    // console.log("userController_checkuser | redirect to home >> ");
 
                     }else {
                         // Password doesn't match
@@ -318,7 +318,7 @@ const logoutUser = async(req,res) => {
             res.redirect('/')
         }
     } catch (error) {
-        console.log("error logging out user: ",error);
+        // console.log("error logging out user: ",error);
         res.redirect('/')
     }
 }
@@ -328,7 +328,7 @@ const loadAccount = async(req,res) => {
     try {
         const userId = req.session.user;
         
-        console.log(">> usercontroller_loadAccount <<| userId >> "+userId);
+        // console.log(">> usercontroller_loadAccount <<| userId >> "+userId);
         const userData = await User.findOne({ _id: userId })
         // const WalletData = await userHelper.getWalletDetails(userId);
         // console.log("usrCntrlr_loadAccount | userData ................>>"+userData);
@@ -371,7 +371,7 @@ const Loaduserproduct = async(req,res) => {
     try {
         const id = req.params.id;
         const email = req.session.user
-        console.log("the id is",id);
+        // console.log("the id is",id);
         const userData = req.session.user;
         const product = await productModel
         .findById({_id:id})
@@ -458,7 +458,7 @@ const addAddress = async (req,res) => {
         console.log("inside the add address user_userController");
         const body = req.body;
 
-        console.log("the body is >>..........>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.... "+body);
+        // console.log("the body is >>..........>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.... "+body);
 
         const userId = req.session.user;
         const results = await userHelper.addAddressTouser(body, userId);
@@ -477,19 +477,19 @@ const addAddress = async (req,res) => {
 const addressEditModal = async (req, res) => {
     try {
 
-        console.log("userControllr_addressEditModal");
+        // console.log("userControllr_addressEditModal");
       const userId = req.params.userId;
       const addressId = req.params.addressId;
   
       // Assuming you have a User model
       const userData = await User.findById(userId);
-      console.log(userId)
+    //   console.log(userId)
       if (userData) {
         
         const addressData = userData.address.id(addressId);
         
         if (addressData) {
-          console.log("addressdata : > "+addressData);
+        //   console.log("addressdata : > "+addressData);
           res.json({ addressData });
         } else {
           res.status(404).json({ message: 'Address not found' });
@@ -526,11 +526,11 @@ const addressEditModal = async (req, res) => {
     
     const updateUser = async(req,res,next) => {
         try {
-            console.log("inside userController_update user...................................................<<");
+            // console.log("inside userController_update user...................................................<<");
             const userId = req.session.user;
-            console.log("userID  >> ................................................................"+userId);
+            // console.log("userID  >> ................................................................"+userId);
             const userDetails = req.body;
-            console.log("userDetails >>> "+ userDetails);
+            // console.log("userDetails >>> "+ userDetails);
             const result = await userHelper.updateUserDetails(userId, userDetails)
             res.json(result)
             
@@ -545,8 +545,8 @@ const addressEditModal = async (req, res) => {
             const addressId = req.params.id;
             const body = req.body;
 
-            console.log("> inside userCntrllr_editAddress <");
-            console.log("addressId : > "+addressId+" body : > "+body);
+            // console.log("> inside userCntrllr_editAddress <");
+            // console.log("addressId : > "+addressId+" body : > "+body);
             const result = await userHelper.editAddress(userId, addressId, body)
 
            res.status(200).send({success:true})
@@ -559,11 +559,11 @@ const addressEditModal = async (req, res) => {
 
     const deleteAddress = async(req,res,next) => {
         try {
-            console.log("> inside usrcntrllr_deleteAddress <");
+            // console.log("> inside usrcntrllr_deleteAddress <");
             const userId = req.session.user;
-            console.log("userId : > "+userId);
+            // console.log("userId : > "+userId);
             const addressId = req.params.id;
-            console.log("addressId : > "+addressId);
+            // console.log("addressId : > "+addressId);
             const result = await userHelper.deleteAddressHelper(userId,addressId);
             if (result) {
                 console.log(result);
@@ -580,12 +580,12 @@ const addressEditModal = async (req, res) => {
     const updatePassword = async(req,res) => {
         try {
 
-            console.log(">inside usercontroller_updatepassword <");
+            // console.log(">inside usercontroller_updatepassword <");
             
             const userId = req.session.user;
             const passwordDetails = req.body;
 
-            console.log("passwordDetails "+passwordDetails);
+            // console.log("passwordDetails "+passwordDetails);
 
             const result = await userHelper.updateUserPassword(userId,passwordDetails);
             res.json(result);    
@@ -604,7 +604,7 @@ const addressEditModal = async (req, res) => {
             
             
             const category = await categoryModel.find({isActive:true})
-            console.log('the category',category);
+            // console.log('the category',category);
             const userID = req.session.user
             const user = await User.findOne({ _id: userID })
     

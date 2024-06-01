@@ -6,12 +6,14 @@ const { Types: { ObjectId } } = require('mongoose');
 
 
 
-const placeOrder = (totalAmount,data, userId) => {
+const placeOrder = (data, userId) => {
     console.log("orderHelper_ place order function");
+
     return new Promise (async (resolve,reject) => {
-       
+       console.log("userId : ",userId);
        try {
                 const cart = await cartModel.findOne( { user: userId} );
+                // console.log("> cart is : ",cart);
                 const address = await userModel.findOne(
                     { _id: userId, "address._id": data.addressId},
                     { "address.$":1,
@@ -55,7 +57,7 @@ const placeOrder = (totalAmount,data, userId) => {
                   console.log('stock',stock);
                   console.log('stock[product.size]',stock[productSize]);
                   stock[productSize].quantity = stock[productSize].quantity-product.quantity;
-                  console.log(stock[productSize].quantity);
+                  console.log("balance stock of this product : > ",stock[productSize].quantity);
                   await changeStock.save()
                 }
                 
@@ -76,7 +78,7 @@ const placeOrder = (totalAmount,data, userId) => {
                             mobile: user.mobile,
                         },
                         paymentMethod: data.paymentOption,
-                        totalAmount: totalAmount,
+                        totalAmount: data.totalAmount,
                     })
 
                     resolve ({result: result, status: true})

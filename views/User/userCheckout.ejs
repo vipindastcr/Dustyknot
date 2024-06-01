@@ -210,6 +210,15 @@
                                                             <%= totalandsubtotal %>
                                                         </span></td>
                                                 </tr>
+
+                                                <tr >
+                                                    <th style="display: none;" >coupon code</th>
+                                                    <td id="couponCodeTable" style="display: none;">
+                                                        <% if (cartItems.couponAmount>0) { %>
+                                                            <span> <%=cartItems.coupon %> </span>
+                                                            <% } %>
+                                                    </td>
+                                                </tr>
                                                
                                     </tbody>
                                 </table>
@@ -506,22 +515,28 @@
       $("#placeOrder").click(function () {
         let address = $("input[name='address']:checked").val();
         let payment = $("input[name='payment_option']:checked").val();
+        const code = document.getElementById("couponCodeTable").textContent.trim();
+        const Amount = document.getElementById("totalAmount").innerHTML;
+        const totalAmount = Amount.trim()
+
         const data = {
           addressId: address,
           paymentOption: payment,
+          couponCode: code,
+          totalAmount:totalAmount
         }
-        const Amount = document.getElementById("totalAmount").innerHTML;
-        const totalAmount = Amount.trim()
-        console.log("haiii",data,totalAmount);
+        
+        
+        console.log("haiii, the data is : ",data);
 
         if (payment === "COD") {
       $.ajax({
         url: "/placeOrder",
         method: "POST",
-        data: {
-            totalAmount,
-            data
-        },
+        
+        data: JSON.stringify(data),          // data old one that is working 
+        contentType: "application/json",
+
         success: (response) => {
           if (response.status) {
             console.log('its herer');
@@ -542,12 +557,14 @@
         }
       })
     }else if (payment === "RazorPay") {
+        console.log("payment method s : ",payment);
     console.log("razorpay selected");
     console.log(typeof(totalAmount));
     $.ajax({
         url:`/createorder?totalAmount=${totalAmount}`,
         type: 'POST',
         dataType: 'json',
+        data: data,
         contentType: 'application/json',
         success: function (data) {
             const parseAmount = parseInt(totalAmount);

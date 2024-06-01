@@ -94,7 +94,7 @@ const editTheCouponDetails = async (editedCouponData) => {
 
 const applyCoupon = (uesrId,couponCode) => {
     return new Promise (async(resolve,reject) => {
-        
+        console.log(">> couponHelper_applyCoupon <<");
         let coupon = await couponModel.findOne({ code: couponCode})
 
         console.log("the coupon is : >",coupon);
@@ -103,15 +103,20 @@ const applyCoupon = (uesrId,couponCode) => {
             if(!coupon.usedBy.includes(uesrId)) {
                 let cart = await cartModel.findOne({ user: new ObjectId(uesrId)})
                 console.log(cart);
-                const discount = coupon.discount;
+                const discount = coupon.discount / 100 ;
                 console.log("> the discount is :  <", discount);
                 console.log("cart.totalAmount : ",cart.totalAmount);
 
                 // discount substraction
-                cart.totalAmount = cart.totalAmount - discount;
+                cart.totalAmount = cart.totalAmount - cart.totalAmount*discount;
                 cart.coupon = couponCode;
-
                 await cart.save();
+                console.log("amount after the coupon applied is : > ",cart.totalAmount);
+
+                
+
+
+                
                 console.log(cart);
 
                 resolve({
