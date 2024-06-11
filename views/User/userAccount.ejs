@@ -82,11 +82,11 @@
                                                     class="fi-rs-marker mr-10"></i>My Address</a>
                                         </li>
 
-                                        <!-- <li class="nav-item">
+                                        <li class="nav-item">
                                             <a class="nav-link" id="wallet-detail-tab" data-bs-toggle="tab"
                                                 href="#wallet" role="tab" aria-controls="wallet-detail"
                                                 aria-selected="true"><i class="fi-rs-user mr-10"></i>Wallet</a>
-                                        </li>    -->
+                                        </li>   
 
                                         <li class="nav-item">
                                             <a class="nav-link" href="/logout"><i
@@ -463,6 +463,54 @@
                                     </div>
                                 </div>
                             </div> -->
+
+
+                            <div class="tab-pane fade  show " id="wallet" role="tabpanel"
+                                aria-labelledby="wallet-detail-tab">
+                                <div class="tab-content dashboard-content">
+                                    
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Welcome To  Your Wallet</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Transaction ID</th>
+                                                            <th>Amount</th>
+                                                            <th>Date</th>
+    
+                                                        </tr>
+                                                    </thead>
+                                                    <h6>your balance</h6>
+                                                    <br>
+                                                    <h1>RS:<%=  %></h1>
+                                                    <br>
+                                                    <h6><a onclick="razorPay()">Want to add money to wallet?</a></h6>
+                                                    <br>
+                                                    <tbody>
+                                                         
+                                                        <tr>
+                                                            <td><%=  %></td>
+                                                            <td><%=  %></td>
+                                                            <td><%=  %></td>
+                                                            
+                                                        </tr> 
+                                                  
+                                                    
+                                                    </tbody>
+                                                </table>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            
                                 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                                     <div class="row">
                                         <% userData.address.forEach(function(address) { %>
@@ -552,7 +600,7 @@
     <!-- Template  JS -->
     <script src="/assets/js/maind134.js?v=3.4"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js"></script>
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         
         // route to inner webpage code
@@ -961,6 +1009,138 @@
             })
         }
 
+    </script>
+
+    <script>
+        function razorPay() {
+            $.ajax({
+        url:`/createorderforwallet?totalAmount=${totalAmount}`,
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify({addressId: address,
+          paymentOption: payment,
+          couponCode: code,
+          totalAmount:totalAmount}),
+        contentType: 'application/json',
+        success: function (data) {
+            const parseAmount = parseInt(totalAmount);
+            console.log('data ....................: > ',data);
+            var options = {
+                "key": "rzp_test_vFXpOj7PsDYubS",
+                "amount": 100000,
+                "currency": "INR",
+                "name": "Dustyknot Clothings",
+                "description": "Test Transaction",
+                "image": "https://localhost:3003/public/image/Dustyknot.png",
+                "order_id": data.orderId.id,
+                "handler": function (response) {
+                    console.log(response);
+                    console.log("Hello .................... <<");
+                    verify(response, data.orderId.id);
+                    console.log("hey........................ <<");
+                },
+                "prefill": {
+                    "name": "Gaurav Kumar",
+                    "email": "gaurav.kumar@example.com",
+                    "contact": "9000090000"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp = new Razorpay(options);
+            rzp.open();
+            rzp.on("payment.failed", function (response) {
+                console.log('Payment failed:', response.error.description);
+                handleFailure(response.error.description, address, payment);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            console.error('Response Text:', xhr.responseText);
+        }
+    });
+
+    function handleFailure(description, address, paymentMethod) {
+        console.log('Payment failed:', description);
+        createOrderWithStatusPending(address, paymentMethod);
+        window.location.href = "/orderFailure-page";
+    }
+
+    function createOrderWithStatusPending(address, paymentMethod) {
+        $.ajax({
+            url: '/placeOrder',
+            type: 'POST',
+            dataType: 'json',
+            data: ({
+                addressId: address,
+                paymentOption: paymentMethod,
+                status: "payment pending",
+                totalAmount:totalAmount
+            }),
+            contentType: 'application/json',
+            success: function (data) {
+                console.log(data);
+                if (data.success) {
+                    window.location.href = '/orderFailure-page';
+                } else {
+                    console.error('Error: Order creation failed');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+            }
+        });
+    }
+
+    function verify(response, orderId) {
+        $.ajax({
+            url: '/paymentSuccess',
+            type: 'POST',
+            data: ({
+                paymentid: response.razorpay_payment_id,
+                razorpayorderid: response.razorpay_order_id,
+                signature: response.razorpay_signature,
+                orderId
+            }),
+            success: function (data) {
+                console.log("data..................................................: ",data);
+                if (data.success) {
+                    console.log("data.success.................: ",data.success);
+                    $.ajax({
+                        url: '/placeOrder',
+                        type: 'POST',
+                        data: ({
+                            addressId: address,
+                            paymentOption: payment,
+                            // couponCode: code
+                            totalAmount:totalAmount
+                        }),
+                        success: function (data) {
+                            console.log(data);
+                            window.location.href = '/ordersuccesspage';
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            console.error('Response Text:', xhr.responseText);
+                        }
+                    });
+                } else {
+                    console.error('Payment failed:', data.error);
+                    alert('Payment failed. Please try again later.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+            }
+        });
+    }
+        }
     </script>
 
 </body>

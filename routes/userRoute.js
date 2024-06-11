@@ -18,6 +18,8 @@ const wishlistController = require('../controllers/wishlistController');
 const couponController = require('../controllers/couponController')
 
 
+
+
 userRoute.get('/',userController.loadHome);
 userRoute.get('/fashion',userMiddleware.isLogout,userBlockingMiddileware.userBlock,userController.loadFashion)  
 
@@ -29,6 +31,11 @@ userRoute.get('/logout',userMiddleware.isLogout,userController.logOut);
 userRoute.get('/register',userController.loadRegister)  
 userRoute.post('/register',userController.userRegisterPost)
 userRoute.get('/forgotPassword',userController.loadforgot)
+userRoute.post('/forgotPassword',userController.resetPass)
+userRoute.get('/enterNewPass',userController.loadNewPassword)
+userRoute.post('/enterNewPass',userController.userPasswordChange)
+userRoute.get('/otp2',userController.verifyOtp2)
+userRoute.post('/otp2',userController.otpVerificationPost2)
 
 userRoute.get('/userAccount',userMiddleware.isLogout,userBlockingMiddileware.userBlock,userController.loadAccount)
 userRoute.get('/userProductPage/:id',userMiddleware.isLogout,userBlockingMiddileware.userBlock,userController.Loaduserproduct)
@@ -71,5 +78,11 @@ userRoute.get('/orderFailure-page',userMiddleware.isLogout,orderController.order
 userRoute.post('/paymentSuccess',userMiddleware.isLogout,orderController.paymentSuccess)
 
 userRoute.post('/applyCoupon',userMiddleware.isLogout,couponController.applyCoupon)
+userRoute.post('/removeCoupon',userMiddleware.isLogout,couponController.removeCoupon)
+userRoute.post('/createorderforwallet')
+
+// userRoute.post('/generate-invoice',userController.invoiceDownload)
+
+
 
 module.exports = userRoute;

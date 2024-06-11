@@ -2,7 +2,8 @@ const cartModel = require("../models/cartModel")
 const userModel = require("../models/userSchema")
 const productModel = require("../models/productModel")
 const orderModel = require("../models/orderModel")
-const { Types: { ObjectId } } = require('mongoose');
+const { ObjectId } = require('mongodb');
+
 
 
 
@@ -10,10 +11,14 @@ const placeOrder = (data, userId) => {
     console.log("orderHelper_ place order function");
 
     return new Promise (async (resolve,reject) => {
-       console.log("userId : ",userId);
+      //  console.log("userId : ",userId);
        try {
+                
+                // let userId = new ObjectId(user_Id);
+                // console.log("userId : is ", userId);
                 const cart = await cartModel.findOne( { user: userId} );
-                // console.log("> cart is : ",cart);
+                console.log("> cart is ::::::::::::::::::::::::::::::::::::::::::::::: ",cart);
+                console.log("userId : is ", userId) 
                 const address = await userModel.findOne(
                     { _id: userId, "address._id": data.addressId},
                     { "address.$":1,
@@ -22,10 +27,12 @@ const placeOrder = (data, userId) => {
                 )
                 console.log("address>>...... "+address);
                 const user = await userModel.findOne({ _id:userId });
-                console.log(cart);
+                console.log(" showing cart : >>> ----",cart);
+                console.log("finished cart ===========================");
                 let products = [];
                 let status = "pending";
                 if(data.status) {
+                  console.log(" inside if data.status");
                     status = "payment pending"
                 }
 
@@ -291,6 +298,76 @@ const changeOrderStatusOfEachProduct = (orderId, productId, status) => {
     }
   });
 };
+
+
+
+const salesReport = async() => {
+  
+  try {
+      const result = await orderModel.aggregate([
+        { $unwind: "$products"},
+        { $match: { "products.status": "delivered" }},
+        {
+          $lookup: {
+            from: "products",
+            localField: "products.product",
+            foreignField: "_id",
+            as: "productDetails"
+          }
+        }
+      ]);
+
+    return result
+    
+  } catch (error) {
+    console.log("error",error);
+    throw error;
+
+  }
+}
+
+
+const salesReportDateSort = async (startDate,endDate) => {
+  try {
+    console.log(startDate,endDate,"=======>")
+    const startDateSort = new Date(startDate);
+    const endDateSort = new Date(endDate);
+    console.log("startDateSort :", startDateSort,"||  endDateSort  :", endDateSort);
+
+    function getNextDay(date) {
+      const nextDay = new Date(date);
+      nextDay.setDate( nextDay.getDate() + 1);
+
+      return nextDay;
+    }
+
+    const endDateSortPlusOneDay = getNextDay(endDateSort);
+
+    const result = await orderModel.aggregate([
+        {
+          $match: {
+            orderedOn: { $gte: startDateSort, $lt: endDateSort }
+          },
+        },
+        { $unwind: "$products" },
+        { $match: { "products.status":"delivered" }},
+        {
+          $lookup: {
+              from:"products",
+              localField: "products.product",
+              foreignField:"_id",
+              as: "productDetails",
+          }
+        },
+        { $sort: { orderedOn: 1 }},  // here,1 for ascending order, -1 for descending
+    ])
+    console.log("result is,,,,",result)
+    return result 
+  } catch (error) {
+    console.log("Error", error);
+    throw error;
+  }
+}
  
 module.exports = {
     placeOrder,
@@ -299,6 +376,8 @@ module.exports = {
     getOrderDetailsOfEachProduct,
     cancelSingleOrder,
     getAllOrders,
-    changeOrderStatusOfEachProduct
+    changeOrderStatusOfEachProduct,
+    salesReport,
+    salesReportDateSort,
 
 }

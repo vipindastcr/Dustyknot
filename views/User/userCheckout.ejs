@@ -63,7 +63,7 @@
                           </div>
 
 
-                        <div class="panel-collapse collapse login_form" id="loginform">
+                        <!-- <div class="panel-collapse collapse login_form" id="loginform">
                             <div class="panel-body">
                                 <p class="mb-30 font-sm">If you have shopped with us before, please enter your details
                                     below. If you are a new customer, please proceed to the Billing &amp; Shipping
@@ -91,7 +91,7 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="col-lg-6">
                         <div class="toggle_info">
@@ -534,7 +534,7 @@
         url: "/placeOrder",
         method: "POST",
         
-        data: JSON.stringify(data),          // data old one that is working 
+        data: JSON.stringify(data),          //old one that is working 
         contentType: "application/json",
 
         success: (response) => {
@@ -564,7 +564,10 @@
         url:`/createorder?totalAmount=${totalAmount}`,
         type: 'POST',
         dataType: 'json',
-        data: data,
+        data: JSON.stringify({addressId: address,
+          paymentOption: payment,
+          couponCode: code,
+          totalAmount:totalAmount}),
         contentType: 'application/json',
         success: function (data) {
             const parseAmount = parseInt(totalAmount);
@@ -618,11 +621,14 @@
         $.ajax({
             url: '/placeOrder',
             type: 'POST',
+            dataType: 'json',
             data: ({
                 addressId: address,
                 paymentOption: paymentMethod,
-                status: "payment pending"
+                status: "payment pending",
+                totalAmount:totalAmount
             }),
+            contentType: 'application/json',
             success: function (data) {
                 console.log(data);
                 if (data.success) {
@@ -659,6 +665,7 @@
                             addressId: address,
                             paymentOption: payment,
                             // couponCode: code
+                            totalAmount:totalAmount
                         }),
                         success: function (data) {
                             console.log(data);
@@ -744,6 +751,28 @@
 
     })
 
+</script>
+
+<script>
+    function removeCoupon (coupon,userId) {
+        // let coupon = coupon;
+        // console.log(coupon);
+        console.log("in the removecoupon function coupon and userId : ",coupon,"   ",userId)
+
+        $.ajax({
+            
+            url: `/removeCoupon?coupon=${coupon}&userId=${userId}`,
+            type:'POST',
+            success: function (response) {
+                console.log('response is : ',response);
+                $('#couponAmountText').text('no coupon applied');
+            },
+            error: function (error) {
+                console.error(error,'Error removing coupon');
+            }
+
+        })
+    }
 </script>
 
 </body>

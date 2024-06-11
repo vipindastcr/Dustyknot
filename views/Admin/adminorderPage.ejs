@@ -248,7 +248,7 @@
                                       <%= allOrders[i].userOrderDetails[0].name %>
                                     </td>
                                     <td width="15%">
-                                      <%= allOrders[i].formattedDate %>
+                                      <%= allOrders[i].orderedOn.toLocaleDateString() %>
                                     </td>
                                     <td width="7%">
                                       ₹ <%= allOrders[i].totalAmount %>

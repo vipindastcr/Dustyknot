@@ -141,7 +141,11 @@ const applyCoupon = async(req,res) => {
         const userId =req.session.user;
         const couponCode = req.query.couponCode;
         console.log("this is the coupon code : >> ",couponCode);
-        if(price > 1500) {
+
+
+        
+       
+        if(price > 1500 ) {
             const result = await couponHelper.applyCoupon(userId,couponCode);
             console.log(result,"discount value");
             if(result.status) {
@@ -169,11 +173,42 @@ const getEditCoupon = async (req, res) => {
     }
   };
 
+
+  const removeCoupon = async (req, res) => {
+    try {
+
+        console.log("> ..couponController_removeCoupon.. <");
+      // Find the active coupon and set it to expired
+      const appliedCouponName = req.query.coupon;
+      const userId = req.query.userId
+      
+      console.log('Appplied couponName......>>> ',appliedCouponName);
+      console.log("userId......>>> ", userId);
+      
+      const coupon = await couponModel.findOne({code:appliedCouponName});
+      const cart = await cartModel.findOne({user:userId})
+      console.log('couponcart',coupon);
+    
+      
+      if (coupon) {
+        cart.coupon = null;
+        await cart.save();
+        res.json({success:true})
+      } else {  
+        res.status(404).send('No active coupon found.'); 
+      }
+    } catch (error) {
+      console.error('Error removing coupon:', error);
+      res.status(500).send('Internal Server Error'); 
+    }
+  };
+
 module.exports = {
     adminCoupon,
     addCoupon,
     deleteCoupon,
     editCoupon,
     applyCoupon,
-    getEditCoupon
+    getEditCoupon,
+    removeCoupon
 }

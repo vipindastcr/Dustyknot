@@ -46,13 +46,14 @@ adminRoute.get('/editCategory',adminAuth.isLogout,categoryController.editCategor
 adminRoute.post('/editCategory',categoryController.postEditCategory)
 adminRoute.post('/blockCategory',categoryController.blockCategory)
 // adminRoute.put('/addcategory',adminAuth.isLogout,adminController.addcategory)
+
 adminRoute.get('/addProduct',adminAuth.isLogout,productController.displayAddProduct)
 adminRoute.post('/addProduct', adminAuth.isLogout, multer.productUpload.array("image"), adminController.addProduct)
 
 adminRoute.get('/productList',adminAuth.isLogout,productController.displayProductList)
 adminRoute.get('/editProduct',adminAuth.isLogout,productController.editProduct)
 adminRoute.post('/editProduct',multer.productUpload.array('image'),productController.postEditProduct)
-adminRoute.delete('/deleteImage/:id',productController.deleteImage)     //nt wrkng
+adminRoute.delete('/deleteImage/:id',productController.deleteImage)     
 adminRoute.post('/blockProduct',productController.blockProduct)
 adminRoute.get('/adminorderPage',adminAuth.isLogout,orderController.orderspage)
 adminRoute.get('/adminOrderDetails/:id',adminAuth.isLogout,orderController.adminOrderDetails)
@@ -67,9 +68,8 @@ adminRoute.delete('/deleteCoupon/:id',adminAuth.isLogout,couponController.delete
 
 adminRoute.get('/editCoupon/:id',adminAuth.isLogout,couponController.getEditCoupon)
 adminRoute.post('/editCoupon',adminAuth.isLogout,couponController.editCoupon)
-
-// adminRoute.get('/unblockProduct',productController.unblockProduct)
-// adminRoute.get('/blockUser',productController.blockUser)
+adminRoute.get('/admin-salesReport',adminAuth.isLogout,orderController.SalesReportload)
+adminRoute.post('/admin-salesReport',adminAuth.isLogout,orderController.SalesReportDateSortload)
 
 
 module.exports = adminRoute;

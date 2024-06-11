@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+]<head>
+    <meta charset="utf-8">
+    <title>Dustyknot</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/public/assets/imgs/theme/dustyknotsmall.png">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/public/assets/css/maind134.css?v=3.4">
+    <style>
+        .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-button {
+            margin-right: 10px; /* Adjust as needed */
+            margin-left: 200px;
+        }
+
+        .btn1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        .icon-svg {
+            margin-right: 5px; /* Adjust as needed */
+        }
+
+        .spacer {
+            width: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <header class="header-area ">
+        <div class="header-top header-top-ptb-1 d-none d-lg-block">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="header-info">
+                           
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-4">
+                        <div class="text-center">
+                            <div id="news-flash" class="d-inline-block">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom sticky-bar sticky-white-bg">
+            <div class="container">
+                <div class="header-wrap header-space-between position-relative">
+                    <!-- <div class="container d-flex justify-content-center logo logo-width-1">
+                        <a href="/"><img src="/public/adminassets/imgs/theme/Dustynote_logo_Black.png" alt="logo"></a>
+                    </div> -->
+                    <!-- <div class="container d-flex justify-content-center logo logo-width-1 position-static">
+                      <a href="/"><img src="/public/adminassets/imgs/theme/Dustynote_logo_Black.png" alt="logo"></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    
+    <main class="main">
+       
+        <section class="pt-150 pb-150">
+            <div class="container">
+
+              <div class="container d-flex justify-content-center logo logo-width-1">
+                <a href="/"><img src="/public/adminassets/imgs/theme/Dustynote_logo_Black.png" alt="logo"></a>
+              </div>
+              <br>
+                <div class="container row d-flex justify-content-center">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                           
+                            
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-5">
+                                <div class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                                    <div class="padding_eight_all bg-white">
+                                        <div class=" container d-flex justify-content-center heading_s1">
+                                            <h3 class="mb-30 ">Enter New Password</h3>
+                                        </div>
+                                        <div class="text-muted text-center">Enter the email address associated with your account and we'll send you a link to reset your password.</div><br>
+                                        <form action="enterNewPass" method="post">
+
+                                            <% if(locals.message) { %>
+                                                <div class="alert alert-success"> <%= locals.message %></div>
+                                                  <% } %>
+                    
+                                                  <% if(locals.notexists) { %>
+                                                    <div class="alert alert-danger"> <%= locals.notexists %></div>
+                                                      <% } %>
+                    
+                                                      <%if(locals.blocked){%>
+                                                    <div id="blocked" class="alert alert-danger"> <%= locals.blocked %></div>
+                                                    <script>
+                                                      setTimeout(() => {
+                                                        document.getElementById('blocked').style.display="none"
+                                                      }, 3000);email
+                                                    </script>
+                                                      <%}%>
+                                                    <% if(locals.error1) { %>
+                                                        <div class="alert alert-danger"> <%= locals.error1 %></div>
+                                                          <% } %>
+
+                                                          <div class="form-group">
+                                                            <input required="" type="password" id="typePasswordX" name="password" placeholder="Password">
+                                                            <label class="form-label" for="typePasswordX"></label>
+                                                            <p><span id="error2" style="display: none; color: red;"></span></p>
+                                                        </div>
+
+                                                        <!-- <div class="form-group">
+                                                            <input required="" type="password" id="typePasswordX" name="password" placeholder="Password">
+                                                            <label class="form-label" for="typePasswordX"></label>
+                                                            <p><span id="error2" style="display: none; color: red;"></span></p>
+                                                        </div> -->
+
+                                                        <!-- <div class="form-group">
+                                                            <input required="" type="password" id="Lpass" name="password" placeholder="Password">
+                                                            <p id="error2" style="display: none; color: red;"></p>
+                                                        </div> -->
+
+                                                        <!-- <div class="login_footer form-group">
+                                                            <div class="chek-form">
+                                                                <div class="custome-checkbox">
+                                                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
+                                                                    <label class="form-check-label" for="exampleCheckbox1"><span>Remember me</span></label>
+                                                    </div>
+                                                </div>
+                                          
+                                              </div> -->
+                                            
+                                        <%if(locals.message){%>
+                                            <p><%=locals.message%></p>
+                                        <%}%>
+                                        <br>
+                                            <div class="container d-flex justify-content-center">
+                                                <button type="submit" class="btn btn-fill-out btn-block hover-up" name="home">Continue</button>
+                                            </div><br>
+                                            
+                                            <div class="text-muted text-center">Don't have an account? <a href="register">Sign up now</a></div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+
+    </footer>
+    <!-- Preloader Start -->
+    
+    
+</body>
+</html>

@@ -2,6 +2,8 @@ const couponModel = require('../models/couponModel');
 const cartModel = require('../models/cartModel');
 const voucherCode = require('voucher-code-generator')
 
+const orderModel = require('../models/orderModel')
+
 const ObjectId = require('mongoose').Types.ObjectId;
 const moment = require('moment');
 
@@ -92,7 +94,7 @@ const editTheCouponDetails = async (editedCouponData) => {
     }
 }
 
-const applyCoupon = (uesrId,couponCode) => {
+const applyCoupon = (userId,couponCode) => {
     return new Promise (async(resolve,reject) => {
         console.log(">> couponHelper_applyCoupon <<");
         let coupon = await couponModel.findOne({ code: couponCode})
@@ -100,8 +102,15 @@ const applyCoupon = (uesrId,couponCode) => {
         console.log("the coupon is : >",coupon);
         
         if(coupon && coupon.isActive === 'Active') {
-            if(!coupon.usedBy.includes(uesrId)) {
-                let cart = await cartModel.findOne({ user: new ObjectId(uesrId)})
+
+
+            if(!coupon.usedBy.includes(userId)) {
+
+                console.log(" it works only when it is not used by the userId---------------------------------------");
+                console.log(coupon.usedBy.includes(userId));
+
+
+                let cart = await cartModel.findOne({ user: new ObjectId(userId)})
                 console.log(cart);
                 const discount = coupon.discount / 100 ;
                 console.log("> the discount is :  <", discount);
@@ -110,12 +119,12 @@ const applyCoupon = (uesrId,couponCode) => {
                 // discount substraction
                 cart.totalAmount = cart.totalAmount - cart.totalAmount*discount;
                 cart.coupon = couponCode;
+                
                 await cart.save();
                 console.log("amount after the coupon applied is : > ",cart.totalAmount);
 
-                
-
-
+                coupon.usedBy.push({ userId: userId });
+                await coupon.save();
                 
                 console.log(cart);
 
@@ -127,6 +136,7 @@ const applyCoupon = (uesrId,couponCode) => {
                 })
 
             }else {
+                console.log("if the coupon already ",!coupon.usedBy.includes(uesrId));
                 resolve({ status: false, message: "This coupon is already used" })
             }
         }else {
@@ -134,6 +144,8 @@ const applyCoupon = (uesrId,couponCode) => {
         }
     })
 }
+
+
 
 const getCouponData = (couponId) => {
     return new Promise(async(resolve,reject) => {
@@ -146,12 +158,16 @@ const getCouponData = (couponId) => {
     });
 }
 
+
+
+
 module.exports = {
     addCoupon,
     findAllCoupons,
     deleteSelectedCoupon,
     editTheCouponDetails,
     applyCoupon,
-    getCouponData
+    getCouponData,
+    
 
 }

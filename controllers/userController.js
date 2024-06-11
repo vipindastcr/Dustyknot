@@ -3,6 +3,9 @@ const User = require('../models/userSchema');
 const Otp = require('../controllers/OtpController/generateOtp');
 const sendOtpMail = require('../controllers/OtpController/otpUtils');
 const bcrypt = require('bcrypt');
+
+const NiceInvoice = require('nice-invoice');
+
 const productModel = require('../models/productModel');
 const review = require('../models/reviewModel');
 const Wallet = require('../models/walletSchema');
@@ -105,7 +108,7 @@ const userRegisterPost = async (req,res) => {
             return res.render('registration',{message:"password do not match"})
         }
 
-         // check the user already exists
+        // check the user already exists
         const userExist = await User.findOne({$or: [{phone:phone},{email:email}]});
         console.log("user exist is "+userExist)
         if( userExist!==null) {
@@ -170,6 +173,20 @@ const verifyOtp = async (req,res) => {
 }
 
 
+const verifyOtp2 = async (req,res) => {
+    try {
+        const otpExpiration = req.session.otpExpiration;
+        // console.log("otp_exprtn"+otpExpiration);
+        const email = req.session.userEmail;
+        console.log("sssn_exp"+email);
+        res.render('otp2',{otpExpiration,email});
+
+    } catch (error) {
+        console.log(error.message);
+      }
+}
+
+
 const createUser = async(userData) => {
     return await User.create(userData);
 }
@@ -202,6 +219,57 @@ const otpVerificationPost = async (req,res) => {
                     }
                     const createdWallet = await createWallet(wallet)
                 }
+
+                res.redirect('/login');
+            }else {
+                const email = req.session.email
+                const otpExpiration = req.session.otpExpiration
+                res.render('otp',{ otpExpiration, email, message: "Incorrect OTP" })
+
+            }
+            
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const otpVerificationPost2 = async (req,res) => {
+    // console.log("ivide ethiYOOO..");
+    try {
+        const currentTimer = Date.now();
+        const timer = req.session.timer;
+        
+        if ( currentTimer-timer > 60000 ) {
+            console.log("OTP timeout");
+            res.render('otp',{message:'OTP has been timeout'})
+        }
+        else{
+            const storedOtp = req.session.Otp;
+            const enteredOtp = req.body.otp;
+
+            console.log("storedOtp: ",req.session.Otp);
+            console.log("enteredOtp: ",req.body.otp);
+
+            if(storedOtp == enteredOtp) {
+                console.log(">otpVerificationPost2 ||  inside of if storedOtp == enteredOtp <");
+                
+                const userData = req.session.userData;
+                console.log("userData ----",userData);
+                const user = userData.email;
+                const securePass = userData.password;
+                // const createdUser = await createUser(userData);
+                
+                // if (createdUser) {
+                //     console.log("yess!!!!!! wallet creating");
+                //     const wallet = {
+                //         user:createUser._id
+                //     }
+                //     const createdWallet = await createWallet(wallet)
+                // }
+                await User.findOneAndUpdate({ email: user }, { $set: { password: securePass } })
+                
 
                 res.redirect('/login');
             }else {
@@ -740,7 +808,126 @@ const addressEditModal = async (req, res) => {
     }
 
     
-    
+    const resetPass = async(req,res) => {
+
+        console.log("> in the userController_resetPass <");
+
+        console.log("req.body ",req.body);
+
+        const {email} = req.body;
+        console.log("email : ",email);
+       
+        try {
+            // const user = await User.findOne({ email: email });
+            const user = await User.findOne({ email });
+
+            console.log(email,"  ---  ");
+            if(!user) {
+                return res.status(404).send("user not found")
+                // return res.redirect('/forgot-password');
+            }else {
+                console.log("user exists _ so continue...");
+
+                req.session.userData = user;
+                console.log("req.session.userData    -------- ",req.session.userData);
+                res.render('enterNewPass',req.session.userData)
+               
+            }
+            
+        } catch (error) {
+            console.log(error);
+            }   
+    }
+
+
+    const loadNewPassword = async(req,res) =>{
+        console.log("> in the usercontroller_loadNewPassword******************* <");
+        const pss= req.session.userData
+        console.log("pss : --",pss);
+        res.render('enterNewPass',pss)
+    }
+
+
+    //new pass post
+    const userPasswordChange = async(req,res) => {
+        try {
+            console.log("> inside userCntrllr_ userPasswordChange <");
+            const newPassword = req.body.password;
+            // console.log(">>>>>>>>>>>>>>>>>>:",req.session.userData);
+            const userData1 = req.session.userData
+
+            const email = userData1.email;
+            const mobile = userData1.mobile
+            console.log("userData1.email & mobile :",email,"&",mobile);
+
+            console.log("the newPassword is (without hashing ):::>>>",newPassword);
+            
+            //hash password security
+            const securePass = await securePasswordFunction(newPassword);
+            console.log("hashed newPassword :", securePass);
+
+            const user = await User.findOne()
+            //create new userdata object
+            const userData = {
+                name:name,
+                email:email,
+                mobile:mobile,
+                password:securePass
+            }
+            // const userData = {
+                
+            // }
+
+            //store userdata in the session for otp verification
+            req.session.userData = userData;
+
+            //generate otp and timer save it for temporary
+            const generatedOtp = Otp();
+            req.session.Otp = generatedOtp;
+            req.session.timer = Date.now();
+
+            //send otp to mail
+            sendOtpMail(email,generatedOtp);
+            console.log(email,generatedOtp);
+
+            //set otp expiration time
+            const otpExpiration = Date.now() + 60*1000;
+            req.session.otpExpiration = otpExpiration;
+            req.session.userEmail = email;
+
+            // redirect to otp verification page
+            res.redirect('/otp2');
+            // res.render('login')
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // // invoice generator 
+    // const generateInvoice = (invoiceDetail) => {
+    //     console.log('> generateInvoice <');
+    //     NiceInvoice.createInvoice(invoiceDetail, 'invoice.pdf');
+    // };
+
+
+    // const invoiceDownload = async(req,res) => {
+    //     console.log('> userController_invoiceDownload <');
+    //     const invoiceDetail = req.body;
+
+    //     generateInvoice(invoiceDetail);
+    //     res.download('invoice.pdf',(err) => {
+    //         if(err) {
+    //             console.log('Error sending invoice:', err);
+    //             res.status(500).send('Error generating invoice');
+    //         }else {
+    //             console.log('Invoice sent successfully');
+    //           }
+    //     })
+    // }
+      
+
+
 
 module.exports = {
     loadHome,
@@ -749,7 +936,9 @@ module.exports = {
     logoutUser,
     userRegisterPost,
     verifyOtp,
+    verifyOtp2,
     otpVerificationPost,
+    otpVerificationPost2,
     resendOtp,
     checkUser,
     loadAccount,
@@ -768,6 +957,9 @@ module.exports = {
     updatePassword,
     getShop,
     getCategory,
-    
-
+    resetPass,
+    loadNewPassword,
+    userPasswordChange,
+    // generateInvoice,
+    // invoiceDownload
 }

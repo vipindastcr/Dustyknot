@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css">
+    
+    <script src="https://unpkg.com/nice-invoice@1.1.4/dist/index.js"></script>
 </head>
 
 <body>
@@ -90,7 +92,7 @@
                   </div>
                   <% if (productDetails.deliveryStatus) { %>
                     <div class="col-lg-6 col-md-6 mb-lg-0  pt-3">
-                      <!-- <button class="btn btn-dark text-end" id="invoice">Download Invoice</button> -->
+                      <button class="btn btn-dark text-end" id="invoice">Download Invoice</button>
                     </div>
                     <% } %>
       
@@ -400,6 +402,195 @@
       }
   
     </script>
+
+<!-- working invoince cdn below -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/easyinvoice/dist/easyinvoice.min.js"></script> -->
+
+
+
+<!-- invoice easyinvoice working code below -->
+<script>
+  $(document).ready(function () {
+    $('#invoice').click((e) => {
+
+      let productDetails = JSON.parse(document.getElementById('productDetails').value);
+
+      console.log(productDetails);
+
+      e.preventDefault();
+      ;
+      Swal.fire({
+        title: 'Do you want to download Invoice?',
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let filteredProducts = productDetails.filter((product) => {
+            return product.products.status !== "cancelled";
+          });
+          let products = filteredProducts.map((product) => ({
+            quantity: product.products.quantity,
+            description: product.orderedProduct.name,
+            tax: 0,
+            price: product.totalAmount
+          }));
+          console.log(products)
+
+          if (filteredProducts[0].couponAmount > 0) {
+            products.push({
+              quantity: 1,
+              description: "Coupon Deduction",
+              tax: 0,
+              price: -productDetails[0].couponAmount,
+            })
+          }
+
+          const data = {
+            "apiKey": "free",
+            "mode": "development",
+            "documentTitle": "INVOICE Dustyknot",
+            "currency": "INR",
+            "taxNotation": "GST",
+            "marginTop": 25,
+            "marginRight": 25,
+            "marginLeft": 25,
+            "marginBottom": 25,
+            "logo": "https://public.easyinvoice.cloud/img/logo_en_original.png",
+            "sender": {
+              "company": "Dustyknot",
+              "address": "Maradu,Kundanoor",
+              "zip": "123 ABC",
+              "city": "Kochi",
+              "country": "India"
+            },
+            "client": {
+              "company":  productDetails[0].address.name ,
+              "address": productDetails[0].address.house,
+              "zip": "5678 CD",
+              "city": productDetails[0].address.city,
+              "country": productDetails[0].address.country
+            },
+            "invoiceNumber": "2021.0001",
+            "invoiceDate": "12-03-2024",
+            "products": products,
+            "bottomNotice": "Thank you for your business."
+          };
+          console.log(data)
+
+          easyinvoice.createInvoice(data, function (result) {
+            easyinvoice.download('Dustyknot-invoice.pdf', result.pdf);
+            console.log("success")
+          });
+        }
+      });
+    });
+  });
+</script>
+
+
+<!-- <script>
+  $(document).ready(function () {
+    $('#invoice').click((e) => {
+
+      let productDetails = JSON.parse(document.getElementById('productDetails').value);
+
+      console.log("the productDetails is :>>>>>>>>",productDetails);
+
+      e.preventDefault();
+      ;
+      Swal.fire({
+        title: 'Do you want to download Invoice?',
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let filteredProducts = productDetails.filter((product) => {
+            return product.products.status !== "cancelled";
+          });
+          let products = filteredProducts.map((product) => ({
+            quantity: product.products.quantity,
+            description: product.orderedProduct.name,
+            tax: 0,
+            price: product.totalAmount
+          }));
+          console.log('products ;;; >>>>>>>>>>',products)
+          console.log("productDetails.nameee:",productDetails.name);
+
+          if (filteredProducts[0].couponAmount > 0) {
+            products.push({
+              quantity: 1,
+              description: "Coupon Deduction",
+              tax: 0,
+              price: -productDetails[0].couponAmount,
+            })
+          }
+
+          const invoiceDetail = {
+          shipping: {
+            name: productDetails[0].name,
+            address: "1234 Main Street",
+            city: "Dubai",
+            state: "Dubai",
+            country: "UAE",
+            postal_code: 94111
+          },
+          items: [
+            {
+              item: "Chair",
+              description: "Wooden chair",
+              quantity: 1,
+              price: 50.00, 
+              tax: "10%"
+            },
+            {
+              item: "Watch",
+              description: "Wall watch for office",
+              quantity: 2,
+              price: 30.00,
+              tax: "10%"
+            },
+            {
+              item: "Water Glass Set",
+              description: "Water glass set for office",
+              quantity: 1,
+              price: 35.00,
+              tax: ""
+            }
+          ],
+          subtotal: 156,
+          total: 156,
+          order_number: 1234222,
+          header:{
+              company_name: "Nice Invoice",
+              company_logo: "logo.png",
+              company_address: "Nice Invoice. 123 William Street 1th Floor New York, NY 123456"
+          },
+          footer:{
+            text: "This is footer - you can add any text here"
+          },
+          currency_symbol:"$", 
+          date: {
+            billing_date: "08 August 2020",
+            due_date: "10 September 2020",
+          }
+      };
+
+      
+
+      niceInvoice(invoiceDetail, 'your-invoice-name.pdf');
+      // console.log(data)
+
+          // easyinvoice.createInvoice(data, function (result) {
+          //   easyinvoice.download('Dustyknot-invoice.pdf', result.pdf);
+          //   console.log("success")
+          // });
+        }
+      });
+    });
+  });
+</script> -->
 
     
 </body>

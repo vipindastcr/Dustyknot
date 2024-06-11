@@ -9,6 +9,11 @@ const couponHelper = require('../helper/couponHelper')
 
 const moment = require("moment")
 const Razorpay = require('razorpay')
+const { url } = require("node:inspector")
+const { error } = require("node:console")
+
+const niceInvoice = require("nice-invoice");
+// const { response } = require("../routes/adminRoute")
 
 
 const razorpay = new Razorpay({
@@ -74,6 +79,7 @@ const checkoutpage = async(req,res) => {
           for ( i = 0; i< cartItems.products.length; i++ ) {
               let total = cartItems.products[i].quantity * parseInt(cartItems.products[i].price);
               totalAmountOfEachProduct.push(total)
+              
           }
           totalandsubtotal = totalandsubtotal;
 
@@ -131,6 +137,68 @@ const placeOrder = async(req,res) => {
     }
 
 }
+
+
+
+//versiion2 adding more features
+// const placeOrder = async(req,res) => {
+
+//         console.log("> ordrCntrllr_PlceOrder <");
+
+//         const userId = req.session.user;
+//         const data = req.body;
+//         // console.log(userId);
+//         const body = req.body;
+//         console.log("ordrcntrllr_plcordr > req.body is ....: ",data);
+
+//         // console.log("Place order failed");
+        
+//         console.log("body.couponCode : > ", body.couponCode);
+//         let coupon = await couponModel.findOne({ code: body.couponCode });
+        
+//         console.log("this is coupon : > ", coupon);
+//         // const cart = await cartModel.findOne( { user: userId} );
+//         // const result = await orderHelper.placeOrder(data,userId);
+//         // console.log("result : ",result);
+//         const cart = await cartModel.deleteOne({ user: userId })
+
+//         if(cart) {
+           
+//           console.log(" inside of if_ cart");
+
+//           if(parseFloat(body.totalAmount) > 1500 && body.paymentOption == 'COD') {
+            
+//               return res.json({ message: "COD is not available for this price range", status: false})
+//           } else if({
+//              const result = await orderHelper.placeOrder(data,userId,coupon);
+
+//              if( result.status ) {
+
+//               if(coupon) {
+//                 coupon.usedBy.push(userId);
+//                 await coupon.save();
+//               }
+
+//               await cartHelper.clearAllCartItems(userId);
+
+//               // return res.json({ url:'/ordersuccesspage',staus: true})
+//               res.render('ordersuccesspage')
+              
+//               // console.log('the cart is',cart);
+//               //     console.log('ivida ethikkitoo');
+                
+//               //     console.log("userId  >> "+userId);
+//               //     res.json({ status: true })
+              
+//           }
+//           }
+//         }
+//         else{
+//             console.log("payment failed  -----  ordercntrler_ placeOrder ");
+//             res.json({status:false})
+//         }
+
+// }
 
 
 
@@ -266,7 +334,8 @@ const orderDetails = async (req, res) => {
 
 
   const ordersuccesspageload = (req,res) => {
-    res.render('ordersuccesspage')
+    let email = req.session.userId
+    res.render('ordersuccesspage',{email})
   }
 
   const paymentSuccess = (req,res) => {
@@ -301,6 +370,62 @@ const orderDetails = async (req, res) => {
     res.render('orderFailure-page')
   }
 
+
+
+  const SalesReportload = async(req,res) => {
+    try {
+
+        const page = req.query.page || 1;
+        const startIndex = (page-1) * 6;
+        const endIndex = page * 6;
+
+        orderHelper.salesReport().then((response) => {
+
+          console.log("this is response : ",response);
+
+          response.forEach((order) => {
+            const orderDate = new Date ( order.orderedOn );
+            const formattedDate = orderDate.toLocaleDateString("en-GB",
+            {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric"
+            });
+            order.orderedOn = formattedDate;
+          });
+          const productcount = response.length;
+          const totalPage = Math.ceil( productcount/6 );
+          response = response.slice(startIndex,endIndex);
+          
+          res.render('admin-salesReport', {sales: response, page, totalPage})
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+      
+    } catch (error) {
+      console.log("salesReport error caught");
+      console.log(error);
+    }
+  }
+
+
+
+  const SalesReportDateSortload = async(req,res) => {
+    console.log("> inside orderCOntroller_SalesReportDateSortLoad  <");
+
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    console.log(startDate,endDate);
+
+     orderHelper.salesReportDateSort(startDate,endDate).then((response)=>{
+      console.log("response is ",response)
+     res.status(200).json({sales:response})
+     })
+  }
+
+
+
 module.exports = {
     checkoutpage,
     placeOrder,
@@ -313,5 +438,7 @@ module.exports = {
     createOrder,
     ordersuccesspageload,
     orderFailurePageload,
-    paymentSuccess
+    paymentSuccess,
+    SalesReportload,
+    SalesReportDateSortload
 }
