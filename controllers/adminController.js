@@ -5,7 +5,9 @@ const bcrypt = require('bcrypt');
 const categoryHelper = require('../helper/categoryHelper');
 const productHelper = require('../helper/productHelper')
 // const { addProduct } = require('./productController');
-const orderModel = require('../models/orderModel')
+const orderModel = require('../models/orderModel');
+const productModel = require('../models/productModel');
+const categoryModel = require('../models/categoryModel');
 
 
 const adminReg = async (req,res,next) =>{
@@ -26,7 +28,35 @@ const loadAdmin = async (req,res) => {
 
 const getAdminDash = async(req,res) => {
     try {
-        res.render('adminDash')
+
+        console.log("> inside the getadminDash <");
+
+        const salesDetails = await orderModel.find();
+        let totalRevenue =0;
+        
+        
+            for(let i=0;i<salesDetails.length;i++){
+                totalRevenue+=salesDetails[i].totalAmount
+            }
+            console.log(totalRevenue);
+        const products = await productModel.find();
+        const categories = await categoryModel.find();
+
+        // const topSellingProducts = await orderModel.aggregate([      // for top selling products display after chart
+        //     { $unwind: "$products" },
+        //     {
+        //       $group: {
+        //         _id: "$products.product",
+        //         totalQuantity: { $sum: "$products.quantity" },
+        //       },
+        //     }, 
+        //     { $sort: { totalQuantity: -1 } }, 
+        //     { $limit: 10 }, 
+        // ]);
+
+
+
+        res.render('adminDash',{totalRevenue})
     } catch (error) {
         console.log(error.message);
     }
@@ -54,7 +84,7 @@ const postAdminLogin = async(req,res) => {
             email:email
         }).catch(error=>console.error("mongoose findOne error",error))
 
-        console.log("adminData full: >>"+adminData);
+        // console.log("adminData full: >>"+adminData);
 
         if(adminData) {
 

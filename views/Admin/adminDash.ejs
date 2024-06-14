@@ -218,10 +218,19 @@
                 <div class="col-lg-3">
                     <div class="card card-body mb-4">
                         <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                ₹</span>
+                            <!-- <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span> -->
                             <div class="text">
                                 <h6 class="mb-1 card-title">Revenue</h6>
-                                <span>$13,456.5</span>
+
+
+                                
+                                        <span id="totalRevenue" style="font-size: 18px;">
+                                            ₹ <%= totalRevenue %>
+                                        </span>
+                                
+                                
                                 <span class="text-sm">
                                     Shipping fees are not included
                                 </span>
@@ -545,28 +554,7 @@
             </div>
         </footer>
 
-    <!-- <script>
-        window.onload = async function fetchDatafromServer() {
-            fetch('/fetchSalesData',{
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({msg: "from adminDash_hi"})
-            }).then(response => response.json()).then(data => {
-                
-                if(data.salesData) {
-                    console.log("data varunnundo ivide atho chumma ",data.salesData);
-
-                    createChart(data.salesData,data.arr1,data.arr2)
-                }
-            })
-        }
-    </script> -->
-
     
-
-
     </main>
     <script src="/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/js/vendors/bootstrap.bundle.min.js"></script>
@@ -581,7 +569,7 @@
 
     <script>
         window.onload = function () {
-            alert("alert  e")
+            // alert("alert  e")
           
           fetch('/showChart', {
             method: 'post',
@@ -626,8 +614,8 @@
     
           
           if ($('#monthlyChart').length) {
-            alert("alert just to check")
-            console.log("alerting");
+            // alert("alert just to check")
+            // console.log("alerting");
             var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
             var monthlyChart = new Chart(monthlyCtx, {
               type: 'bar',
