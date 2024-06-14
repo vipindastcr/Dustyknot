@@ -257,7 +257,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="widget-about font-md mb-md-5 mb-lg-0">
                             <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="index.html"><img src="/public/adminassets/imgs/theme/Dustynote_logo_Black.png" alt="logo"></a>
+                                <a href="/"><img src="/public/adminassets/imgs/theme/Dustynote_logo_Black.png" alt="logo"></a>
                             </div>
                             <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                             <p class="wow fadeIn animated">
@@ -387,17 +387,56 @@
             }
         })
 
-        function onSignIn(googleUser) {
+        
+    </script>
+<!-- 
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+    gapi.load('auth2', function() {
+      gapi.auth2.init({
+        client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com'
+      });
+    });
+  </script> -->
+
+
+<script>
+    function onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId());
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail());
+  
+      var id_token = googleUser.getAuthResponse().id_token;
+      console.log("ID Token: " + id_token);
+  
+      // Send the ID token to your server
+      fetch('/tokensignin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id_token: id_token})
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        console.log(data);
+      });
+    }
+  </script>
+
+  <script>
+    function onSignIn(googleUser) {
         var profile = googleUser.getBasicProfile();
         console.log('ID: ' + profile.getId());
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-}
 
-    </script>
-
-<script src="https://apis.google.com/js/platform.js" async defer></script>
+        }
+  </script>
+  
     
 </body>
 

@@ -173,18 +173,18 @@ const verifyOtp = async (req,res) => {
 }
 
 
-const verifyOtp2 = async (req,res) => {
-    try {
-        const otpExpiration = req.session.otpExpiration;
-        // console.log("otp_exprtn"+otpExpiration);
-        const email = req.session.userEmail;
-        console.log("sssn_exp"+email);
-        res.render('otp2',{otpExpiration,email});
+// const verifyOtp2 = async (req,res) => {
+//     try {
+//         const otpExpiration = req.session.otpExpiration;
+//         // console.log("otp_exprtn"+otpExpiration);
+//         const email = req.session.userEmail;
+//         console.log("sssn_exp"+email);
+//         res.render('otp2',{otpExpiration,email});
 
-    } catch (error) {
-        console.log(error.message);
-      }
-}
+//     } catch (error) {
+//         console.log(error.message);
+//       }
+// }
 
 
 const createUser = async(userData) => {
@@ -235,56 +235,7 @@ const otpVerificationPost = async (req,res) => {
     }
 }
 
-const otpVerificationPost2 = async (req,res) => {
-    // console.log("ivide ethiYOOO..");
-    try {
-        const currentTimer = Date.now();
-        const timer = req.session.timer;
-        
-        if ( currentTimer-timer > 60000 ) {
-            console.log("OTP timeout");
-            res.render('otp',{message:'OTP has been timeout'})
-        }
-        else{
-            const storedOtp = req.session.Otp;
-            const enteredOtp = req.body.otp;
 
-            console.log("storedOtp: ",req.session.Otp);
-            console.log("enteredOtp: ",req.body.otp);
-
-            if(storedOtp == enteredOtp) {
-                console.log(">otpVerificationPost2 ||  inside of if storedOtp == enteredOtp <");
-                
-                const userData = req.session.userData;
-                console.log("userData ----",userData);
-                const user = userData.email;
-                const securePass = userData.password;
-                // const createdUser = await createUser(userData);
-                
-                // if (createdUser) {
-                //     console.log("yess!!!!!! wallet creating");
-                //     const wallet = {
-                //         user:createUser._id
-                //     }
-                //     const createdWallet = await createWallet(wallet)
-                // }
-                await User.findOneAndUpdate({ email: user }, { $set: { password: securePass } })
-                
-
-                res.redirect('/login');
-            }else {
-                const email = req.session.email
-                const otpExpiration = req.session.otpExpiration
-                res.render('otp',{ otpExpiration, email, message: "Incorrect OTP" })
-
-            }
-            
-        }
-        
-    } catch (error) {
-        console.log(error.message);
-    }
-}
 
 let lastotpGeneration = 0;
 
@@ -325,14 +276,14 @@ const checkUser = async(req,res) => {
         const logemail = req.body.email;
         const logpassword = req.body.password;
 
-        // console.log("> userController_ checkUser ||  logemail >> "+logemail+" logpass >> "+logpassword);
+        console.log("> userController_ checkUser ||  logemail >> "+logemail+" logpass >> "+logpassword);
     
         const loggeduser = await User.findOne({ email:logemail })
        
         if(!loggeduser) {
             res.render('login',{notexists:"user not exists"})
         }
-        // console.log(logpassword+"<<<<logpassword  loggeduser.password >>>>--->>"+ loggeduser.password);
+        console.log(logpassword+"<<<<logpassword  loggeduser.password >>>>--->>"+ loggeduser.password);
 
         if(loggeduser){
             if(loggeduser.isActive) {
@@ -808,9 +759,9 @@ const addressEditModal = async (req, res) => {
     }
 
     
-    const resetPass = async(req,res) => {
+    const getEmail = async(req,res) => {
 
-        console.log("> in the userController_resetPass <");
+        console.log("> in the userController_getEmail using post <");
 
         console.log("req.body ",req.body);
 
@@ -830,79 +781,34 @@ const addressEditModal = async (req, res) => {
 
                 req.session.userData = user;
                 console.log("req.session.userData    -------- ",req.session.userData);
-                res.render('enterNewPass',req.session.userData)
-               
+                // res.render('enterNewPass',req.session.userData) //before it was forward to newpass create
+
+                //generate otp and timer save it for temporary
+                const generatedOtp = Otp();
+                req.session.Otp = generatedOtp;
+                req.session.timer = Date.now();
+                
+                //set otp expiration time
+                const otpExpiration = Date.now() + 60*1000;
+                req.session.otpExpiration = otpExpiration;
+                req.session.userEmail = email;
+
+
+                // redirect to otp verification page
+                res.redirect('/otp2');    
             }
             
         } catch (error) {
             console.log(error);
+            res.status(500).send({error:"internal server error"})
             }   
     }
 
 
-    const loadNewPassword = async(req,res) =>{
-        console.log("> in the usercontroller_loadNewPassword******************* <");
-        const pss= req.session.userData
-        console.log("pss : --",pss);
-        res.render('enterNewPass',pss)
-    }
+    
 
 
-    //new pass post
-    const userPasswordChange = async(req,res) => {
-        try {
-            console.log("> inside userCntrllr_ userPasswordChange <");
-            const newPassword = req.body.password;
-            // console.log(">>>>>>>>>>>>>>>>>>:",req.session.userData);
-            const userData1 = req.session.userData
-
-            const email = userData1.email;
-            const mobile = userData1.mobile
-            console.log("userData1.email & mobile :",email,"&",mobile);
-
-            console.log("the newPassword is (without hashing ):::>>>",newPassword);
-            
-            //hash password security
-            const securePass = await securePasswordFunction(newPassword);
-            console.log("hashed newPassword :", securePass);
-
-            const user = await User.findOne()
-            //create new userdata object
-            const userData = {
-                name:name,
-                email:email,
-                mobile:mobile,
-                password:securePass
-            }
-            // const userData = {
-                
-            // }
-
-            //store userdata in the session for otp verification
-            req.session.userData = userData;
-
-            //generate otp and timer save it for temporary
-            const generatedOtp = Otp();
-            req.session.Otp = generatedOtp;
-            req.session.timer = Date.now();
-
-            //send otp to mail
-            sendOtpMail(email,generatedOtp);
-            console.log(email,generatedOtp);
-
-            //set otp expiration time
-            const otpExpiration = Date.now() + 60*1000;
-            req.session.otpExpiration = otpExpiration;
-            req.session.userEmail = email;
-
-            // redirect to otp verification page
-            res.redirect('/otp2');
-            // res.render('login')
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
+  
 
     // // invoice generator 
     // const generateInvoice = (invoiceDetail) => {
@@ -925,9 +831,98 @@ const addressEditModal = async (req, res) => {
     //           }
     //     })
     // }
+
+    const loadOtp2 = async(req,res) => {
+        console.log('> usercontroller_loadotp2 <');
+        const otpExpiration = req.session.otpExpiration;
+        const email = req.session.userEmail;
+        // console.log("session userdata : ",req.session.userData);
+        res.render('otp2',{otpExpiration,email});
+    }
+
+
+    const postOtp2 = async(req,res) => {
+        try {
+                console.log("> usercontroller_postOtp2 <");
+
+                const currentTimer = Date.now();
+                const timer = req.session.timer;
+
+                if( currentTimer-timer > 60000 ) {
+                    console.log("OTP timeout");
+                    res.render('otp',{message:'OTP has been timeout'})
+                }
+                else {
+                      const storedOtp = req.session.Otp;
+                      const enteredOtp = req.body.otp;
+
+                        console.log("storedOtp: ",req.session.Otp);
+                        console.log("enteredOtp: ",req.body.otp);
+
+                        if(storedOtp == enteredOtp) {
+                            const userData = req.session.userData;
+                            
+                            res.render('enterNewPass')
+                        }
+                }
+
+            
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal error in postOtp2")
+        }
+    }
       
 
 
+    const resetPass = async(req,res) => {
+        try {
+            console.log("> usercontroller_restPass <");
+            const newPassord = req.body.password;
+            console.log("the new password is : ", newPassord);
+
+            const securePass = await securePasswordFunction(newPassord)
+            console.log("hashed newpassword is :", securePass);
+
+            const session = req.session.userData
+            console.log("session memory is email >:", session.email);
+
+
+            const user = await User.findOne({email: session.email})
+            console.log("that user is :", user);
+
+            if(user) {
+                
+                await User.findOneAndUpdate({ email: user.email }, { $set: { password: securePass } })
+                res.redirect('/login')
+            }
+            
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("Internal error in forgot/resetpass")
+        }
+    }
+
+
+    const tokenSignin = async(req,res) => {
+        try {
+            console.log("> usercontroller_tokenSignin <");
+            const token = req.body.id_token;
+
+            verify(token).then((ticket)=> {
+                const payload = ticket.getPayload()
+                const userId = payload['sub']
+
+                res.send('user signed in', userId)
+            }).catch(err => {
+                res.status(400).send('Token verification failed');
+            })
+            
+        } catch (error) {
+            console.log(error);
+            res.status(500).send("internal server error")
+        }
+    }
 
 module.exports = {
     loadHome,
@@ -936,9 +931,7 @@ module.exports = {
     logoutUser,
     userRegisterPost,
     verifyOtp,
-    verifyOtp2,
     otpVerificationPost,
-    otpVerificationPost2,
     resendOtp,
     checkUser,
     loadAccount,
@@ -957,9 +950,11 @@ module.exports = {
     updatePassword,
     getShop,
     getCategory,
+    getEmail,
+    loadOtp2,
+    postOtp2,
     resetPass,
-    loadNewPassword,
-    userPasswordChange,
+    tokenSignin
     // generateInvoice,
     // invoiceDownload
 }

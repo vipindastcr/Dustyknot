@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const categoryHelper = require('../helper/categoryHelper');
 const productHelper = require('../helper/productHelper')
 // const { addProduct } = require('./productController');
+const orderModel = require('../models/orderModel')
 
 
 const adminReg = async (req,res,next) =>{
@@ -172,6 +173,84 @@ const addProduct=(req,res)=>{
 }
 
 
+
+const showChart = async(req,res) => {
+    try {
+
+        console.log("> in admincontroller_showchart <");
+        
+
+            const monthlySalesData = await orderModel.aggregate([
+                {
+                    $match: { "products.status": "delivered"}
+                },
+                {
+                    $group: {
+                        _id: { $month: "$orderedOn"},
+                        totalAmount : { $sum: "$totalAmount" }
+                    }
+                },
+                {
+                    $sort: { _id: 1 }
+                }
+            ]);
+
+
+            console.log("monthlySalesData  :>>",monthlySalesData);
+
+
+            const dailySalesData = await orderModel.aggregate([
+                {
+                    $match: { "products.status" : "delivered" }
+                },
+                {
+                    $group: {
+                        _id: { $dayOfMonth : "$orderedOn"},
+                        totalAmount: { $sum: "$totalAmount"}
+                    }
+                },
+                {
+                    $sort: { _id: 1}
+                }
+            ]);
+
+            console.log("daily sales data : >", dailySalesData);
+
+            const orderStatuses = await orderModel.aggregate([
+                {
+                    $unwind: "$products"
+                },
+                {
+                    $group: {
+                        _id: "$products.status",
+                        count: { $sum : 1 }
+                    }
+                }
+            ]);
+
+            console.log("order statues : >> ", orderStatuses);
+
+
+            const eachOrderStatusCount = {};
+            orderStatuses.forEach((status) => {
+                
+                eachOrderStatusCount[status._id] = status.count;
+            });
+
+
+            res
+                .status(200)
+                .json({monthlySalesData, dailySalesData, eachOrderStatusCount})
+
+
+        
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error:"Internal server error"})
+    }
+}
+
 module.exports = {
     adminReg,
     postAdmin,
@@ -182,5 +261,6 @@ module.exports = {
     logoutAdmin,
     blockUser,
     addcategory,
-    addProduct
+    addProduct,
+    showChart
 }

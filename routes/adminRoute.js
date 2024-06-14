@@ -24,6 +24,7 @@ const adminAuth = require('../middlewares/adminAuth')
 const orderController = require('../controllers/orderController')
 const imageMiddleware = require('../middlewares/imageValidateMiddleware')
 const couponController = require('../controllers/couponController')
+const chartController = require('../controllers/chartController')
 
 
 
@@ -70,6 +71,9 @@ adminRoute.get('/editCoupon/:id',adminAuth.isLogout,couponController.getEditCoup
 adminRoute.post('/editCoupon',adminAuth.isLogout,couponController.editCoupon)
 adminRoute.get('/admin-salesReport',adminAuth.isLogout,orderController.SalesReportload)
 adminRoute.post('/admin-salesReport',adminAuth.isLogout,orderController.SalesReportDateSortload)
+
+// adminRoute.post('/fetchSalesData',chartController.fetchsalesdata)
+adminRoute.post('/showChart',adminAuth.isLogout,adminController.showChart)
 
 
 module.exports = adminRoute;

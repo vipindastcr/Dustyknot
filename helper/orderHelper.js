@@ -7,6 +7,7 @@ const { ObjectId } = require('mongodb');
 
 
 
+
 const placeOrder = (data, userId) => {
     console.log("orderHelper_ place order function");
 
@@ -282,6 +283,8 @@ const getAllOrders = () => {
 };
 
 const changeOrderStatusOfEachProduct = (orderId, productId, status) => {
+
+  console.log(orderId," - ",productId," - status >> ",status);
   return new Promise(async (resolve, reject) => {
     try {
       const result = await orderModel.findOneAndUpdate(
@@ -291,7 +294,15 @@ const changeOrderStatusOfEachProduct = (orderId, productId, status) => {
         },
         { new: true }
       );
-      console.log(result);
+
+      const result2 = await orderModel.findOneAndUpdate(     // added extra for testing purposes
+        { _id: new ObjectId(orderId)},
+        {
+          $set: { "status": status },  // 
+        },
+        { new: true }
+      );
+      console.log("the result1 and result2  are .............>>>",result,"------",result2);
       resolve(result);
     } catch (error) {
       console.log(error);

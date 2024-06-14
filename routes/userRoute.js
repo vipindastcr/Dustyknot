@@ -27,15 +27,18 @@ userRoute.get('/login',userMiddleware.isLogin,userController.loadLogin);
 userRoute.post('/login',userMiddleware.isLogin,userController.checkUser); 
 userRoute.get('/logout',userMiddleware.isLogout,userController.logOut);
 
+// userRoute.post('/tokensignin',userController.tokenSignin)
+
 
 userRoute.get('/register',userController.loadRegister)  
 userRoute.post('/register',userController.userRegisterPost)
 userRoute.get('/forgotPassword',userController.loadforgot)
-userRoute.post('/forgotPassword',userController.resetPass)
-userRoute.get('/enterNewPass',userController.loadNewPassword)
-userRoute.post('/enterNewPass',userController.userPasswordChange)
-userRoute.get('/otp2',userController.verifyOtp2)
-userRoute.post('/otp2',userController.otpVerificationPost2)
+userRoute.post('/forgotPassword',userController.getEmail)
+
+userRoute.get('/otp2',userController.loadOtp2)
+userRoute.post('/otp2',userController.postOtp2)
+
+userRoute.post('/enterNewPass',userController.resetPass)
 
 userRoute.get('/userAccount',userMiddleware.isLogout,userBlockingMiddileware.userBlock,userController.loadAccount)
 userRoute.get('/userProductPage/:id',userMiddleware.isLogout,userBlockingMiddileware.userBlock,userController.Loaduserproduct)

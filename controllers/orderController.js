@@ -111,7 +111,8 @@ const placeOrder = async(req,res) => {
 
     const userId = req.session.user;
     const data = req.body;
-    console.log(userId);
+    console.log(userId); // 
+    
     const body = req.body;
     console.log("ordrcntrllr_plcordr > req.body is ....: ",data);
 
@@ -260,7 +261,7 @@ const orderDetails = async (req, res) => {
       console.log("> ordercontrllr_orderspage <");
       const allOrders = await orderHelper.getAllOrders();
       
-      console.log("all orders ; > "+allOrders); 
+      // console.log("all orders ; > "+allOrders); // it prints all orders so commented
       for(const order of allOrders) {
         const dateString = order.orderedOn;
         const formattedData = moment(dateString).format("MMMM Do, YYYY");
