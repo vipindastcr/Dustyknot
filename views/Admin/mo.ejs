@@ -3,8 +3,6 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Fashion Club</title>
@@ -97,8 +95,6 @@
                     </a>
                     <div class="submenu">
                         <a href="product-list">Product List</a>
-                        <!-- <a href="page-products-grid.html">Product grid</a>
-                        <a href="page-products-grid-2.html">Product grid 2</a> -->
                         <a href="admin-category">Categories</a>
                     </div>
                 </li>
@@ -106,31 +102,12 @@
                     <a class="menu-link" href="/admin-orders"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
-                    <!-- <div class="submenu">
-                        <a href="page-orders-1.html">Order list 1</a>
-                        <a href="page-orders-2.html">Order list 2</a>
-                        <a href="page-orders-detail.html">Order detail</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Sellers</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-sellers-cards.html">Sellers cards</a>
-                        <a href="page-sellers-list.html">Sellers list</a>
-                        <a href="page-seller-detail.html">Seller profile</a>
-                    </div>
-                </li> -->
                 <li class="menu-item has-submenu active">
                     <a class="menu-link" href="adminadd-products"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Add product</span>
                     </a>
                     <div class="submenu">
                         <a href="adminadd-products" class="active">Add product</a>
-                        <!-- <a href="page-form-product-2.html">Add product 2</a>
-                        <a href="page-form-product-3.html">Add product 3</a>
-                        <a href="page-form-product-4.html">Add product 4</a> -->
                     </div>
                 </li>
 
@@ -147,8 +124,6 @@
                     </a>
                     <div class="submenu">
                         <a href="/admin-productoffer">ProductOffer</a>
-                        <!-- <a href="page-products-grid.html">Product grid</a>
-                        <a href="page-products-grid-2.html">Product grid 2</a> -->
                         <a href="/admin-categoryoffer">CategoryOffer</a>
                     </div>
                 </li>
@@ -158,40 +133,7 @@
                     </a>
                    
                 </li> 
-                <!-- <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Transactions</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-transactions-1.html">Transaction 1</a>
-                        <a href="page-transactions-2.html">Transaction 2</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
-                        <span class="text">Account</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-account-login.html">User login</a>
-                        <a href="page-account-register.html">User registration</a>
-                        <a href="page-error-404.html">Error 404</a>
-                    </div>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
-                        <span class="text">Brands</span> </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
-                    </a>
-                </li>
-            </ul> -->
+                
             <hr>
             <ul class="menu-aside">
                 <li class="menu-item has-submenu">
@@ -203,11 +145,6 @@
                         <a href="page-settings-2.html">Setting sample 2</a>
                     </div>
                 </li>
-                <!-- <li class="menu-item">
-                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
-                        <span class="text"> Starter page </span>
-                    </a>
-                </li> -->
             </ul>
             <br>
             <br>
@@ -215,7 +152,6 @@
     </aside>
     <div id="myModal" class="modal">
         <span class="close">&times;</span>
-        <!-- <img class="modal-content" height="100%" id="img01"> -->
         <div class="modal-content img-container">
             <img id='image' src="" alt="">
         </div>
@@ -348,8 +284,8 @@
                             </div>
                               
                         </div>
-                    </div> <!-- card end// -->
-                    <!-- card end// -->
+                    </div> 
+                    
                 </div>
                 <div class="col-lg-4">
                     <div class="card mb-3">
@@ -383,7 +319,7 @@
 
                                         function handleFileSelect(event) {
                                             var previewContainer = document.getElementById('preview-container');
-                                            previewContainer.innerHTML = ''; // Clear previous previews
+                                            previewContainer.innerHTML = ''; 
 
                                             var files = event.target.files;
 
@@ -391,7 +327,7 @@
                                                 var file = files[i];
                                                 let ind =i
                                                 if (!file.type.startsWith('image/')) {
-                                                    continue; // Skip non-image files
+                                                    continue; 
                                                 }
 
                                                 var reader = new FileReader();
@@ -400,7 +336,6 @@
                                                     return function (e) {
                                                         var previewImage = document.createElement('img');
                                                         previewImage.className = 'preview-image';
-                                                        // previewImage.id=`image${ind}`
                                                         previewImage.src = e.target.result;
                                                         previewImage.title = currentFile.name;
                                                         previewImage.width = "300px"
@@ -413,11 +348,7 @@
                                                                 
                                                             const container = deleteButton.parentNode;
                                                             container.parentNode.removeChild(container);
-                                                        
-                                                            // Remove the file from the selectedFiles array
                                                             selectedFiles.splice(ind, 1);
-                                                        
-                                                            // Create a new FileList with the remaining files
                                                             const remainingFileList = new DataTransfer();
                                                             selectedFiles.forEach(file => {
                                                                 remainingFileList.items.add(file);
@@ -504,20 +435,11 @@
                                                 reader.readAsDataURL(file);
                                             }
                                         }
-
-                                        // Close modal when clicking on the close button
                                         document.getElementsByClassName('close')[0].onclick = function() {
                                             document.getElementById('myModal').style.display = 'none';
 
                                         };
 
-                                        // Close modal when clicking anywhere outside the modal
-                                        // window.onclick = function(event) {
-                                        //     var modal = document.getElementById('myModal');
-                                        //     if (event.target == modal) {
-                                        //         modal.style.display = 'none';
-                                        //     }
-                                        // };
                                     </script>
                                     
 
@@ -550,11 +472,11 @@
                                 <div class="d-flex justify-content-center">
                                     <button class="btn btn-md rounded font-sm hover-up"  >Add Product</button>
                                 </div>
-                            </div> <!-- card end// -->
+                            </div> 
                         </div>
                     </div>
                 </form>
-        </section> <!-- content-main end// -->
+        </section> 
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
@@ -580,7 +502,7 @@
             let productQuantity = document.getElementById('productQuantity').value;
             let discount = document.getElementById('productDiscount').value;
 
-            //for clearing previous errors
+            
 
             document.getElementById('productNameError').innerHTML = "";
             document.getElementById('productPriceError').innerHTML = "";
@@ -639,74 +561,7 @@
         })
         </script>
 
-     <!-- <script>
-        const fileInput = document.getElementById("fileInput");
-        const previewContainer = document.getElementById("previewContainer");
-
-        let selectedFiles = []; 
-
-        fileInput.addEventListener("change", function (event) {
-            const files = event.target.files; // Get uploaded files
-
-            previewContainer.innerHTML = "";
-
-            for (const file of files) {
-                if (!file.type.startsWith("image/")) {
-                    alert("Only images are allowed!");
-                    continue;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const previewElement = document.createElement("div");
-                    previewElement.classList.add("preview", "col-6", "mb-2");
-
-                    const image = document.createElement("img");
-                    image.src = event.target.result;
-                    image.classList.add("img-thumbnail");
-                    previewElement.appendChild(image);
-
-                    // Delete icon button
-                    const deleteButton = document.createElement("button");
-                    deleteButton.classList.add("btn-close", "btn-close-dark");
-                    deleteButton.setAttribute("aria-label", "Delete");
-                    const icon = document.createElement("span");
-                    icon.classList.add("fas", "fa-trash"); // Trash can icon
-                    deleteButton.appendChild(icon);
-                    previewElement.appendChild(deleteButton);
-
-                    previewContainer.appendChild(previewElement);
-                    selectedFiles.push(file); // Add file to selected files
-
-                    deleteButton.addEventListener("click", function () {
-                        previewContainer.removeChild(previewElement);
-                        selectedFiles.splice(selectedFiles.indexOf(file), 1); // Remove from array
-
-                        // Remove file from FileList
-                        const fileList = event.target.files;
-
-                        if (fileList) { // Make sure fileList is available
-                            const fileIndex = fileList.indexOf(file);
-                            // ... (rest of the code)
-                        } else {
-                            console.error("fileList is undefined"); // Log a message if it's missing
-                        }
-                        // const fileIndex = fileList.indexOf(file);
-                        if (fileIndex !== -1) {
-                            fileList.splice(fileIndex, 1); // Splice to actually remove from list
-                        }
-
-                        // Optionally reset input value (clear file selection)
-                        if (fileList.length === 0) {
-                            fileInput.value = ""; // Clear input value if no files remain
-                        }
-                    });
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-    </script> -->
+    
 
 <script>
     document.getElementById('imageUpload').addEventListener('change', function() {
@@ -744,6 +599,4 @@
     <script src="/public/admin-assets/js/main.js" type="text/javascript"></script>
 </body>
 
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
 </html>

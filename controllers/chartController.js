@@ -66,10 +66,7 @@ const fetchsalesdata = async (req,res) => {
                     }
                 }
             ])
-
-
-            console.log("the pieData is >>> ",pieData);
-
+            
             let arr1 = []
             let arr2 = []
 
@@ -85,10 +82,6 @@ const fetchsalesdata = async (req,res) => {
                 arr2.push(totalamount)
             })
 
-            console.log("both arrays are : >>>> ",arr1,arr2);
-
-
-            console.log("sales data and arr1, arrr2 ",salesData,arr1,arr2);
             res.json({ salesData: dataArray, arr1: arr1, arr2: arr2})
 
         }

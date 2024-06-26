@@ -2,8 +2,6 @@
 <!DOCTYPE HTML>
 <html lang="en">
 
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Dustyknot clothing</title>
@@ -51,36 +49,15 @@
                   <a class="menu-link" href="adminorderPage"> <i class="icon material-icons md-shopping_cart"></i>
                       <span class="text">Orders</span>
                   </a>
-                  <!-- <div class="submenu">
-                      <a href="orderlist">Order list </a>
-                      
-                      <a href="page-orders-detail.html">Order detail</a>
-                  </div> -->
               </li>
-              <!-- <li class="menu-item has-submenu">
-                  <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
-                      <span class="text">Orders</span>
-                  </a>
-                 
-              </li> -->
-              <!-- <li class="menu-item has-submenu">
-                  <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
-                      <span class="text">Sellers</span>
-                  </a>
-                  
-              </li> -->
+              
               <li class="menu-item ">
                   <a class="menu-link" href="addProduct"> <i class="icon material-icons md-add_box"></i>
                       <span class="text">Add product</span>
                   </a>
                  
               </li>
-              <!-- <li class="menu-item has-submenu">
-                  <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
-                      <span class="text">Transactions</span>
-                  </a>
-                  
-              </li> -->
+              
               <li class="menu-item ">
                   <a class="menu-link" href="userList"> <i class="icon material-icons md-person"></i>
                       <span class="text">Users</span>
@@ -98,9 +75,7 @@
                       <span class="text">Offer</span>
                   </a>
                   <div class="submenu">
-                      <a href="/admin-productoffer">ProductOffer</a>
-                      <!-- <a href="page-products-grid.html">Product grid</a>
-                      <a href="page-products-grid-2.html">Product grid 2</a> -->
+                      <a href="/admin-productoffer">ProductOffer</a>                      
                       <a href="/admin-categoryoffer">CategoryOffer</a>
                   </div>
               </li>
@@ -110,38 +85,7 @@
                   <a class="menu-link" href="admin-salesReport"> <i class="icon material-icons md-local_offer"></i>
                       <span class="text">Sales Report</span>
                   </a>
-              </li>
-              <!-- <li class="menu-item">
-                  <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
-                      <span class="text">Reviews</span>
-                  </a>
-              </li> -->
-              <!-- <li class="menu-item">
-                  <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
-                      <span class="text">Brands</span> </a>
-              </li>
-              <li class="menu-item">
-                  <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
-                      <span class="text">Statistics</span>
-                  </a>
-              </li>
-          </ul>
-          <hr>
-          <ul class="menu-aside">
-              <li class="menu-item has-submenu">
-                  <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
-                      <span class="text">Settings</span>
-                  </a>
-                  <div class="submenu">
-                      <a href="page-settings-1.html">Setting sample 1</a>
-                      <a href="page-settings-2.html">Setting sample 2</a>
-                  </div>
-              </li>
-              <li class="menu-item">
-                  <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
-                      <span class="text"> Starter page </span>
-                  </a>
-              </li> -->
+              </li>              
           </ul>
           <br>
           <br>
@@ -221,7 +165,7 @@
                     </div>
                   </div>
                 </form>
-              </header> <!-- card-header end// -->
+              </header>
               <div id="sales-report" class="card-body">
                 <div class="table-responsive">
                   <table class="table table-hover" id="sales-table">
@@ -268,18 +212,16 @@
                    
                   </table>
                   
-  
-                  <!-- <input type="hidden" id="salesReportStore" value="ejsout sales "> -->
-                </div> <!-- table-responsive //end -->
-              </div> <!-- card-body end// -->
+                </div> 
+              </div>
               <div style="margin: 35px;">
                 <button class="button" onclick="prev('<%=page%>','<%=totalPage%>')">prev</button>
                   <button class="button" onclick="next('<%=page%>','<%=totalPage%>')">next</button>
               </div>
-            </div> <!-- card end// -->
+            </div>
 
         
-          </section> <!-- content-main end// -->
+          </section> 
                 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/adminassets/js/vendors/jquery-3.6.0.min.js"></script>
@@ -326,7 +268,7 @@
               let sales = res.sales;
               console.log("hi");
               console.log(sales);
-              $('#defaultReport').empty(); // Clear the table body before appending new data
+              $('#defaultReport').empty();
     
               for (let i = 0; i < sales.length; i++) {
                 console.log(sales[i]._id);
@@ -343,7 +285,6 @@
                       `);
               }
     
-              // document.getElementById('salesReportStore').value = sales;
             })
     
     
@@ -389,19 +330,19 @@
               var elt = document.getElementById('sales-table');
               var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
     
-              // Adjust column widths
+              
               var ws = wb.Sheets['sheet1'];
               var columnWidths = [
-                { wch: 5 },   // Width for column "No"
-                { wch: 15 },  // Width for column "Order Id"
-                { wch: 20 },  // Width for column "Customer"
-                { wch: 15 },  // Width for column "Order Date"
-                { wch: 20 },  // Width for column "Payment Method"
-                { wch: 15 },  // Width for column "Order Status"
-                { wch: 15 }   // Width for column "Total Amount"
+                { wch: 5 },   
+                { wch: 15 },  
+                { wch: 20 },  
+                { wch: 15 },  
+                { wch: 20 },  
+                { wch: 15 },  
+                { wch: 15 }  
               ];
     
-              // Set column widths
+              
               columnWidths.forEach(function (width, index) {
                 var col = XLSX.utils.encode_col(index);
                 ws['!cols'] = ws['!cols'] || [];
@@ -419,12 +360,10 @@
     
     
       <script>
-        // Get the start date input element
+ 
         const startDateInput = document.querySelector('input[name="startDate"]');
-        // Get the end date input element
         const endDateInput = document.querySelector('input[name="endDate"]');
     
-        // Function to format a date as YYYY-MM-DD
         function formatDate(date) {
           const year = date.getFullYear();
           const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -432,27 +371,19 @@
           return `${year}-${month}-${day}`;
         }
     
-        // Get the current date
         const currentDate = new Date();
-    
-        // Set the maximum selectable date for the end date input to the current date
         endDateInput.max = formatDate(currentDate);
         startDateInput.max = formatDate(currentDate);
-    
-        // Event listener for start date input
+
         startDateInput.addEventListener('input', function () {
-          // Set the minimum selectable date for the end date input to the selected start date
           endDateInput.min = this.value;
     
-          // If the end date is before the start date, reset it to the start date
           if (endDateInput.value < this.value) {
             endDateInput.value = this.value;
           }
         });
     
-        // Event listener for end date input
         endDateInput.addEventListener('input', function () {
-          // If the end date is before the start date, reset it to the start date
           if (this.value < startDateInput.value) {
     
     
@@ -460,11 +391,9 @@
           }
         });
     
-        // Auto-fill start date with the current month's 1st date
         const currentMonthFirstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         startDateInput.value = formatDate(currentMonthFirstDay);
     
-        // Auto-fill end date with the current date
         endDateInput.value = formatDate(currentDate);
         console.log(  "startDateInput.value", startDateInput.value)
         console.log(  "startDateInput.value",  endDateInput.value )
@@ -481,6 +410,4 @@
       </script>
 </body>
 
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
 </html>

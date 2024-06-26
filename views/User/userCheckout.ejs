@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
-
 <head>
     <meta charset="utf-8">
     <title>Dustyknot</title>
@@ -61,37 +58,7 @@
                               </div>
                             </div>
                           </div>
-
-
-                        <!-- <div class="panel-collapse collapse login_form" id="loginform">
-                            <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have shopped with us before, please enter your details
-                                    below. If you are a new customer, please proceed to the Billing &amp; Shipping
-                                    section.</p>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <input type="text" name="email" placeholder="Username Or Email">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="password" placeholder="Password">
-                                    </div>
-                                    <div class="login_footer form-group">
-                                        <div class="chek-form">
-                                            <div class="custome-checkbox">
-                                                <input class="form-check-input" type="checkbox" name="checkbox"
-                                                    id="remember" value="">
-                                                <label class="form-check-label" for="remember"><span>Remember
-                                                        me</span></label>
-                                            </div>
-                                        </div>
-                                        <a href="#">Forgot password?</a>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-md" name="login">Log in</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div> -->
+                        
                     </div>
                     <div class="col-lg-6">
                         <div class="toggle_info">
@@ -236,13 +203,7 @@
                                             <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
                                         </div>
                                     </div>
-                                    <!-- <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" value="Wallet" id="exampleRadios4" checked="">
-                                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Wallet</label>
-                                        <div class="form-group collapse in" id="checkPayment">
-                                            <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
-                                        </div>
-                                    </div> -->
+                                    
                                     <div class="custome-radio">
                                         <input class="form-check-input" required="" type="radio" name="payment_option" value="COD" id="exampleRadios5" checked="">
                                         <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">COD</label>
@@ -367,7 +328,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js"></script>
 
 
-    <script>////////MODAL////////////////
+    <script>
         function editAddress(userId, addressId) {
             console.log("clicked addressEdit", userId, addressId);
             $.ajax({
@@ -400,7 +361,7 @@
 
 
 <script>
-    ///////////////////EDIT-IN-MODAL////////////////////
+    
     document.getElementById("editAddressForm").addEventListener("submit", function (event) {
         event.preventDefault();
         let formdata = $(this).serialize();
@@ -434,7 +395,7 @@
     })
 </script>
 
-<script>/////////////////VALIDATION//////////////////////////
+<script>
     function validateForm2() {
 
         const houseRegex = /^[a-zA-Z0-9\s]+$/;
@@ -655,20 +616,16 @@
                 orderId
             }),
             success: function (data) {
-                console.log("data..................................................: ",data);
                 if (data.success) {
-                    console.log("data.success.................: ",data.success);
                     $.ajax({
                         url: '/placeOrder',
                         type: 'POST',
                         data: ({
                             addressId: address,
                             paymentOption: payment,
-                            // couponCode: code
                             totalAmount:totalAmount
                         }),
                         success: function (data) {
-                            console.log(data);
                             window.location.href = '/ordersuccesspage';
                         },
                         error: function (xhr, status, error) {
@@ -703,7 +660,6 @@
 
             event.preventDefault();
             let formData = $("#couponCodeEnter").val();
-            console.log("this is formdata", formData)
             $.ajax({
                 url: `/applyCoupon?price=${price}&couponCode=${formData}`,
                 method: "POST",
@@ -755,16 +711,13 @@
 
 <script>
     function removeCoupon (coupon,userId) {
-        // let coupon = coupon;
-        // console.log(coupon);
-        console.log("in the removecoupon function coupon and userId : ",coupon,"   ",userId)
+        
 
         $.ajax({
             
             url: `/removeCoupon?coupon=${coupon}&userId=${userId}`,
             type:'POST',
             success: function (response) {
-                console.log('response is : ',response);
                 $('#couponAmountText').text('no coupon applied');
             },
             error: function (error) {
@@ -776,8 +729,5 @@
 </script>
 
 </body>
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
 
 </html>

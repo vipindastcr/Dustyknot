@@ -53,7 +53,10 @@ const productSchema = new mongoose.Schema({
     createdAt:{
         type:Date,
         default:Date.now()
-    }
+    },
+    totalQuantity:{
+        type:Number,
+    },
 })
 
 module.exports = mongoose.model('Product',productSchema)

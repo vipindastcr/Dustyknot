@@ -2,6 +2,8 @@ const express = require('express');
 const adminRoute = express();
 const path = require('path');
 
+const offerController = require('../controllers/offerController');
+
 adminRoute.use(express.static('./public/adminassets'));
 adminRoute.set('view engine','ejs');
 adminRoute.set('views','./views/Admin');
@@ -27,11 +29,6 @@ const couponController = require('../controllers/couponController')
 const chartController = require('../controllers/chartController')
 
 
-
-
-// adminRoute.get('/adminReg',adminController.adminReg)
-// adminRoute.post('/adminReg',adminController.postAdmin)
-
 adminRoute.get('/adminLogin',adminController.loadAdmin)
 adminRoute.post('/adminLogin',adminController.postAdminLogin)
 adminRoute.get('/adminDash',adminAuth.isLogout,adminController.getAdminDash)
@@ -46,7 +43,6 @@ adminRoute.post('/categories',categoryController.postAddCategories)
 adminRoute.get('/editCategory',adminAuth.isLogout,categoryController.editCategory)
 adminRoute.post('/editCategory',categoryController.postEditCategory)
 adminRoute.post('/blockCategory',categoryController.blockCategory)
-// adminRoute.put('/addcategory',adminAuth.isLogout,adminController.addcategory)
 
 adminRoute.get('/addProduct',adminAuth.isLogout,productController.displayAddProduct)
 adminRoute.post('/addProduct', adminAuth.isLogout, multer.productUpload.array("image"), adminController.addProduct)
@@ -74,6 +70,12 @@ adminRoute.post('/admin-salesReport',adminAuth.isLogout,orderController.SalesRep
 
 // adminRoute.post('/fetchSalesData',chartController.fetchsalesdata)
 adminRoute.post('/showChart',adminAuth.isLogout,adminController.showChart)
+
+
+adminRoute.get('/admin-productoffer',adminAuth.isLogout,offerController.productofferLoad)
+adminRoute.post('/productAddOffer',adminAuth.isLogout,offerController.productAddOffer)
+adminRoute.get('/admin-categoryoffer',adminAuth.isLogout,offerController.categoryofferLoad)
+adminRoute.post('/categoryAddOffer',adminAuth.isLogout,offerController.addCategoryOffer)
 
 
 module.exports = adminRoute;

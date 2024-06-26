@@ -6,22 +6,18 @@ const path = require('path');
 
 
 const addProduct = (data, files) => {
-
-    console.log("> inside the productHelper addproduct <");
-
-    // const { hiddenField1, hiddenField2, hiddenField3, hiddenField4, } = data;
-    console.log("> hello... < data: ",data);
   
     return new Promise(async (resolve, reject) => {
-      console.log("> inside the productHelper_addProduct | data: <", data);
      
       let images=[]
       for(const file of files){
           images.push(file.filename)
-          
-          console.log(files);
       }
 
+      let totalQuantity =
+      parseInt(data.small) +
+      parseInt(data.medium) +
+      parseInt(data.large);
 
       const productQuantity = 
       {
@@ -37,13 +33,7 @@ const addProduct = (data, files) => {
                quantity:data.large,
               },
       }
-
-      let totalQuantity =
-        parseInt(data.small) +
-        parseInt(data.medium) +
-        parseInt(data.large);
       
-      console.log("prdcthlpr | data.category :",data.category);
        const newProduct =await Product.create({
 
           name: data.name,
@@ -53,17 +43,12 @@ const addProduct = (data, files) => {
             salesPrice:data.salesPrice,
           },
           size: productQuantity,
-        //   productDiscount: data.discount,
-        //   totalQuantity: totalQuantity,
+          totalQuantity: totalQuantity,
           image: images,
         })
 
-        // const newProduct = await productModel.create(productAdding);
-  
-        // Array to store promises for cropping operations
         const cropPromises = [];
   
-        // Define cropImage function
         async function cropImage(hiddenfield) {
             return new Promise((resolve, reject) => {
                 let parts = hiddenfield.split(" ");
@@ -84,47 +69,15 @@ const addProduct = (data, files) => {
                             console.error("Error cropping image:", err);
                             reject(err);
                         } else {
-                            // Update the product image path with the cropped image
                             let croppedFilename = `cropped_${filename}`;
                             newProduct.image[ind] = croppedFilename;
-        
-                            // try {
-                            //     // Attempt to unlink the file
-                            //     fs.unlinkSync(inputPath);
-                            //     console.log('File unlinked successfully');
-                            // } catch (err) {
-                            //     // Handle the error
-                            //     console.error('Error unlinking file:', err);
-                            //     // You can take further action here, such as retrying or notifying the user
-                            // }
-                            // // Resolve the promise
                             resolve();
                         }
                     });
             });
         }
-
-
-    //     // Push crop promises to array
-    //   if (hiddenField1) {
-    //     cropPromises.push(cropImage(hiddenField1));
-    // }
-    // if (hiddenField2) {
-    //     cropPromises.push(cropImage(hiddenField2));
-    // }
-    // if (hiddenField3) {
-    //     cropPromises.push(cropImage(hiddenField3));
-    // }
-    // if (hiddenField4) {
-    //     cropPromises.push(cropImage(hiddenField4));
-    // }
-   
     
-
-    // Wait for all crop promises to resolve
     await Promise.all(cropPromises);
-
-    // Save the updated product after all cropping operations
     await newProduct.save();
 
     const message = "Product added successfully";
@@ -134,7 +87,36 @@ const addProduct = (data, files) => {
       
 }
 
+
+
+const getAllProducts =() => {
+
+    return new Promise(async(resolve,reject) => {
+
+        const product = await Product
+
+        .aggregate([
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "caotegory",
+                    foreignField: "_id",
+                    as: "category"
+                }
+            }
+        ])
+
+        .then ((result) => {
+            resolve(result)
+        })
+
+        .catch((error) => {
+            console.log(error);
+        })
+    })
+}
+
 module.exports = {
     addProduct,
-
+    getAllProducts
 }

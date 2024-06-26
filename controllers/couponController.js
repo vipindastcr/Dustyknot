@@ -6,25 +6,21 @@ const couponHelper = require('../helper/couponHelper')
 
 const adminCoupon = async(req,res) => {
     try {
-
-        console.log("> here inside the couponcontroler_adminCoupon <");
         const page = req.query.page || 1;
         const startIndex = (page -1 ) * 6;
         const endIndex = page * 6;
 
         const productCount = await couponModel.find().count();
-        console.log("> productCount is : ",productCount);
-
+        
         const totalPage = Math.ceil(productCount/6);
         const coupons = await couponModel.find().skip(startIndex).limit(6);
         let allCoupons = await couponHelper.findAllCoupons();
-        console.log("> allCoupons are : ",allCoupons);
-
+        
         for( let i = 0; i < allCoupons.length; i++ ) {
             allCoupons[i].discount = (allCoupons[i].discount)
             
             allCoupons[i].expiryData = dateFormatter(allCoupons[i].expiryDate)
-            // console.log("allCoupons[i].expiryData :",allCoupons[i].expiryData);
+            
         }
 
         allCoupons = allCoupons.slice(startIndex,endIndex)
@@ -39,7 +35,7 @@ const adminCoupon = async(req,res) => {
                 coupons: allCoupons
             })
         }
-        // res.send("couponpage") //for testing purpose
+        
     } catch (error) {
         console.log(error);
     }
@@ -48,14 +44,13 @@ const adminCoupon = async(req,res) => {
 
 // Date Formatter
 function dateFormatter(date) {
-    console.log("Received date:", date); //
+    
     return date.toISOString().slice(0, 10);
   }
 
 const addCoupon = async (req,res) => {
     try {
-            console.log("> inside the couponController_ addCoupon <");
-        
+    
         if(req.body.couponDiscount > 1000) {
             req.flash('message', 'Max coupon amount exceeded')
             res.redirect('/admin-coupon')
@@ -78,9 +73,7 @@ const addCoupon = async (req,res) => {
 
 const deleteCoupon = async(req,res) => {
     try {
-        console.log("> you are inside the couponController_deleteCoupon <");
         const result = await couponHelper.deleteSelectedCoupon(req.params.id);
-        console.log("the result is : > ",result);
         res.json({ message: "Coupon deleted" })
         
     } catch (error) {
@@ -89,23 +82,6 @@ const deleteCoupon = async(req,res) => {
 }
 
 
-// const editCoupon = async (req,res) => {
-//     try {
-//         console.log("> inside the editCoupon function <");
-        
-//         const couponId = req.params.id;
-//         console.log(".....req.body. : ", req.body);
-
-//         let editedCoupon = await couponHelper.editTheCouponDetails(req.body)
-//         console.log("editedCoupon ............: ", editedCoupon);
-
-//         // res.redirect('/admin-coupon')
-
-        
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
 
 const editCoupon = async (req, res) => {
     try {
@@ -121,37 +97,22 @@ const editCoupon = async (req, res) => {
     }
   };
 
-//   function dateFormatter(date) {
-//     console.log("here, the Received date is :", date); 
-
-//     console.log("what datatype : ",typeof date);
-//     date.toISOString()
-//     console.log(typeof date);
-//     return date.toISOString().slice(0, 10);
-//     let thedate = date.toISOString().split('T')[0]
-//     console.log("thedate : >> ",thedate);
-//   }
 
 
 const applyCoupon = async(req,res) => {
     try {
-        console.log(">  inside of coupon controller_ applyCoupon  <");
-
+        
         const price = parseInt(req.query.price);
         const userId =req.session.user;
         const couponCode = req.query.couponCode;
-        console.log("this is the coupon code : >> ",couponCode);
-
-
         
-       
         if(price > 1500 ) {
             const result = await couponHelper.applyCoupon(userId,couponCode);
-            console.log(result,"discount value");
+            
             if(result.status) {
                 res.json({  result: result, status:true, message: "Coupon Applied Successfuly"  })
             }else {
-                res.json({ result: result, status:true, message: result.message });
+                res.json({ result: result, status:false, message: "Coupon can only apply on 1500 and above" });
             }
         }
         
@@ -177,18 +138,11 @@ const getEditCoupon = async (req, res) => {
   const removeCoupon = async (req, res) => {
     try {
 
-        console.log("> ..couponController_removeCoupon.. <");
-      // Find the active coupon and set it to expired
       const appliedCouponName = req.query.coupon;
       const userId = req.query.userId
       
-      console.log('Appplied couponName......>>> ',appliedCouponName);
-      console.log("userId......>>> ", userId);
-      
       const coupon = await couponModel.findOne({code:appliedCouponName});
       const cart = await cartModel.findOne({user:userId})
-      console.log('couponcart',coupon);
-    
       
       if (coupon) {
         cart.coupon = null;

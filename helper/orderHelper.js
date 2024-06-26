@@ -9,27 +9,16 @@ const { ObjectId } = require('mongodb');
 
 
 const placeOrder = (data, userId) => {
-    console.log("orderHelper_ place order function");
-
     return new Promise (async (resolve,reject) => {
-      //  console.log("userId : ",userId);
        try {
-                
-                // let userId = new ObjectId(user_Id);
-                // console.log("userId : is ", userId);
                 const cart = await cartModel.findOne( { user: userId} );
-                console.log("> cart is ::::::::::::::::::::::::::::::::::::::::::::::: ",cart);
-                console.log("userId : is ", userId) 
                 const address = await userModel.findOne(
                     { _id: userId, "address._id": data.addressId},
                     { "address.$":1,
                         _id:0,
                     }
                 )
-                console.log("address>>...... "+address);
                 const user = await userModel.findOne({ _id:userId });
-                console.log(" showing cart : >>> ----",cart);
-                console.log("finished cart ===========================");
                 let products = [];
                 let status = "pending";
                 if(data.status) {
@@ -46,26 +35,12 @@ const placeOrder = (data, userId) => {
                         status: status,
                     });
 
-                    // let changeStock = await productModel.updateOne(
-                    //     { _id: product.productId },
-                    //     {
-                    //     $inc: {
-                    //       [`size.${product.size}.quantity`]: -product.quantity,
-                    //       // totalQuantity: -product.quantity
-                          
-                    //     } 
-                    //     }
-                    // )
                     let productSize = product.size.toLowerCase()
                     let changeStock = await productModel.findOne(
                       { _id: product.productItemId});
                       
-                   console.log('changeStock',changeStock);
-                   let stock = changeStock.size
-                  console.log('stock',stock);
-                  console.log('stock[product.size]',stock[productSize]);
+                  let stock = changeStock.size
                   stock[productSize].quantity = stock[productSize].quantity-product.quantity;
-                  console.log("balance stock of this product : > ",stock[productSize].quantity);
                   await changeStock.save()
                 }
                 
@@ -138,7 +113,7 @@ const getSingleOrderDetails = (orderId) => {
             },
           },
         ]);
-        console.log(singleOrderDetails);
+        
         resolve(singleOrderDetails);
       } catch (error) {
         console.log(error);
@@ -172,11 +147,6 @@ const getOrderDetailsOfEachProduct = (orderId) => {
           {
             $unwind: "$orderedProduct",
           },
-        //   {
-        //     $addFields: {
-        //         orderedTime: "$createdAt" 
-        //     }
-        // }
           
         ]);
         let check = true;
@@ -260,7 +230,6 @@ const cancelSingleOrder = (orderId,singleOrderId,price) => {
 }
 
 const getAllOrders = () => {
-  console.log("> here orderHelper getAllorders | <");
   return new Promise(async (resolve, reject) => {
     const result = await orderModel
       .aggregate([
@@ -275,7 +244,6 @@ const getAllOrders = () => {
       ])
       .sort({ orderedOn: -1 });
 
-      // console.log("result : > "+result);
     if (result) {
       resolve(result);
     }
@@ -284,7 +252,6 @@ const getAllOrders = () => {
 
 const changeOrderStatusOfEachProduct = (orderId, productId, status) => {
 
-  console.log(orderId," - ",productId," - status >> ",status);
   return new Promise(async (resolve, reject) => {
     try {
       const result = await orderModel.findOneAndUpdate(
@@ -295,14 +262,13 @@ const changeOrderStatusOfEachProduct = (orderId, productId, status) => {
         { new: true }
       );
 
-      const result2 = await orderModel.findOneAndUpdate(     // added extra for testing purposes
+      const result2 = await orderModel.findOneAndUpdate(  
         { _id: new ObjectId(orderId)},
         {
           $set: { "status": status },  // 
         },
         { new: true }
       );
-      console.log("the result1 and result2  are .............>>>",result,"------",result2);
       resolve(result);
     } catch (error) {
       console.log(error);
@@ -340,10 +306,8 @@ const salesReport = async() => {
 
 const salesReportDateSort = async (startDate,endDate) => {
   try {
-    console.log(startDate,endDate,"=======>")
     const startDateSort = new Date(startDate);
     const endDateSort = new Date(endDate);
-    console.log("startDateSort :", startDateSort,"||  endDateSort  :", endDateSort);
 
     function getNextDay(date) {
       const nextDay = new Date(date);
@@ -370,12 +334,10 @@ const salesReportDateSort = async (startDate,endDate) => {
               as: "productDetails",
           }
         },
-        { $sort: { orderedOn: 1 }},  // here,1 for ascending order, -1 for descending
+        { $sort: { orderedOn: 1 }},
     ])
-    console.log("result is,,,,",result)
     return result 
   } catch (error) {
-    console.log("Error", error);
     throw error;
   }
 }

@@ -6,10 +6,6 @@ const fs = require('fs')
 
 const validateImage = async(req,res,next) => {
     try {
-        console.log("u are in validImage function MIDDILEWARE");
-        console.log("req.files...."+req.files);
-        console.log("req.files.path  : ",req.files.buffer);
-
         const buffer = req.files ? req.files[0].buffer : null;
         if (!buffer) {
             throw new Error("No image uploaded or buffer is not available");

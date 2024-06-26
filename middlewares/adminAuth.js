@@ -1,7 +1,5 @@
 const isLogin = async (req,res,next) => {
     try {
-
-        console.log("admin middleware adminauth: "+req.session.admn);
         if (req.session.admn) {
             res.redirect('/adminDash');
         }else {

@@ -1,8 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="en">
 
-
-<!-- Mirrored from template.hasthemes.com/toro/toro/login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Feb 2024 11:20:02 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -12,10 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets2/images/favicon.png">
-
-    <!-- All CSS is here
-	============================================ -->
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets2/css/vendor/bootstrap.min.css">
     <!-- Icon Font CSS -->
@@ -136,8 +130,6 @@
     <script>
         const otpexpr = document.getElementById('otp').value
         const otpDid = document.getElementById('otpDisplay')
-        
-        // const email = document.getElementById('email').value
         const otpExpiration = otpexpr
         const resendOtp = document.querySelector('.resend')
         
@@ -170,7 +162,6 @@
             if (remainingTime <= 0) {
                 otpDid.innerHTML = 'OTP has timedout ,please resend for newone'
                 otpDid.style.display = 'block'
-                // document.querySelector('.resend').style.display="block"
             } else {
                 console.log('getts here');
                 const remainingSeconds = Math.ceil(remainingTime / 1000);
@@ -188,6 +179,4 @@
 
 </body>
 
-
-<!-- Mirrored from template.hasthemes.com/toro/toro/login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Feb 2024 11:20:02 GMT -->
 </html>

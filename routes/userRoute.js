@@ -21,13 +21,12 @@ const couponController = require('../controllers/couponController')
 
 
 userRoute.get('/',userController.loadHome);
-userRoute.get('/fashion',userMiddleware.isLogout,userBlockingMiddileware.userBlock,userController.loadFashion)  
+userRoute.get('/fashion',userController.loadFashion)  
 
 userRoute.get('/login',userMiddleware.isLogin,userController.loadLogin);       
 userRoute.post('/login',userMiddleware.isLogin,userController.checkUser); 
 userRoute.get('/logout',userMiddleware.isLogout,userController.logOut);
 
-// userRoute.post('/tokensignin',userController.tokenSignin)
 
 
 userRoute.get('/register',userController.loadRegister)  
@@ -41,7 +40,7 @@ userRoute.post('/otp2',userController.postOtp2)
 userRoute.post('/enterNewPass',userController.resetPass)
 
 userRoute.get('/userAccount',userMiddleware.isLogout,userBlockingMiddileware.userBlock,userController.loadAccount)
-userRoute.get('/userProductPage/:id',userMiddleware.isLogout,userBlockingMiddileware.userBlock,userController.Loaduserproduct)
+userRoute.get('/userProductPage/:id',userController.Loaduserproduct)
 
 userRoute.get('/otp',userController.verifyOtp)
 userRoute.post('/otp',userController.otpVerificationPost)
@@ -82,7 +81,6 @@ userRoute.post('/paymentSuccess',userMiddleware.isLogout,orderController.payment
 
 userRoute.post('/applyCoupon',userMiddleware.isLogout,couponController.applyCoupon)
 userRoute.post('/removeCoupon',userMiddleware.isLogout,couponController.removeCoupon)
-userRoute.post('/createorderforwallet')
 
 // userRoute.post('/generate-invoice',userController.invoiceDownload)
 

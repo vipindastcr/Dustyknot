@@ -26,6 +26,25 @@ const addCat = (productName,productDescription) => {
 }
 
 
+const getAllActiveCategory = () => {
+    return new Promise(async(resolve,reject) => {
+        try {
+            const categories = await categoryModel.find({ isActive: true });
+
+            if(categories) {
+                resolve(categories);
+            }else {
+                resolve({ message: "No active categories..!"});
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    })
+}
+
+
 module.exports = {
-    addCat
+    addCat,
+    getAllActiveCategory
 }

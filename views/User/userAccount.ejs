@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Dustyknot clothing</title>
@@ -430,41 +427,6 @@
                                     </div>
                                 </div>
 
-
-                            <!-- <div class="tab-pane fade  show " id="wallet" role="tabpanel"
-                                aria-labelledby="wallet-detail-tab">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 class="mb-0">Your Wallet <br> (Avialable Balance: <span
-                                                class="text-primary"></span> )
-                                        </h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="table-responsive container">
-                                            <table class="table" id="walletTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Transaction Id</th>
-                                                        <th>Date</th>
-
-                                                        <th>Amount</th>
-
-                                                        <th>Transaction Type</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                  
-
-
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-
-
                             <div class="tab-pane fade  show " id="wallet" role="tabpanel"
                                 aria-labelledby="wallet-detail-tab">
                                 <div class="tab-content dashboard-content">
@@ -671,7 +633,6 @@
 
     <script>
         $(document).ready(function () {
-            // console.log("here in fuction caleed userDetailsform");
             $("#userDetailsForm").submit(function (event) {
                 event.preventDefault();
                 const validate = validateForm();
@@ -695,9 +656,7 @@
                                         background: "linear-gradient(to right, aqua, blue)",
                                     },
                                 }).showToast();
-                                // setTimeout(() => {
-                                //     location.reload();
-                                // }, 1000);
+                                
                             } else {
                                 document.getElementById("passwordError").innerHTML = `${response.message}`;
 
@@ -733,12 +692,11 @@
                         console.log("< response is ths << "+response);
                         Toastify({
                             text: "Password Updated",
-                            duration: 3000, // 3 seconds
-                            gravity: "top", // Display at the top of the screen
-                            position: "center", // Centered horizontally
-                            backgroundColor: "green", // Set the background color to green
+                            duration: 3000, 
+                            gravity: "top", 
+                            position: "center", 
+                            backgroundColor: "green", 
                         }).showToast();
-                        // Handle success, e.g., close the modal and refresh the page
 
                         setTimeout(() => {
                             location.reload();
@@ -747,7 +705,6 @@
                     },
                     error: (xhr, status, error) => {
                         console.log(error);
-                        // Handle the error and provide user feedback if necessary
                     }
                 });
             }
@@ -835,7 +792,7 @@
 
     </script>
 
-    <script>/////////////////VALIDATION//////////////////////////
+    <script>
         function validateForm2() {
 
             const houseRegex = /^[a-zA-Z0-9\s]+$/;
@@ -1144,7 +1101,4 @@
     </script>
 
 </body>
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
 </html>
