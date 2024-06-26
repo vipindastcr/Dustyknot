@@ -4,7 +4,6 @@ const User = require('../models/userSchema');
 const bcrypt = require('bcrypt');
 const categoryHelper = require('../helper/categoryHelper');
 const productHelper = require('../helper/productHelper')
-// const { addProduct } = require('./productController');
 const orderModel = require('../models/orderModel');
 const productModel = require('../models/productModel');
 const categoryModel = require('../models/categoryModel');
@@ -42,17 +41,7 @@ const getAdminDash = async(req,res) => {
         const products = await productModel.find();
         const categories = await categoryModel.find();
 
-        // const topSellingProducts = await orderModel.aggregate([      // for top selling products display after chart
-        //     { $unwind: "$products" },
-        //     {
-        //       $group: {
-        //         _id: "$products.product",
-        //         totalQuantity: { $sum: "$products.quantity" },
-        //       },
-        //     }, 
-        //     { $sort: { totalQuantity: -1 } }, 
-        //     { $limit: 10 }, 
-        // ]);
+        
 
 
 
@@ -106,22 +95,14 @@ const postAdminLogin = async(req,res) => {
 
 const postAdmin =async (req,res) => {
     try {
-        // console.log("req body: "+req.body);
         const { name,email,mobile,password,confirmPassword } = req.body;
-        // name = req.body.name;
-        // console.log(req.body.name);
-
         const hashed = await bcrypt.hash(password,10);
-
         const adm = {
             name,
             email,
             mobile,
-            password:hashed,
-            // confirmPassword
+            password:hashed,            
         }
-
-        console.log("adm: "+adm);
 
         const admn = new Admin({name,email,mobile,password,isActive:1})
         await admn.save();
@@ -137,7 +118,6 @@ const postAdmin =async (req,res) => {
 
 const logoutAdmin = async (req,res) => {
     try {
-        console.log("req.session.admn: "+req.session.admn);
         if( req.session.admn ) {
             req.session.destroy((error) => {
                 if(error) {
@@ -157,9 +137,7 @@ const logoutAdmin = async (req,res) => {
 const blockUser = async (req,res) => {
     try {
         
-        console.log("enter to the block user page");
         const userId = req.body.id;
-        console.log("userId :"+userId);
         const findUser = await User.findById({ _id:userId });
         if(findUser.isActive === true) {
             await User.findByIdAndUpdate({ _id:userId },{ $set:{ isActive:false } })
@@ -168,7 +146,6 @@ const blockUser = async (req,res) => {
         }
 
         res.json({ success:true });
-        // res.redirect('/userList')
 
     } catch (error) {
         console.log(error.message);
@@ -184,17 +161,10 @@ const addcategory = async(req,res) => {
 }
 
 const addProduct=(req,res)=>{
-    console.log("> you are inside the addProduct <");
-    console.log("inside admncontrllr _ addprdct | req.body is: vvvv");
-    console.log(req.body)
     const body = req.body
     const files=req.files
-  
-    console.log("req.files...................................................................................",files);
-    
     productHelper.addProduct(body,files)
     .then((response)=>{
-      console.log("hello",response);
       res.redirect('/addProduct')
     })
     .catch((error)=>{
@@ -207,10 +177,7 @@ const addProduct=(req,res)=>{
 const showChart = async(req,res) => {
     try {
 
-        console.log("> in admincontroller_showchart <");
-        
-
-            const monthlySalesData = await orderModel.aggregate([
+        const monthlySalesData = await orderModel.aggregate([
                 {
                     $match: { "products.status": "delivered"}
                 },
@@ -224,10 +191,6 @@ const showChart = async(req,res) => {
                     $sort: { _id: 1 }
                 }
             ]);
-
-
-            console.log("monthlySalesData  :>>",monthlySalesData);
-
 
             const dailySalesData = await orderModel.aggregate([
                 {
@@ -244,8 +207,6 @@ const showChart = async(req,res) => {
                 }
             ]);
 
-            console.log("daily sales data : >", dailySalesData);
-
             const orderStatuses = await orderModel.aggregate([
                 {
                     $unwind: "$products"
@@ -257,9 +218,6 @@ const showChart = async(req,res) => {
                     }
                 }
             ]);
-
-            console.log("order statues : >> ", orderStatuses);
-
 
             const eachOrderStatusCount = {};
             orderStatuses.forEach((status) => {
