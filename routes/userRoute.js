@@ -54,7 +54,6 @@ userRoute.put('/editAddress/:id',userBlockingMiddileware.userBlock,userControlle
 userRoute.put('/deleteAddress/:id',userBlockingMiddileware.userBlock,userController.deleteAddress)
 userRoute.patch('/cancelSingleOrder',userMiddleware.isLogout,userBlockingMiddileware.userBlock,orderController.cancelSingleOrder)
 userRoute.put('/updatePassword',userBlockingMiddileware.userBlock,userController.updatePassword)
-// userRoute.get('/category',userController.getCategory)
 userRoute.get('/wishlist',userMiddleware.isLogout,userBlockingMiddileware.userBlock,wishlistController.wishlistload)
 userRoute.post('/addToWishlist/:id',userMiddleware.isLogout,wishlistController.addToWishlist)
 userRoute.put('/removeFromWishList',userMiddleware.isLogout,wishlistController.removeFromWishlist)

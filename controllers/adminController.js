@@ -27,15 +27,14 @@ const loadAdmin = async (req,res) => {
 
 const getAdminDash = async(req,res) => {
     try {
-
-        console.log("> inside the getadminDash <");
-
         const salesDetails = await orderModel.find();
         let totalRevenue =0;
         
         
             for(let i=0;i<salesDetails.length;i++){
-                totalRevenue+=salesDetails[i].totalAmount
+                if(salesDetails[0].totalAmount) {
+                    totalRevenue += salesDetails[i].totalAmount
+                }
             }
             console.log(totalRevenue);
         const products = await productModel.find();
