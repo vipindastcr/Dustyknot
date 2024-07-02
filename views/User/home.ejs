@@ -237,15 +237,9 @@
                             <% }) %>
                         <%}%>
                         </div>
-                        <!--End product-grid-4-->
                     </div>
-                    
-                    
-                    
-                    
-                    
+                  
                 </div>
-                <!--End tab-content-->
             </div>
         </section>
 
@@ -262,8 +256,6 @@
             </nav>
         </div>
         
-        
-        <!-- branding logo animation -->
         <section class="section-padding">
             <div class="container">
                 <h3 class="section-title mb-20 wow fadeIn animated"><span>Featured</span> Brands</h3>
@@ -416,6 +408,27 @@
                 }
             })
         }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const paginationLinks = document.querySelectorAll('.pagination .page-link');
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentPage = urlParams.get('page') || '1';
+
+    // Update the active class based on the current page
+    paginationLinks.forEach(link => {
+        const pageItem = link.closest('.page-item');
+        const page = link.getAttribute('href').split('=')[1];
+        
+        if (page === currentPage) {
+            pageItem.classList.add('active');
+        } else {
+            pageItem.classList.remove('active');
+        }
+    });
+});
+
     </script>
 
 </body>

@@ -101,13 +101,15 @@ const editCoupon = async (req, res) => {
 
 const applyCoupon = async(req,res) => {
     try {
-        
         const price = parseInt(req.query.price);
+        console.log('pricee is................... ',price);
         const userId =req.session.user;
         const couponCode = req.query.couponCode;
         
         if(price > 1500 ) {
             const result = await couponHelper.applyCoupon(userId,couponCode);
+            
+            console.log('result is >>>',result);
             
             if(result.status) {
                 res.json({  result: result, status:true, message: "Coupon Applied Successfuly"  })

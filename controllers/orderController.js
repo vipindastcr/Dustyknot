@@ -16,6 +16,7 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
+
 const checkoutpage = async(req,res) => {
     
   try {
@@ -26,10 +27,16 @@ const checkoutpage = async(req,res) => {
         let cart = await cartModel.findOne({ user: userId })
         const cartItems = await cartHelper.getAllCartItems( userId )
         let totalandsubtotal = cart.totalAmount;
+        // let oldTotal = totalandsubtotal;
+        
+        console.log('cart>>>>.................||',cart);
         
         if( cart.coupon != null ) {
             const appliedCoupon = await couponModel.findOne({ code: cart.coupon });
             cartItems.couponAmount = appliedCoupon.discount;
+            const couponAmt = cartItems.couponAmount
+            console.log('couponAmount>>>>>...>>>>',couponAmt);
+            
 
                 let totalAmountOfEachProduct = []
             for (let i = 0; i < cartItems.products.length; i++) {
@@ -47,7 +54,10 @@ const checkoutpage = async(req,res) => {
                   totalAmountOfEachProduct,
                   totalandsubtotal,
                   email,
-                  coupons
+                  coupons,
+                  cart,
+                  // oldTotal
+                  couponAmt
               })
           }
             
@@ -87,17 +97,52 @@ const placeOrder = async(req,res) => {
     const userId = req.session.user;
     const data = req.body;
     const body = req.body;
-    let coupon = await cartModel.findOne({ code: body.couponCode });
-    const result = await orderHelper.placeOrder(data,userId);
+    let coupon = await couponModel.findOne({ code: body.couponCode });
+    // const result = await orderHelper.placeOrder(data,userId);
     
-    if( result.status ) {
-        console.log('........................................................its');
-        const cart = await cartModel.deleteOne({ user: userId })
-        res.json({ status: true })
+    // if( result.status ) {
+
+    //   if (coupon) {
+    //     coupon.usedBy.push(userId);
+    //     await coupon.save();
+    //   }
         
-    }else{
-        res.json({status:false})
-    }
+    //     const cart = await cartModel.deleteOne({ user: userId })
+    //     res.json({ status: true })
+        
+    // }else{
+    //     res.json({status:false})
+    // }
+
+    console.log('the data is ',data);
+    const cart = await cartModel.findOne({ user: userId })
+
+    if (cart) {
+         
+      if (parseFloat(body.totalAmount) > 1000 && body.paymentOption === "COD") {
+         
+          return res.json({ message: "COD is not available for this price range", status: false });
+      } else {
+          const result = await orderHelper.placeOrder(body, userId, coupon);
+        console.log('result',result);
+          if (result.status) {
+            if (coupon) {
+                coupon.usedBy.push(userId);
+                await coupon.save();
+            }
+          const result2 = await cartHelper.clearAllCartItems(userId);
+          console.log('"result2 is "',result2);
+          if(result2.success){
+           res.json({ status: true });
+          }
+
+      }
+  }
+} else {
+  console.log('payment failed');
+ 
+  return res.json({ message: result.message, status: false });
+}
 
 }
 
@@ -114,10 +159,9 @@ const orderDetails = async (req, res) => {
       
       const userData = await user.findById({_id:req.session.user})
       const orderDetails = await orderHelper.getSingleOrderDetails(orderId);
-      const productDetails = await orderHelper.getOrderDetailsOfEachProduct(
-        orderId
-      );
+      const productDetails = await orderHelper.getOrderDetailsOfEachProduct( orderId );
       
+      console.log('productDetails<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< <<',productDetails);
   
       if (orderDetails && productDetails) {
         res.render("orderDetails", {
@@ -182,7 +226,7 @@ const orderDetails = async (req, res) => {
       if (orderDetails && productDetails) {
         res.render("adminOrderDetails", { orderDetails, productDetails, userData });
       }
-      console.log(productDetails);
+      
     } catch (error) {
       console.log(error);
     }

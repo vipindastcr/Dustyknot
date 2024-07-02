@@ -189,6 +189,7 @@ const incDecProductQuantity = (userId,productId,quantity) => {
 const clearAllCartItems = ( userId ) => {
     return new Promise(async (resolve,reject) => {
         const result = await cartModel.deleteOne({ user: userId })
+        resolve({success:true})
     })
 }
 

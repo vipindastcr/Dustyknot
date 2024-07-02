@@ -88,7 +88,9 @@ const applyCoupon = (userId,couponCode) => {
 
                 let cart = await cartModel.findOne({ user: new ObjectId(userId)})
                 const discount = coupon.discount / 100 ;
-                cart.totalAmount = cart.totalAmount - cart.totalAmount*discount;
+                // let oldT = cart.totalAmount;
+                // cart.totalAmount = cart.totalAmount - cart.totalAmount*discount;
+                // const CouponAppliedTotalAmount = cart.totalAmount - cart.totalAmount*discount;
                 cart.coupon = couponCode;
                 await cart.save();
 
@@ -97,6 +99,7 @@ const applyCoupon = (userId,couponCode) => {
                     cart,
                     status: true,
                     message: "Coupon applied successfully",
+                    // oldT
                 })
 
             }else {

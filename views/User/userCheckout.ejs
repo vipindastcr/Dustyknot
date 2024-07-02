@@ -158,23 +158,43 @@
                                                 <tr>
                                                     <th>SubTotal</th>
                                                     <td class="product-subtotal" colspan="2" class="text-dark">
-                                                        <span>
-                                                            <%= totalandsubtotal %>
-                                                        </span>
+                                                        
+                                                        <span id="subtotal">₹ <%= totalandsubtotal %></span>
 
 
                                                     </td>
                                                 </tr>
                                             
                                                 <tr>
-                                                    <!-- <th>Coupon Discount</th> -->
+                                                    <th>Coupon Discount</th>
+                                                    <td colspan="2" class="text-dark">
+                                                        <input id="carti" type="hidden" value="<%=cartItems %>">
+                                                        <span >
+                                                        <% if (cartItems.couponAmount>0) { %>
+                                                          <span id="couponAmountText"> <%=cartItems.couponAmount %>%</span>
+                                                            <script>
+                                                                // console.log("cartitemi",document.getElementById('carti').value)
+                                                              
+                                                            </script>
+                                                          <% } else { %>
+                                                            <span>No Coupons Applied</span>
+                                                            <% } %>
+                                                        </span>
+                                                      </td>
 
+                                                </tr>
                                                 </tr>
                                                 <tr>
                                                     <th>Total</th>
                                                     <td colspan="2" class="product-subtotal"><span
                                                             class="font-xl text-dark fw-900" id="totalAmount">
-                                                            <%= totalandsubtotal %>
+                                                            
+                                                            <% if (cartItems.couponAmount > 0) { %>
+                                                               
+                                                                <%=Math.round(totalandsubtotal-(totalandsubtotal*cartItems.couponAmount/100))%>
+                                                            <% } else { %>
+                                                                <%= totalandsubtotal %>
+                                                            <% } %>
                                                         </span></td>
                                                 </tr>
 
@@ -478,13 +498,16 @@
         let payment = $("input[name='payment_option']:checked").val();
         const code = document.getElementById("couponCodeTable").textContent.trim();
         const Amount = document.getElementById("totalAmount").innerHTML;
-        const totalAmount = Amount.trim()
+        const totalAmount = document.getElementById("totalAmount").innerHTML;
+        const couponAmount = document.getElementById("couponAmountText").innerHTML;
+        // const totalAmount = Amount.trim()
 
         const data = {
           addressId: address,
           paymentOption: payment,
           couponCode: code,
-          totalAmount:totalAmount
+          totalAmount:totalAmount,
+        //   Amount:Amount
         }
         
         
@@ -495,7 +518,7 @@
         url: "/placeOrder",
         method: "POST",
         
-        data: JSON.stringify(data),          //old one that is working 
+        data: JSON.stringify(data),
         contentType: "application/json",
 
         success: (response) => {
@@ -587,7 +610,8 @@
                 addressId: address,
                 paymentOption: paymentMethod,
                 status: "payment pending",
-                totalAmount:totalAmount
+                totalAmount:totalAmount,
+
             }),
             contentType: 'application/json',
             success: function (data) {
@@ -623,9 +647,11 @@
                         data: ({
                             addressId: address,
                             paymentOption: payment,
-                            totalAmount:totalAmount
+                            totalAmount:totalAmount,
+                            couponAmount:couponAmount
                         }),
                         success: function (data) {
+                            console.log("data is",data)
                             window.location.href = '/ordersuccesspage';
                         },
                         error: function (xhr, status, error) {
@@ -664,6 +690,11 @@
                 url: `/applyCoupon?price=${price}&couponCode=${formData}`,
                 method: "POST",
                 success: (response) => {
+
+                    console.log('the applycoupons response is ::::',response);
+                    // Access the variable t from the response
+                    // const old = response.oldT;
+                    // console.log('Variable oldTotla:', old);
                     if (response.status) {
                         Toastify({
                             text:` ${response.message}`,
@@ -708,6 +739,8 @@
     })
 
 </script>
+
+
 
 <script>
     function removeCoupon (coupon,userId) {

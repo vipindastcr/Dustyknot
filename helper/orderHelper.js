@@ -9,6 +9,10 @@ const { ObjectId } = require('mongodb');
 
 
 const placeOrder = (data, userId) => {
+
+  console.log('the placeorder data >>>> ',data);
+  const couponAmount = parseInt(data.couponAmount);
+  console.log('couponAmount and its type',couponAmount," type :", typeof(couponAmount));
     return new Promise (async (resolve,reject) => {
        try {
                 const cart = await cartModel.findOne( { user: userId} );
@@ -62,9 +66,10 @@ const placeOrder = (data, userId) => {
                         },
                         paymentMethod: data.paymentOption,
                         totalAmount: data.totalAmount,
+                        couponAmount: couponAmount
                     })
 
-                    resolve ({result: result, status: true})
+                    resolve ({result:result, status:true})
             }
 
         }catch(error){

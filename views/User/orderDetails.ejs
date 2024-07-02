@@ -275,17 +275,21 @@
                               <td class="cart_total_label">Order Subtotal</td>
                               <td class="cart_total_amount"><span class="font-lg fw-900 text-dark" id="totalAmount"
                                   style="color: 2B1754;">
-                                  ₹ <%= productDetails[0].totalAmount%>
+                                  <% let subtotal = 0 %>
+                                  <% for(let i = 0; i < productDetails.length; i++) {%>
+                                        <% subtotal += productDetails[i].products.productPrice; %>
+                                    <% } %>
+                                  ₹ <%= subtotal %>
                                 </span>
                               </td>
                             </tr>
                             <tr>
-                              <td class="cart_total_label">Coupon</td>
+                              <td class="cart_total_label">Applied Coupon</td>
                               <% if (productDetails[0].couponAmount>0) { %>
                                 <td class="cart_total_amount"> <i class="ti-gift mr-5"></i>
                                   <span id="couponAmount">
-                                    <%=productDetails[0].couponAmount %>
-                                  </span>
+                                    <%= productDetails[0].couponAmount %>
+                                  %</span>
                                 </td>
                                 <% } else { %>
                                   <td class="cart_total_amount"> <i class="ti-gift mr-5"></i>
@@ -409,7 +413,7 @@
 
       let productDetails = JSON.parse(document.getElementById('productDetails').value);
 
-      console.log(productDetails);
+      console.log("productDetails ... >>",productDetails);
 
       e.preventDefault();
       ;
@@ -427,16 +431,17 @@
             quantity: product.products.quantity,
             description: product.orderedProduct.name,
             tax: 0,
-            price: product.totalAmount
+            price: product.products.productPrice
           }));
           console.log(products)
 
+          let totalAmount = products.reduce((total, product) => total + product.price, 0);
           if (filteredProducts[0].couponAmount > 0) {
             products.push({
               quantity: 1,
               description: "Coupon Deduction",
               tax: 0,
-              price: -productDetails[0].couponAmount,
+              price: -(totalAmount * productDetails[0].couponAmount/100),
             })
           }
 

@@ -48,7 +48,6 @@ adminRoute.get('/editCoupon/:id',adminAuth.isLogout,couponController.getEditCoup
 adminRoute.post('/editCoupon',adminAuth.isLogout,couponController.editCoupon)
 adminRoute.get('/admin-salesReport',adminAuth.isLogout,orderController.SalesReportload)
 adminRoute.post('/admin-salesReport',adminAuth.isLogout,orderController.SalesReportDateSortload)
-// adminRoute.post('/fetchSalesData',chartController.fetchsalesdata)
 adminRoute.post('/showChart',adminAuth.isLogout,adminController.showChart)
 adminRoute.get('/admin-productoffer',adminAuth.isLogout,offerController.productofferLoad)
 adminRoute.post('/productAddOffer',adminAuth.isLogout,offerController.productAddOffer)
