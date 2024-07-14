@@ -26,6 +26,7 @@ const securePasswordFunction = async(password) => {
 
 const loadHome = async (req,res) => {
 
+    console.log('its home page');
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
     const email = req.session.user;

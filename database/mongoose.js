@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 function connectDb (){
     // const mongo = mongoose.connect('mongodb://localhost:27017/dustyknotDB');
-    const mongo = mongoose.connect('mongodb+srv://Dusty9995:RfXKlRNZxwayPTU3@dustyknotcl.qdoaucz.mongodb.net/?retryWrites=true&w=majority&appName=DustyknotCL');
+    const mongo = mongoose.connect('mongodb+srv://Dusty9995:RfXKlRNZxwayPTU3@dustyknotcl.qdoaucz.mongodb.net/?retryWrites=true&w=majority&appName=DustyknotCL' || "mongodb://localhost:27017/dustyknotDB");
     mongo.then(()=> {
         console.log("Database connected");
     })

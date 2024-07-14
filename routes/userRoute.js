@@ -64,6 +64,8 @@ userRoute.post('/paymentSuccess',userMiddleware.isLogout,orderController.payment
 userRoute.post('/applyCoupon',userMiddleware.isLogout,couponController.applyCoupon)
 userRoute.post('/removeCoupon',userMiddleware.isLogout,couponController.removeCoupon)
 
+userRoute.get('/category',userController.getCategory)
+
 
 
 
