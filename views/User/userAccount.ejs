@@ -16,9 +16,10 @@
     <link rel="stylesheet" href="/assets/css/maind134.css?v=3.4">
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css">
+    
     <!-- Include SweetAlert from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 </head>
 
 <body>
@@ -448,17 +449,20 @@
                                                     </thead>
                                                     <h6>your balance</h6>
                                                     <br>
-                                                    <h1>RS:<%=  %></h1>
+                                                    <h1>RS:<%= userData.wallet.balance %></h1>
                                                     <br>
-                                                    <h6><a onclick="razorPay()">Want to add money to wallet?</a></h6>
+                                                    <h6>Want to add money to wallet?</h6>
                                                     <br>
                                                     <tbody>
-                                                         
+
+                                                        <% for(let i = 0; i<userData.wallet.details.length; i++){ %>
+                                                        
                                                         <tr>
-                                                            <td><%=  %></td>
-                                                            <td><%=  %></td>
-                                                            <td><%=  %></td>
+                                                            <td><%= userData.wallet.details[i].transactionId %></td>
+                                                            <td>₹ <%= userData.wallet.details[i].amount %></td>
+                                                            <td><%= userData.wallet.details[i].date %></td>
                                                             
+                                                            <% } %>
                                                         </tr> 
                                                   
                                                     
@@ -970,6 +974,7 @@
 
     <script>
         function razorPay() {
+            console.log('razorpay function running...');
             $.ajax({
         url:`/createorderforwallet?totalAmount=${totalAmount}`,
         type: 'POST',

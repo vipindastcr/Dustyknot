@@ -364,5 +364,5 @@ module.exports = {
     orderFailurePageload,
     paymentSuccess,
     SalesReportload,
-    SalesReportDateSortload
+    SalesReportDateSortload,
 }

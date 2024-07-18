@@ -3,6 +3,7 @@ const userModel = require("../models/userSchema")
 const productModel = require("../models/productModel")
 const orderModel = require("../models/orderModel")
 const { ObjectId } = require('mongodb');
+const walletHelper = require('../helper/walletHelper')
 
 
 
@@ -182,6 +183,8 @@ const getOrderDetailsOfEachProduct = (orderId) => {
 };
 
 const cancelSingleOrder = (orderId,singleOrderId,price) => {
+
+  console.log('inside of cancelSingleorder function');
   return new Promise(async (resolve,reject) => {
     try {
 
@@ -198,6 +201,8 @@ const cancelSingleOrder = (orderId,singleOrderId,price) => {
         }
       );
 
+      // console.log('cancelled :', cancelled);
+
       const result = await orderModel.aggregate([
         {
           $unwind: "$products",
@@ -211,20 +216,46 @@ const cancelSingleOrder = (orderId,singleOrderId,price) => {
       ]);
 
 
-      const singleProductId = result[0].products.product;
+        const singleProductId = result[0].products.product;
         const singleProductSize = result[0].products.size;
         const singleProductQuantity = result[0].products.quantity;
+
+        console.log('singleProductId: ',singleProductId,' |  singleProductSize: ', singleProductSize, '  | singleProductQuantity: ', singleProductQuantity);
   
-        const stockIncrease = await productModel.updateOne(
-          { _id: singleProductId, "productQuantity.size": singleProductSize },
+        let ssingleProductSize = singleProductSize.toLowerCase();
+        console.log('ssingleProductSize : ', ssingleProductSize);
+        
+        const finDStockNow = await productModel.updateOne(
+          { _id: singleProductId },
           {
             $inc: {
-              "productQuantity.$.quantity": singleProductQuantity,
-              totalQuantity: singleProductQuantity,
-            },
+              [`size.${ssingleProductSize}.quantity`]: parseInt(singleProductQuantity),
+              totalQuantity: parseInt(singleProductQuantity)
+            }
           }
         );
         
+      
+        const response = await orderModel.findOne({ _id: orderId });
+        let amountToReturn;
+        // response.products.forEach(product=>{
+        //   if(product._id==singleOrderId){
+        //     amountToReturn = product.productPrice;
+        //     console.log('amountToReturn: ', amountToReturn);
+        //   }
+        // })
+
+        amountToReturn = cancelled.totalAmount;
+        console.log('amountToReturn :', amountToReturn);
+        console.log("order id is",orderId)
+        console.log("response issssssssssss",response)
+        if (response.paymentMethod == 'RazorPay') {
+          console.log("razorpay");
+          const walletUpdation = await walletHelper.walletAmountAdding(
+            response.user,
+            amountToReturn
+          );
+        }
   
         resolve(cancelled);
       
@@ -270,7 +301,7 @@ const changeOrderStatusOfEachProduct = (orderId, productId, status) => {
       const result2 = await orderModel.findOneAndUpdate(  
         { _id: new ObjectId(orderId)},
         {
-          $set: { "status": status },  // 
+          $set: { "status": status },
         },
         { new: true }
       );

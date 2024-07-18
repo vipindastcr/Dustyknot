@@ -17,13 +17,10 @@ const userCart = async(req,res)=> {
         const userData = req.session.user
         console.log("userData :>>>"+userData);
       
-        const cartItems = await cartHelper.getAllCartItems(userData)
-        
-        // console.log("getting back with cartItems",cartItems)
+        const cartItems = await cartHelper.getAllCartItems(userData);
 
         if(cartItems) {
-            // console.log("cart items is",cartItems)
-            // console.log("getting inside cart itmess====>");
+            
             const email = req.session.user;
             if(cartItems.products.length>0) {
              
@@ -36,11 +33,11 @@ const userCart = async(req,res)=> {
                     let total = 
                     cartItems.products[i].quantity * parseInt(cartItems.products[i].price)
 
-                    
-
                     totalAmountOfEachProduct.push(total);
-                    // console.log(total);
+                    
                 }
+
+                // console.log('WTH is the email here:',email);
 
                 res.render('cart', 
                     
@@ -59,11 +56,13 @@ const userCart = async(req,res)=> {
                 res.render('cart',
                 {
                     status:false,
+                    email
                 })
             }
         }else{
             res.render('cart',{
-                status:false
+                status:false,
+                email
             })
         }
         

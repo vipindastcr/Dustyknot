@@ -13,7 +13,7 @@ const orderHelper = require("../helper/orderHelper")
 const categoryModel = require('../models/categoryModel');
 const { query } = require('express');
 const { name } = require('ejs');
-
+const walletHelper = require('../helper/walletHelper')
 // Function to hash the password
 const securePasswordFunction = async(password) => {
     try{
@@ -323,6 +323,15 @@ const loadAccount = async(req,res) => {
         const userId = req.session.user;
         const userData = await User.findOne({ _id: userId })
         const orderDetails = await orderHelper.getOrderDetails(userId);
+        // const walletDetails = await walletHelper.getWalletDetails(userId)
+
+        // console.log('walletDetails_________________________________________________________: ', walletDetails);
+
+        // for(let el of walletDetails.wallet.details) {
+        // const dateString2 = el.date;
+        //     el.formattedDate2 = moment(dateString2).format('MMMM Do YYYY');     // date format changing
+        //     console.log('date2 :', formattedDate2);
+        // }
         
         for(const order of orderDetails) {
             const dateString = order.orderedon;
@@ -337,10 +346,9 @@ const loadAccount = async(req,res) => {
             order.quantity = quantity;
             quantity = 0
 
-            
-        
-            
+               
         }
+
         if(userId) {
         const email = req.session.user;
             res.render('userAccount',{userData,orderDetails,email})
