@@ -692,9 +692,7 @@
                 success: (response) => {
 
                     console.log('the applycoupons response is ::::',response);
-                    // Access the variable t from the response
-                    // const old = response.oldT;
-                    // console.log('Variable oldTotla:', old);
+                   
                     if (response.status) {
                         Toastify({
                             text:` ${response.message}`,

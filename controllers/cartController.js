@@ -18,7 +18,7 @@ const userCart = async(req,res)=> {
         console.log("userData :>>>"+userData);
       
         const cartItems = await cartHelper.getAllCartItems(userData);
-
+        const email = req.session.user;
         if(cartItems) {
             
             const email = req.session.user;

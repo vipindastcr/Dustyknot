@@ -267,8 +267,8 @@ const orderDetails = async (req, res) => {
 
 
   const ordersuccesspageload = (req,res) => {
-    let email = req.session.userId
-    res.render('ordersuccesspage',{email})
+    let email = req.session.userId;
+    res.render('ordersuccesspage',{email});
   }
 
 
