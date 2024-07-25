@@ -499,6 +499,8 @@
         const couponAmount = document.getElementById("couponAmountText").innerHTML;
         // const totalAmount = Amount.trim()
 
+        
+        //no address error
         if (!address) {
                 Toastify({
                 text: "Address not added. Please add an address.",
@@ -522,6 +524,7 @@
         console.log("haiii, the data is : ",data);
 
         if (payment === "COD") {
+            console.log('codcodo cod',totalAmount);
       $.ajax({
         url: "/placeOrder",
         method: "POST",
