@@ -143,14 +143,16 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form method="post">
+                            <form method="post" id="catform" action="">
                                 <div class="mb-4">
-                                    <label for="product_name" class="form-label">Name</label>
-                                    <input type="text" name="name" class="form-control" id="product_name" />
+                                    <label for="product_name" class="form-label">CclName</label>
+                                    <input type="text" name="name" class="form-control" id="catname" />
+                                    <p id="error1" style="display: none; color: red;"></p>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" name="description" class="form-control"></textarea>
+                                    <textarea placeholder="Type here" name="description" class="form-control" id="catdes"></textarea>
+                                    <p id="error2" style="display: none; color: red;"></p>
                                 </div>
 
                                 <%if(locals.message){%>
@@ -250,6 +252,57 @@
 </body>
 
 
+    <script>
+        const catname = document.getElementById('catname')
+        const catdes = document.getElementById('catdes')
+        const error1 = document.getElementById('error1')
+        const error2 = document.getElementById('error2')
+        const catform = document.getElementById('catform')
+    
+        function catnamevalidate(e){
+            const catval = catname.value.trim()
+            if (catval === "") {
+                error1.style.display = 'block'
+                error1.innerHTML = 'Category name is required'
+            }else if(!/^[a-zA-Z'-][a-zA-Z'-\s]*$/.test(catval)){
+                error1.style.display = 'block'
+                error1.innerHTML = 'Name can only contain capital letter'
+            }else if(catval.length<3){
+                error1.style.display = 'block'
+                error1.innerHTML = 'Should contain more than 3 letters'
+            } else {
+                error1.style.display = 'none'
+                error1.innerHTML = ''
+            }
+        }
+    
+        function catdesvalidate(e){
+            const catdesval = catdes.value.trim()
+            if (catdesval === "") {
+                error2.style.display = 'block'
+                error2.innerHTML = 'description is required'
+            } else {
+                error2.style.display = 'none'
+                error2.innerHTML = ''
+            }
+        }
+    
+        catname.addEventListener('blur',catnamevalidate)
+        catdes.addEventListener('blur',catdesvalidate)
+    
+        catform.addEventListener('submit',function(e){
+            catnamevalidate()
+            catdesvalidate()
+    
+            if(error1.innerHTML||error2.innerHTML){
+                e.preventDefault()
+            }
+        })
+    </script>
+
+
+    
+    
 
 
 <script>

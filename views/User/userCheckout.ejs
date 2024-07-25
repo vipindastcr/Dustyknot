@@ -488,7 +488,7 @@
 
 
 
-<script>
+<!-- <script>
     $(document).ready(function () {
       $("#placeOrder").click(function () {
         let address = $("input[name='address']:checked").val();
@@ -685,7 +685,198 @@
 
 })
 })
+</script> -->
+
+
+
+<script>
+    $(document).ready(function () {
+    $("#placeOrder").click(function () {
+        let address = $("input[name='address']:checked").val();
+        let payment = $("input[name='payment_option']:checked").val();
+
+        // Check for elements and handle missing elements
+        const couponCodeElement = document.getElementById("couponCodeTable");
+        const totalAmountElement = document.getElementById("totalAmount");
+        const couponAmountElement = document.getElementById("couponAmountText");
+
+        const code = couponCodeElement ? couponCodeElement.textContent.trim() : '';
+        const totalAmount = totalAmountElement ? totalAmountElement.innerHTML.trim() : '0';
+        const couponAmount = couponAmountElement ? couponAmountElement.innerHTML.trim() : '0';
+
+        // Check for address
+        if (!address) {
+            Toastify({
+                text: "Address not added. Please add an address.",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                backgroundColor: "red",
+            }).showToast();
+            return; 
+        }
+
+        const data = {
+            addressId: address,
+            paymentOption: payment,
+            couponCode: code,
+            totalAmount: totalAmount,
+            couponAmount: couponAmount
+        }
+
+        console.log("The data is: ", data);
+
+        if (payment === "COD") {
+            $.ajax({
+                url: "/placeOrder",
+                method: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: (response) => {
+                    if (response.status) {
+                        window.location.href = '/orderSuccessPage'
+                    } else {
+                        Toastify({
+                            text: `${response.message}`,
+                            duration: 3000,
+                            gravity: "top",
+                            position: "center",
+                            stopOnFocus: true,
+                            style: {
+                                background: "linear-gradient(to right, aqua, blue)",
+                            },
+                        }).showToast();
+                    }
+                }
+            });
+        } else if (payment === "RazorPay") {
+            $.ajax({
+                url: `/createorder?totalAmount=${totalAmount}`,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({
+                    addressId: address,
+                    paymentOption: payment,
+                    couponCode: code,
+                    totalAmount: totalAmount
+                }),
+                contentType: 'application/json',
+                success: function (data) {
+                    var options = {
+                        "key": "rzp_test_vFXpOj7PsDYubS",
+                        "amount": parseInt(totalAmount) * 100, // Convert to paise
+                        "currency": "INR",
+                        "name": "Dustyknot Clothings",
+                        "description": "Test Transaction",
+                        "image": "https://localhost:3003/public/image/Dustyknot.png",
+                        "order_id": data.orderId.id,
+                        "handler": function (response) {
+                            verify(response, data.orderId.id);
+                        },
+                        "prefill": {
+                            "name": "Gaurav Kumar",
+                            "email": "gaurav.kumar@example.com",
+                            "contact": "9000090000"
+                        },
+                        "notes": {
+                            "address": "Razorpay Corporate Office"
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+                    var rzp = new Razorpay(options);
+                    rzp.open();
+                    rzp.on("payment.failed", function (response) {
+                        handleFailure(response.error.description, address, payment);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    console.error('Response Text:', xhr.responseText);
+                }
+            });
+
+            function handleFailure(description, address, paymentMethod) {
+                createOrderWithStatusPending(address, paymentMethod);
+                window.location.href = "/orderFailure-page";
+            }
+
+            function createOrderWithStatusPending(address, paymentMethod) {
+                $.ajax({
+                    url: '/placeOrder',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        addressId: address,
+                        paymentOption: paymentMethod,
+                        status: "payment pending",
+                        totalAmount: totalAmount,
+                    }),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data.success) {
+                            window.location.href = '/orderFailure-page';
+                        } else {
+                            console.error('Error: Order creation failed');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Response Text:', xhr.responseText);
+                    }
+                });
+            }
+
+            function verify(response, orderId) {
+                $.ajax({
+                    url: '/paymentSuccess',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        paymentid: response.razorpay_payment_id,
+                        razorpayorderid: response.razorpay_order_id,
+                        signature: response.razorpay_signature,
+                        orderId: orderId
+                    }),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data.success) {
+                            $.ajax({
+                                url: '/placeOrder',
+                                type: 'POST',
+                                data: JSON.stringify({
+                                    addressId: address,
+                                    paymentOption: payment,
+                                    totalAmount: totalAmount,
+                                    couponAmount: couponAmount
+                                }),
+                                contentType: 'application/json',
+                                success: function (data) {
+                                    window.location.href = '/ordersuccesspage';
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Error:', error);
+                                    console.error('Response Text:', xhr.responseText);
+                                }
+                            });
+                        } else {
+                            console.error('Payment failed:', data.error);
+                            alert('Payment failed. Please try again later.');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Response Text:', xhr.responseText);
+                    }
+                });
+            }
+        }
+    });
+});
+
 </script>
+
+
 
 
 
