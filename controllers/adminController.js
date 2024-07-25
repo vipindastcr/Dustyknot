@@ -37,24 +37,25 @@ const getAdminDash = async(req,res) => {
                 }
             }
             console.log(totalRevenue);
-        const products = await productModel.find();
-        const categories = await categoryModel.find();
+        // const products = await productModel.find();
+        // const categories = await categoryModel.find();
 
         
-
-
-
         res.render('adminDash',{totalRevenue})
     } catch (error) {
         console.log(error.message);
     }
 }
 
-const displayUser = async(req,res)=> {       
+const displayUser = async(req,res)=> {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 7;     
     try {
         const user = await User.find({})
+
+        const totalPages = Math.ceil(await User.countDocuments() / limit);
         console.log(user);
-        res.render('userList',{user});
+        res.render('userList',{user,currentPage: page, totalPages});
     } catch (error) {
         console.log(error.message);
     }

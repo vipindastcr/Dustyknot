@@ -3,6 +3,7 @@ const cartModel = require("../models/cartModel")
 const productModel = require("../models/productModel")
 const couponModel = require("../models/couponModel")
 const orderHelper = require("../helper/orderHelper")
+const Order = require("../models/orderModel")
 const cartHelper = require("../helper/cartHelper")
 const couponHelper = require('../helper/couponHelper')
 const moment = require("moment")
@@ -195,12 +196,17 @@ const orderDetails = async (req, res) => {
   }
 
   const orderspage = async(req,res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 7;
+
     try {
       const allOrders = await orderHelper.getAllOrders();
+
+      const totalPages = Math.ceil(await Order.countDocuments() / limit);
       for(const order of allOrders) {
         const dateString = order.orderedOn;
         const formattedData = moment(dateString).format("MMMM Do, YYYY");
-        res.render("adminorderPage",{ allOrders })
+        res.render("adminorderPage",{ allOrders, currentPage: page, totalPages })
       }
     } catch (error) {
       console.log(error);

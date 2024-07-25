@@ -24,9 +24,6 @@
 <body>
     
     <%- include('header') %>
-
-
-    
       
     <main class="main">
         
@@ -502,12 +499,23 @@
         const couponAmount = document.getElementById("couponAmountText").innerHTML;
         // const totalAmount = Amount.trim()
 
+        if (!address) {
+                Toastify({
+                text: "Address not added. Please add an address.",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                backgroundColor: "red",
+                }).showToast();
+                return; 
+            }
+
         const data = {
           addressId: address,
           paymentOption: payment,
           couponCode: code,
           totalAmount:totalAmount,
-        //   Amount:Amount
+        
         }
         
         
