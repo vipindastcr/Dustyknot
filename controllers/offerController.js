@@ -59,6 +59,7 @@ const categoryofferLoad = async(req,res) => {
         let offers = await offerModel.find({ 'categoryOffer.offerStatus': true })
 
         const categories = await categoryHelper.getAllActiveCategory();
+        console.log('category offers are ---', offers);
         const message = req.flash("message");
         
         
