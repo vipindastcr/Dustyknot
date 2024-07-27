@@ -701,8 +701,8 @@
         const couponAmountElement = document.getElementById("couponAmountText");
 
         const code = couponCodeElement ? couponCodeElement.textContent.trim() : '';
-        const totalAmount = totalAmountElement ? totalAmountElement.innerHTML.trim() : '0';
-        const couponAmount = couponAmountElement ? couponAmountElement.innerHTML.trim() : '0';
+        const totalAmount = totalAmountElement ? totalAmountElement.innerHTML.trim() : 0;
+        const couponAmount = couponAmountElement ? couponAmountElement.innerHTML.trim() : 0;
 
         // Check for address
         if (!address) {
@@ -883,6 +883,7 @@
 <script>
     $(document).ready(function () {
         const price = document.getElementById("totalAmount").innerText.trim()
+        
 
         $("#couponForm").submit(function (event) {
 

@@ -10,76 +10,156 @@ const walletHelper = require('../helper/walletHelper')
 
 
 
-const placeOrder = (data, userId) => {
+// const placeOrder = (data, userId) => {
 
-  console.log('the placeorder data >>>> ',data);
-  const couponAmount = parseInt(data.couponAmount);
-  console.log('couponAmount and its type',couponAmount," type :", typeof(couponAmount));
-    return new Promise (async (resolve,reject) => {
-       try {
-                const cart = await cartModel.findOne( { user: userId} );
-                const address = await userModel.findOne(
-                    { _id: userId, "address._id": data.addressId},
-                    { "address.$":1,
-                        _id:0,
-                    }
-                )
-                const user = await userModel.findOne({ _id:userId });
-                let products = [];
-                let status = "pending";
-                if(data.status) {
-                  console.log(" inside if data.status");
-                    status = "payment pending"
-                }
+//   console.log('the placeorder data >>>> ',data);
+//   const couponAmount = parseInt(data.couponAmount);
+//   console.log('couponAmount and its type',couponAmount," type :", typeof(couponAmount));
+//     return new Promise (async (resolve,reject) => {
+//        try {
+//                 const cart = await cartModel.findOne( { user: userId} );
+//                 const address = await userModel.findOne(
+//                     { _id: userId, "address._id": data.addressId},
+//                     { "address.$":1,
+//                         _id:0,
+//                     }
+//                 )
+//                 const user = await userModel.findOne({ _id:userId });
+//                 let products = [];
+//                 let status = "pending";
+//                 if(data.status) {
+//                   console.log(" inside if data.status");
+//                     status = "payment pending"
+//                 }
 
-                for (const product of cart.products) {
-                    products.push({
-                        product: product.productItemId,
-                        quantity: product.quantity,
-                        size: product.size,
-                        productPrice: product.price,
-                        status: status,
-                    });
+//                 for (const product of cart.products) {
+//                     products.push({
+//                         product: product.productItemId,
+//                         quantity: product.quantity,
+//                         size: product.size,
+//                         productPrice: product.price,
+//                         status: status,
+//                     });
 
-                    let productSize = product.size.toLowerCase()
-                    let changeStock = await productModel.findOne(
-                      { _id: product.productItemId});
+//                     let productSize = product.size.toLowerCase()
+//                     let changeStock = await productModel.findOne(
+//                       { _id: product.productItemId});
                       
-                  let stock = changeStock.size
-                  stock[productSize].quantity = stock[productSize].quantity-product.quantity;
-                  await changeStock.save()
-                }
+//                   let stock = changeStock.size
+//                   stock[productSize].quantity = stock[productSize].quantity - product.quantity;
+//                   await changeStock.save()
+//                 }
                 
 
-                if( cart && address ) {
-                    const result = orderModel.create({
-                        user: userId,
-                        products: products,
-                        address: {
-                            name: user.name,
-                            house: address.address[0].housename,
-                            street: address.address[0].streetname,
-                            area: address.address[0].areaname,
-                            district: address.address[0].districtname,
-                            state: address.address[0].statename,
-                            country: address.address[0].countryname,
-                            pin: address.address[0].pin,
-                            mobile: user.mobile,
-                        },
-                        paymentMethod: data.paymentOption,
-                        totalAmount: data.totalAmount,
-                        couponAmount: couponAmount
-                    })
+//                 if( cart && address ) {
+//                     const result = orderModel.create({
+//                         user: userId,
+//                         products: products,
+//                         address: {
+//                             name: user.name,
+//                             house: address.address[0].housename,
+//                             street: address.address[0].streetname,
+//                             area: address.address[0].areaname,
+//                             district: address.address[0].districtname,
+//                             state: address.address[0].statename,
+//                             country: address.address[0].countryname,
+//                             pin: address.address[0].pin,
+//                             mobile: user.mobile,
+//                         },
+//                         paymentMethod: data.paymentOption,
+//                         totalAmount: data.totalAmount,
+//                         couponAmount: couponAmount
+//                     })
 
-                    resolve ({result:result, status:true})
-            }
+//                     resolve ({result:result, status:true})
+//             }
 
-        }catch(error){
-            console.log(error);
-        }
+//         }catch(error){
+//             console.log(error);
+//         }
 
-    })
+//     })
+// }
+
+
+const placeOrder = (data, userId) => {
+  console.log('The placeorder data >>>> ', data);
+  const couponAmount = parseInt(data.couponAmount);
+  console.log('CouponAmount and its type:', couponAmount, "type:", typeof(couponAmount));
+
+  return new Promise(async (resolve, reject) => {
+      try {
+          // Fetch cart, address, and user details
+          const cart = await cartModel.findOne({ user: userId });
+          const address = await userModel.findOne(
+              { _id: userId, "address._id": data.addressId },
+              { "address.$": 1, _id: 0 }
+          );
+          const user = await userModel.findOne({ _id: userId });
+
+          let products = [];
+          let status = "pending";
+          if (data.status) {
+              console.log("Inside if data.status");
+              status = "payment pending";
+          }
+
+          // Process each product in the cart
+          for (const product of cart.products) {
+              products.push({
+                  product: product.productItemId,
+                  quantity: product.quantity,
+                  size: product.size,
+                  productPrice: product.price,
+                  status: status,
+              });
+
+              let productSize = product.size.toLowerCase();
+              let changeStock = await productModel.findOne({ _id: product.productItemId });
+
+              if (changeStock && changeStock.size && changeStock.size[productSize]) {
+                  let stock = changeStock.size;
+                  stock[productSize].quantity -= product.quantity;
+                  await changeStock.save();
+              } else {
+                  console.error(`Stock size '${productSize}' not found for product '${product.productItemId}'`);
+              }
+          }
+
+          // Create the order if cart and address are found
+          if (cart && address) {
+              const result = await orderModel.create({
+                  user: userId,
+                  products: products,
+                  address: {
+                      name: user.name,
+                      house: address.address[0].housename,
+                      street: address.address[0].streetname,
+                      area: address.address[0].areaname,
+                      district: address.address[0].districtname,
+                      state: address.address[0].statename,
+                      country: address.address[0].countryname,
+                      pin: address.address[0].pin,
+                      mobile: user.mobile,
+                  },
+                  paymentMethod: data.paymentOption,
+                  totalAmount: data.totalAmount,
+                  couponAmount: couponAmount
+              });
+
+              resolve({ result: result, status: true });
+          } else {
+              console.error('Cart or address not found');
+              reject({ status: false, message: 'Cart or address not found' });
+          }
+
+      } catch (error) {
+          console.error('Error placing order:', error);
+          reject({ status: false, message: 'Error placing order' });
+      }
+  });
 }
+
 
 
 const getOrderDetails = (userId) => {
