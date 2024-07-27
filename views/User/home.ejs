@@ -99,16 +99,55 @@
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            <form action="">
+                           
+                            <!-- <form action="">
                                 <select class="select-active" onchange="redirectToCategory(this)">
                                     <option>All Categories</option>
-                                    <% category.forEach(element => { %>
-                                        <option value="<%= element.name %>"><%= element.name %></option>
-                                    <% }) %>
+                                    <% //category.forEach(element => { %>
+                                        <option value="<%= //element.name %>"><%= //element.name %></option>
+                                    <% //}) %>
                                 </select>
                                 <input id="sinput" name="search" type="text" placeholder="Search for items...">
                                 <button type="submit"  >search</button>
+                            </form> -->
+
+
+                            <!-- its 2222 -->
+                            <!-- <form id="filterForm" action="/" method="get">
+                                <select class="select-active" name="name" onchange="this.form.submit()">
+                                    <option value="">All Categories</option>
+                                    <% //category.forEach(element => { %>
+                                        <option value="<%= //element.name %>" <%=// (element.name === currentFilter) ? 'selected' : '' %>><%= //element.name %></option>
+                                    <% //}) %>
+                                </select>
+                                <input id="sinput" name="search" type="text" placeholder="Search for items..." value="<%=// currentSearch %>">
+                                <button type="submit">Search</button>
+                            </form> -->
+                            
+
+                            <form id="filterForm" action="/" method="get">
+                                <select class="select-active" name="name" onchange="this.form.submit()">
+                                    <option value="">All Categories</option>
+                                    <% category.forEach(element => { %>
+                                        <option value="<%= element.name %>" <%= (element.name === currentFilter) ? 'selected' : '' %>><%= element.name %></option>
+                                    <% }) %>
+                                </select>
+                                <input id="sinput" name="search" type="text" placeholder="Search for items..." value="<%= currentSearch %>">
+                                
+                                <select id="sortSelect" name="sort" onchange="select()">
+                                    <option value="">Sort By</option>
+                                    <option value="lowtohigh">Price: Low to High</option>
+                                    <option value="hightolow">Price: High to Low</option>
+                                    <option value="aAzZ">Name: A to Z</option>
+                                    <option value="zZaA">Name: Z to A</option>
+                                </select>
+                                
+                                <button type="submit">Search</button>
                             </form>
+                            
+                            
+                            
+                            
                         </div>
                         <div class="header-action-right">
                             <div class="header-action-2">
@@ -147,15 +186,16 @@
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                             <nav>
                                 <ul>
-                                    <li><a class="active" href="fashion">ProductList <i class="fi-rs"></i></a>
+                                    <li><a class="active" href="fashion">fashion <i class="fi-rs"></i></a>
+                                    <!-- <li><a class="active" href="category">allproducts <i class="fi-rs"></i></a> -->
                                        
                                 </ul>
                             </nav>
                         </div>
 
-                        <div class="active">
+                        <!-- <div class="active"> -->
                             <!-- price filter  -->
-                            <div id="collapseTwo" class="active" >
+                            <!-- <div id="collapseTwo" class="active" >
                                 <select name="" id="mySelect" onchange="select()">
                                     <option value="" selected disabled>Search By</option>
                                     <option value="option1"><a >Low To High</a></option>
@@ -165,13 +205,13 @@
                                 </select>
                                 
                             </div>
-                        </div>
+                        </div> -->
 
 
-                    </div>
+                    <!-- </div>
                     <div class="hotline d-none d-lg-block">
                         <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p>
-                    </div>
+                    </div> -->
                     
                     
                 </div>
@@ -335,7 +375,10 @@
     <script src="assets/js/shopd134.js?v=3.4"></script>
 
 
-    <script>
+
+<!-- original -->
+
+    <!-- <script>
         function redirectToCategory(select) {
             var selectedCategory = select.value;
             if (selectedCategory !== "All Categories") {
@@ -344,10 +387,33 @@
                 window.location.href = "/";
             }
         }
-    </script>
+    </script> -->
 
 
-    <script>
+    <!-- its 2222 -->
+    <!-- <script>
+        document.getElementById('filterForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            var form = event.target;
+            var selectedCategory = form.querySelector('select[name="name"]').value;
+            var searchQuery = form.querySelector('input[name="search"]').value;
+            var baseUrl = window.location.pathname;
+            
+            var queryString = new URLSearchParams({
+                name: selectedCategory,
+                search: searchQuery
+            }).toString();
+            
+            window.location.href = baseUrl + '?' + queryString;
+        });
+    </script> -->
+    
+    
+    
+
+
+    <!-- its 2222 -->
+    <!-- <script>
         function select() {
             let selectedOption = document.getElementById('mySelect').value;
             console.log("selectedOption : ",selectedOption);
@@ -372,9 +438,11 @@
             }
         }
         }
-    </script>
+    </script> -->
 
-    <script>
+    
+
+    <!-- <script>
         function addtoWishlist(id) {
 
             console.log("id",id);
@@ -408,7 +476,99 @@
                 }
             })
         }
+    </script> -->
+
+    <!-- <script>
+        function select() {
+            // Use the correct ID for your select element
+            let selectedOption = document.getElementById('sortSelect').value;
+            console.log("Selected option:", selectedOption);
+    
+            if (selectedOption) {
+                switch (selectedOption) {
+                    case 'lowtohigh':
+                        window.location.href = '/?sort=lowtohigh';
+                        break;
+                    case 'hightolow':
+                        window.location.href = '/?sort=hightolow';
+                        break;
+                    case 'aAzZ':
+                        window.location.href = '/?sort=aAzZ';
+                        break;
+                    case 'zZaA':
+                        window.location.href = '/?sort=zZaA';
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    </script> -->
+    
+
+
+    <!-- versin 3 -->
+    <!-- <script>
+        function select() {
+            let selectedOption = document.getElementById('sortSelect').value;
+            console.log("Selected option:", selectedOption);
+
+            if (selectedOption) {
+                window.location.href = '/?sort=' + encodeURIComponent(selectedOption);
+            }
+        }
+    </script> -->
+
+    <!-- version 3333 -->
+
+    <script>
+
+function select() {
+            let selectedOption = document.getElementById('mySelect').value;
+            console.log("selectedOption : ",selectedOption);
+
+            if (selectedOption) {
+            
+            switch (selectedOption) {
+                case 'option1':
+                    window.location.href = '/?sort=lowtohigh';
+                    break;
+                case 'option2':
+                    window.location.href = '/?sort=hightolow';
+                    break;
+                case 'option3':
+                    window.location.href = '/?sort=aAzZ';
+                    break;
+                case 'option4':
+                    window.location.href = '/?sort=zZaA';
+                    break;
+                default:
+                    break;
+            }
+        }
+        }
+
+
+        document.getElementById('filterForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+    var form = event.target;
+    var selectedCategory = form.querySelector('select[name="name"]').value;
+    var searchQuery = form.querySelector('input[name="search"]').value;
+    var sortOption = form.querySelector('select[name="sort"]').value;
+    var baseUrl = window.location.pathname;
+    
+    var queryString = new URLSearchParams({
+        name: selectedCategory,
+        search: searchQuery,
+        sort: sortOption
+    }).toString();
+    
+    window.location.href = baseUrl + '?' + queryString;
+    });
+
     </script>
+
+    
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

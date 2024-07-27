@@ -24,79 +24,311 @@ const securePasswordFunction = async(password) => {
     }
 }
 
-const loadHome = async (req,res) => {
+// const loadHome = async (req,res) => {     // working code
 
+//     console.log('its home page');
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 12;
+//     const email = req.session.user;
+//     const category = await categoryModel.find({ isActive:true })
+//     const sort = req.query.sort;
+
+
+//     // product offers--
+//     const productOffers = await offerModel.aggregate([
+//         {
+//             $project: {
+//                 "productOffer.discount": 1
+//             },
+            
+//         },
+//         {
+//             $sort: {
+//                 "productOffer.discount": -1
+//             }
+//         }
+        
+//     ])
+    
+
+//     // category offers ---
+//     const categoryOffers = await offerModel.aggregate([
+//         {
+//             $project: {
+//                 "categoryOffer.discount": 1
+//             }
+//         },
+//         {
+//             $sort: {
+//                 "categoryOffer.discount": -1
+//             }
+//         }
+//     ])
+
+//     let bestOfferdiscount = 0;
+
+//     if( productOffers[0] > categoryOffers[0] ) {
+
+//         let bestOffer = productOffers[0];
+//         bestOfferdiscount = bestOffer.productOffer.discount;
+//     }else {
+//         bestOffer = categoryOffers[0];
+//         bestOfferdiscount = bestOffer.categoryOffer.discount;
+//     }
+
+//     try {  
+//         let product;
+//        const email = req.session.user   
+//         product = await productModel.find({isActive:true})
+//                         .skip((page - 1) * limit)
+//                         .limit(limit);
+//     let totalPages = Math.ceil(await productModel.countDocuments() / limit);
+//     let category = await categoryModel.find({isActive:true})
+
+
+//     if(req.query.name){
+//         req.session.filter_categor = req.query.name;
+//     }
+//     const searchword = req.query.search;
+//     let prdt = await productModel.find({isActive:true}).limit(1)
+
+//     res.render('home',{email,product,category,currentPage: page, totalPages,sort,bestOffer,bestOfferdiscount})
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+
+
+// its 222222
+// const loadHome = async (req, res) => {
+//     console.log('its home page');
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 12;
+//     const skip = (page - 1) * limit;
+//     const email = req.session.user;
+//     const sort = req.query.sort;
+//     const search = req.query.search;
+//     const categoryFilter = req.query.name;
+
+//     // Fetch categories
+//     const category = await categoryModel.find({ isActive: true });
+
+//     // Initialize query object for filtering
+//     let query = { isActive: true };
+
+//     // Apply category filter
+//     if (categoryFilter) {
+//         req.session.filter_category = categoryFilter;
+//         const categoryToFilter = await categoryModel.findOne({ name: categoryFilter, isActive: true });
+//         if (categoryToFilter) {
+//             query.category = categoryToFilter._id;
+//         } else {
+//             console.error(`Category '${categoryFilter}' not found`);
+//         }
+//     } else {
+//         req.session.filter_category = null;
+//     }
+
+//     // Apply search filter
+//     if (search) {
+//         req.session.search = search;
+//         query.name = { $regex: '.*' + search + '.*', $options: 'i' };
+//     } else {
+//         req.session.search = null;
+//     }
+
+//     // Apply sorting
+//     let sortOptions = {};
+//     if (sort) {
+//         req.session.sort = sort;
+//         switch (sort) {
+//             case 'lowtohigh':
+//                 sortOptions = { 'price.salesPrice': 1 };
+//                 break;
+//             case 'hightolow':
+//                 sortOptions = { 'price.salesPrice': -1 };
+//                 break;
+//             case 'aAzZ':
+//                 sortOptions = { name: 1 };
+//                 break;
+//             case 'zZaA':
+//                 sortOptions = { name: -1 };
+//                 break;
+//             default:
+//                 sortOptions = {};
+//                 break;
+//         }
+//     } else {
+//         req.session.sort = null;
+//     }
+
+//     try {
+//         // Fetch products with filtering, sorting, and pagination
+//         const product = await productModel.find(query).sort(sortOptions).skip(skip).limit(limit);
+//         let totalProducts = await productModel.countDocuments(query);
+//         let totalPages = Math.ceil(totalProducts / limit);
+
+//         // Fetch product and category offers
+//         const productOffers = await offerModel.aggregate([
+//             { $project: { "productOffer.discount": 1 } },
+//             { $sort: { "productOffer.discount": -1 } }
+//         ]);
+
+//         const categoryOffers = await offerModel.aggregate([
+//             { $project: { "categoryOffer.discount": 1 } },
+//             { $sort: { "categoryOffer.discount": -1 } }
+//         ]);
+
+//         let bestOfferdiscount = 0;
+//         let bestOffer = {};
+
+//         if (productOffers.length > 0 && (categoryOffers.length === 0 || productOffers[0].productOffer.discount > categoryOffers[0].categoryOffer.discount)) {
+//             bestOffer = productOffers[0];
+//             bestOfferdiscount = bestOffer.productOffer.discount;
+//         } else if (categoryOffers.length > 0) {
+//             bestOffer = categoryOffers[0];
+//             bestOfferdiscount = bestOffer.categoryOffer.discount;
+//         }
+
+//         // Render homepage with all data
+//         res.render('home', {
+//             email,
+//             product,
+//             category,
+//             currentPage: page,
+//             totalPages,
+//             sort: req.session.sort,
+//             bestOffer,
+//             bestOfferdiscount,
+//             currentFilter: req.session.filter_category,
+//             currentSearch: req.session.search
+//         });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// };
+
+
+
+// 333333333
+const loadHome = async (req, res) => {
     console.log('its home page');
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
+    const skip = (page - 1) * limit;
     const email = req.session.user;
-    const category = await categoryModel.find({ isActive:true })
     const sort = req.query.sort;
+    const search = req.query.search;
+    const categoryFilter = req.query.name;
 
+    // Fetch categories
+    const category = await categoryModel.find({ isActive: true });
 
-    // product offers--
-    const productOffers = await offerModel.aggregate([
-        {
-            $project: {
-                "productOffer.discount": 1
-            },
-            
-        },
-        {
-            $sort: {
-                "productOffer.discount": -1
-            }
+    // Initialize query object for filtering
+    let query = { isActive: true };
+
+    // Apply category filter
+    if (categoryFilter) {
+        req.session.filter_category = categoryFilter;
+        const categoryToFilter = await categoryModel.findOne({ name: categoryFilter, isActive: true });
+        if (categoryToFilter) {
+            query.category = categoryToFilter._id;
+        } else {
+            console.error(`Category '${categoryFilter}' not found`);
         }
-        
-    ])
-    
-
-    // category offers ---
-    const categoryOffers = await offerModel.aggregate([
-        {
-            $project: {
-                "categoryOffer.discount": 1
-            }
-        },
-        {
-            $sort: {
-                "categoryOffer.discount": -1
-            }
-        }
-    ])
-
-    let bestOfferdiscount = 0;
-
-    if( productOffers[0] > categoryOffers[0] ) {
-
-        let bestOffer = productOffers[0];
-        bestOfferdiscount = bestOffer.productOffer.discount;
-    }else {
-        bestOffer = categoryOffers[0];
-        bestOfferdiscount = bestOffer.categoryOffer.discount;
+    } else {
+        req.session.filter_category = null;
     }
 
-    try {  
-        let product;
-       const email = req.session.user   
-        product = await productModel.find({isActive:true})
-                        .skip((page - 1) * limit)
-                        .limit(limit);
-    let totalPages = Math.ceil(await productModel.countDocuments() / limit);
-    let category = await categoryModel.find({isActive:true})
-
-
-    if(req.query.name){
-        req.session.filter_categor = req.query.name;
+    // Apply search filter
+    if (search) {
+        req.session.search = search;
+        query.name = { $regex: '.*' + search + '.*', $options: 'i' };
+    } else {
+        req.session.search = null;
     }
-    const searchword = req.query.search;
-    let prdt = await productModel.find({isActive:true}).limit(1)
 
-    res.render('home',{email,product,category,currentPage: page, totalPages,sort,bestOffer,bestOfferdiscount})
+    // Apply sorting
+    let sortOptions = {};
+    if (sort) {
+        req.session.sort = sort;
+        switch (sort) {
+            case 'lowtohigh':
+                sortOptions = { 'price.salesPrice': 1 };
+                break;
+            case 'hightolow':
+                sortOptions = { 'price.salesPrice': -1 };
+                break;
+            case 'aAzZ':
+                sortOptions = { name: 1 };
+                break;
+            case 'zZaA':
+                sortOptions = { name: -1 };
+                break;
+            default:
+                sortOptions = {};
+                break;
+        }
+    } else {
+        req.session.sort = null;
+    }
+
+    // Debug logs
+    console.log('Query object:', query);
+    console.log('Sort options:', sortOptions);
+
+    try {
+        // Fetch products with filtering, sorting, and pagination
+        const product = await productModel.find(query).sort(sortOptions).skip(skip).limit(limit);
+        let totalProducts = await productModel.countDocuments(query);
+        let totalPages = Math.ceil(totalProducts / limit);
+
+        // Fetch product and category offers
+        const productOffers = await offerModel.aggregate([
+            { $project: { "productOffer.discount": 1 } },
+            { $sort: { "productOffer.discount": -1 } }
+        ]);
+
+        const categoryOffers = await offerModel.aggregate([
+            { $project: { "categoryOffer.discount": 1 } },
+            { $sort: { "categoryOffer.discount": -1 } }
+        ]);
+
+        let bestOfferdiscount = 0;
+        let bestOffer = {};
+
+        if (productOffers.length > 0 && (categoryOffers.length === 0 || productOffers[0].productOffer.discount > categoryOffers[0].categoryOffer.discount)) {
+            bestOffer = productOffers[0];
+            bestOfferdiscount = bestOffer.productOffer.discount;
+        } else if (categoryOffers.length > 0) {
+            bestOffer = categoryOffers[0];
+            bestOfferdiscount = bestOffer.categoryOffer.discount;
+        }
+
+        // Render homepage with all data
+        res.render('home', {
+            email,
+            product,
+            category,
+            currentPage: page,
+            totalPages,
+            sort: req.session.sort,
+            bestOffer,
+            bestOfferdiscount,
+            currentFilter: req.session.filter_category,
+            currentSearch: req.session.search
+        });
     } catch (error) {
         console.log(error);
+        res.status(500).send('Internal Server Error');
     }
-}
+};
+
+
+
+
 
 
 
@@ -587,69 +819,233 @@ const addressEditModal = async (req, res) => {
     }
 
 
+    // const getCategory = async (req, res) => {
+    //     try {
+
+    //         const email = req.session.user;
+    //         const category = await categoryModel.find({ isActive: true })
+    //         const page = parseInt(req.query.page) || 1;
+    //         const limit = parseInt(req.query.limit) || 12;
+    //         let totalPages = Math.ceil(await productModel.countDocuments() / limit);
+
+    //         if(req.query.name){
+    //             req.session.filter_categor = req.query.name;
+    //         }
+    //         const searchword = req.query.search;
+        
+    //         const sort = req.query.sort;
+    //         if(req.session.filter_categor){
+    //             let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+    //             product = await productModel.find({ category:categoryTofilter._id,isActive:true })
+    //         }
+        
+    //         if(sort == 'lowtohigh') {
+    //             product = await productModel.find({ isActive:true }).sort({ 'price.salesPrice': 1 })
+    //             if(req.session.filter_categor){
+    //                 let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+    //                 product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ 'price.salesPrice': 1 })
+    //             }
+    //         }
+        
+    //         if(sort == 'hightolow') {
+    //             product = await productModel.find({ isActive:true }).sort({ 'price.salesPrice': -1 })
+    //             if(req.session.filter_categor){
+    //                 let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+    //                 product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ 'price.salesPrice': -1 })
+    //             }
+    //         }
+    //         if(sort == 'aAzZ') {
+    //             product = await productModel.find({ isActive:true }).sort({ name: 1 })
+    //             if(req.session.filter_categor){
+    //                 let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+    //                 product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ name: 1 })
+    //             }
+    //         }
+    //         if(sort == 'zZaA') {
+    //             product = await productModel.find({ isActive:true }).sort({ name: -1 })
+    //             if(req.session.filter_categor){
+    //                 let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
+    //                 product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ name: -1 })
+    //             }
+    //         }
+        
+        
+    //         if(searchword){
+    //             product = await productModel.find({name:{$regex: '.*'+ searchword +'.*',$options:"i"}})
+    //             res.render('category',{email,product,category,currentPage: page, totalPages})    
+    //         }else{
+    //           res.render('category',{email,product,category,currentPage: page, totalPages})    
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //         res.status(500).send('Internal Server Error');
+    //     }
+    // }
+
+
+
+    //second version
+
+    // const getCategory = async (req, res) => {
+    //     try {
+    //         const email = req.session.user;
+    //         const page = parseInt(req.query.page) || 1;
+    //         const limit = parseInt(req.query.limit) || 12;
+    //         const skip = (page - 1) * limit;
+    
+    //         // Fetch the categories for rendering
+    //         const category = await categoryModel.find({ isActive: true });
+    
+    //         // Initialize the query object for filtering
+    //         let query = { isActive: true };
+    
+    //         // Handle filtering by category
+    //         if (req.query.name) {
+    //             req.session.filter_categor = req.query.name;
+    //         }
+    
+    //         if (req.session.filter_categor) {
+    //             const categoryToFilter = await categoryModel.findOne({ name: req.session.filter_categor, isActive: true });
+    //             if (categoryToFilter) {
+    //                 query.category = categoryToFilter._id;
+    //             } else {
+    //                 // Log an error if the category is not found
+    //                 console.error(`Category '${req.session.filter_categor}' not found`);
+    //             }
+    //         }
+    
+    //         // Handle searching
+    //         if (req.query.search) {
+    //             query.name = { $regex: '.*' + req.query.search + '.*', $options: 'i' };
+    //         }
+    
+    //         // Determine sorting
+    //         let sort = {};
+    //         switch (req.query.sort) {
+    //             case 'lowtohigh':
+    //                 sort = { 'price.salesPrice': 1 };
+    //                 break;
+    //             case 'hightolow':
+    //                 sort = { 'price.salesPrice': -1 };
+    //                 break;
+    //             case 'aAzZ':
+    //                 sort = { name: 1 };
+    //                 break;
+    //             case 'zZaA':
+    //                 sort = { name: -1 };
+    //                 break;
+    //             default:
+    //                 sort = {};
+    //                 break;
+    //         }
+    
+    //         // Fetch the products based on the query, sort, and pagination
+    //         const products = await productModel.find(query).sort(sort).skip(skip).limit(limit);
+    //         const totalProducts = await productModel.countDocuments(query);
+    //         const totalPages = Math.ceil(totalProducts / limit);
+    
+    //         // Render the view with products and pagination info
+    //         res.render('category', {
+    //             email,
+    //             product: products,
+    //             category,
+    //             currentPage: page,
+    //             totalPages
+    //         });
+    
+    //     } catch (error) {
+    //         console.log(error);
+    //         res.status(500).send('Internal Server Error');
+    //     }
+    // };
+    
+    
+
+
     const getCategory = async (req, res) => {
-        try {
+    try {
+        const email = req.session.user;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 12;
+        const skip = (page - 1) * limit;
 
-            const email = req.session.user;
-            const category = await categoryModel.find({ isActive: true })
-            const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 12;
-            let totalPages = Math.ceil(await productModel.countDocuments() / limit);
+        // Fetch the categories for rendering
+        const category = await categoryModel.find({ isActive: true });
 
-            if(req.query.name){
-                req.session.filter_categor = req.query.name;
-            }
-            const searchword = req.query.search;
-        
-            const sort = req.query.sort;
-            if(req.session.filter_categor){
-                let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
-                product = await productModel.find({ category:categoryTofilter._id,isActive:true })
-            }
-        
-            if(sort == 'lowtohigh') {
-                product = await productModel.find({ isActive:true }).sort({ 'price.salesPrice': 1 })
-                if(req.session.filter_categor){
-                    let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
-                    product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ 'price.salesPrice': 1 })
-                }
-            }
-        
-            if(sort == 'hightolow') {
-                product = await productModel.find({ isActive:true }).sort({ 'price.salesPrice': -1 })
-                if(req.session.filter_categor){
-                    let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
-                    product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ 'price.salesPrice': -1 })
-                }
-            }
-            if(sort == 'aAzZ') {
-                product = await productModel.find({ isActive:true }).sort({ name: 1 })
-                if(req.session.filter_categor){
-                    let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
-                    product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ name: 1 })
-                }
-            }
-            if(sort == 'zZaA') {
-                product = await productModel.find({ isActive:true }).sort({ name: -1 })
-                if(req.session.filter_categor){
-                    let categoryTofilter = await categoryModel.findOne({name:req.session.filter_categor,isActive:true})
-                    product = await productModel.find({ category:categoryTofilter._id,isActive:true }).sort({ name: -1 })
-                }
-            }
-        
-        
-            if(searchword){
-                product = await productModel.find({name:{$regex: '.*'+ searchword +'.*',$options:"i"}})
-                res.render('category',{email,product,category,currentPage: page, totalPages})    
-            }else{
-              res.render('category',{email,product,category,currentPage: page, totalPages})    
-            }
-        } catch (error) {
-            console.log(error);
-            res.status(500).send('Internal Server Error');
+        // Initialize the query object for filtering
+        let query = { isActive: true };
+
+        // Handle filtering by category
+        if (req.query.name) {
+            req.session.filter_category = req.query.name;
         }
-    }
 
+        if (req.session.filter_category) {
+            const categoryToFilter = await categoryModel.findOne({ name: req.session.filter_category, isActive: true });
+            if (categoryToFilter) {
+                query.category = categoryToFilter._id;
+            } else {
+                console.error(`Category '${req.session.filter_category}' not found`);
+            }
+        }
+
+        // Handle searching
+        if (req.query.search) {
+            req.session.search = req.query.search;
+        }
+
+        if (req.session.search) {
+            query.name = { $regex: '.*' + req.session.search + '.*', $options: 'i' };
+        }
+
+        // Determine sorting
+        let sort = {};
+        if (req.query.sort) {
+            req.session.sort = req.query.sort;
+        }
+
+        switch (req.session.sort) {
+            case 'lowtohigh':
+                sort = { 'price.salesPrice': 1 };
+                break;
+            case 'hightolow':
+                sort = { 'price.salesPrice': -1 };
+                break;
+            case 'aAzZ':
+                sort = { name: 1 };
+                break;
+            case 'zZaA':
+                sort = { name: -1 };
+                break;
+            default:
+                sort = {};
+                break;
+        }
+
+        // Fetch the products based on the query, sort, and pagination
+        const products = await productModel.find(query).sort(sort).skip(skip).limit(limit);
+        const totalProducts = await productModel.countDocuments(query);
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        // Render the view with products and pagination info
+        res.render('category', {
+            email,
+            product: products,
+            category,
+            currentPage: page,
+            totalPages,
+            currentFilter: req.session.filter_category,
+            currentSearch: req.session.search,
+            currentSort: req.session.sort
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+    
+    
     
     const getEmail = async(req,res) => {
 

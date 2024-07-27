@@ -5852,12 +5852,13 @@ h6.post-title {
   position: absolute;
 }
 
+/* changed the size of search field here below */
 .search-style-2 form input {
-  width: 100%;
-  max-width: 683px;
+  width: 55%;
+  max-width: 540px;
   border-radius: 0;
   background-color: #fff;
-  border-color: #414648;
+  /* border-color: #414648; */
   border-width: 0 0 3px 0;
   border-style: solid;
   font-size: 16px;
